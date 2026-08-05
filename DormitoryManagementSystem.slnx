@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DormitoryManagementSystem.API/DormitoryManagementSystem.API.csproj" />
+    <Project Path="src/DormitoryManagementSystem.Application/DormitoryManagementSystem.Application.csproj" />
+    <Project Path="src/DormitoryManagementSystem.Domain/DormitoryManagementSystem.Domain.csproj" />
+    <Project Path="src/DormitoryManagementSystem.Infrastructure/DormitoryManagementSystem.Infrastructure.csproj" />
+    <Project Path="src/DormitoryManagementSystem.Tests/DormitoryManagementSystem.Tests.csproj" />
+  </Folder>
+</Solution>
