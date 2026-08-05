@@ -32,6 +32,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Room> Rooms => Set<Room>();
     public DbSet <RoomAssignment> RoomAssignments => Set<RoomAssignment>();
     public DbSet <RoomTransferRequest> RoomTransferRequests => Set<RoomTransferRequest>();
+    public DbSet <RoomTransferResponse> RoomTransferResponses => Set<RoomTransferResponse>();
     public DbSet <SecurityIncident> SecurityIncidents => Set<SecurityIncident>();
     public DbSet <Violation> Violations => Set<Violation>();
 

@@ -11,12 +11,9 @@ public class ApplicationDbContextFactory
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
         var connectionString =
-            "server=mysql-d8067c-bezawit070-1234.c.aivencloud.com;port=15187;database=defaultdb;user=avnadmin;password=AVNS_u0MYYVozgKTEwhrbgAr";
+            "Server=localhost;Database=DormitoryManagementSystemDB;Trusted_Connection=True;TrustServerCertificate=True;";
 
-        optionsBuilder.UseMySql(
-            connectionString,
-            ServerVersion.AutoDetect(connectionString)
-        );
+        optionsBuilder.UseSqlServer(connectionString);
 
         return new ApplicationDbContext(optionsBuilder.Options);
     }

@@ -737,9 +737,9 @@
               "target": "Package",
               "version": "[10.0.10, )"
             },
-            "Pomelo.EntityFrameworkCore.MySql": {
+            "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[9.0.0, )"
+              "version": "[10.0.10, )"
             }
           },
           "imports": [

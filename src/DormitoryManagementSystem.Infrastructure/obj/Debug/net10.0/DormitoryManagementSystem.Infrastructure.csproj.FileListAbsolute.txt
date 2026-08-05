@@ -11,6 +11,7 @@ C:\Users\hp\OneDrive\Desktop\Internship Projects\Dormitory Management System\src
 C:\Users\hp\OneDrive\Desktop\Internship Projects\Dormitory Management System\src\DormitoryManagementSystem.Infrastructure\obj\Debug\net10.0\DormitoryManagementSystem.Infrastructure.AssemblyInfoInputs.cache
 C:\Users\hp\OneDrive\Desktop\Internship Projects\Dormitory Management System\src\DormitoryManagementSystem.Infrastructure\obj\Debug\net10.0\DormitoryManagementSystem.Infrastructure.AssemblyInfo.cs
 C:\Users\hp\OneDrive\Desktop\Internship Projects\Dormitory Management System\src\DormitoryManagementSystem.Infrastructure\obj\Debug\net10.0\DormitoryManagementSystem.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\hp\OneDrive\Desktop\Internship Projects\Dormitory Management System\src\DormitoryManagementSystem.Infrastructure\obj\Debug\net10.0\DormitoryManagementSystem.Infrastructure.sourcelink.json
 C:\Users\hp\OneDrive\Desktop\Internship Projects\Dormitory Management System\src\DormitoryManagementSystem.Infrastructure\obj\Debug\net10.0\Dormitor.FE780585.Up2Date
 C:\Users\hp\OneDrive\Desktop\Internship Projects\Dormitory Management System\src\DormitoryManagementSystem.Infrastructure\obj\Debug\net10.0\DormitoryManagementSystem.Infrastructure.dll
 C:\Users\hp\OneDrive\Desktop\Internship Projects\Dormitory Management System\src\DormitoryManagementSystem.Infrastructure\obj\Debug\net10.0\refint\DormitoryManagementSystem.Infrastructure.dll
