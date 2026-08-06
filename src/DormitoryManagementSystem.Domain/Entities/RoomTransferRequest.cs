@@ -1,6 +1,4 @@
 namespace DormitoryManagementSystem.Domain.Entities;
-<<<<<<< HEAD
-
 public class RoomTransferRequest
 {
     public int TransferRequestId { get; set; }
@@ -30,14 +28,5 @@ public class RoomTransferRequest
     // Foreign Key: User who approves request
     public int ApprovedBy { get; set; }
     public User? ApprovedByUser { get; set; }
-}
-=======
-public class RoomTransferRequest
-{
-    public int Id { get; set; }
-    public int StudentId { get; set; }
-    public int FromRoomId { get; set; }
-    public int ToRoomId { get; set; }
-    public DateTime RequestDate { get; set; }
+
 };
->>>>>>> ca6ddbeeb2d8d4bf0827dae4d9461809e589ba28
