@@ -30,11 +30,22 @@ public class ApplicationDbContext : DbContext
     public DbSet<Role> Roles => Set<Role>();
     public DbSet<Student> Students => Set<Student>();
     public DbSet<Room> Rooms => Set<Room>();
+<<<<<<< HEAD
     public DbSet<RoomAssignment> RoomAssignments => Set<RoomAssignment>();
     public DbSet<RoomTransferRequest> RoomTransferRequests => Set<RoomTransferRequest>();
     public DbSet<RoomTransferResponse> RoomTransferResponses => Set<RoomTransferResponse>();
     public DbSet<SecurityIncident> SecurityIncidents => Set<SecurityIncident>();
     public DbSet<Violation> Violations => Set<Violation>();
+=======
+    public DbSet <RoomAssignment> RoomAssignments => Set<RoomAssignment>();
+    public DbSet <RoomTransferRequest> RoomTransferRequests => Set<RoomTransferRequest>();
+    public DbSet <RoomTransferResponse> RoomTransferResponses => Set<RoomTransferResponse>();
+    public DbSet <SecurityIncident> SecurityIncidents => Set<SecurityIncident>();
+    public DbSet <Violation> Violations => Set<Violation>();
+    public DbSet <Department> Departments => Set<Department>();
+     public DbSet <MaintenanceAssignment> MaintainenanceAssignments => Set<MaintenanceAssignment>();
+    
+>>>>>>> ca6ddbeeb2d8d4bf0827dae4d9461809e589ba28
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

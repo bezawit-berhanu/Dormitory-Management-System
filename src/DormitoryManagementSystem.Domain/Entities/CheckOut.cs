@@ -1,4 +1,5 @@
 namespace DormitoryManagementSystem.Domain.Entities;
+<<<<<<< HEAD
 
 public class CheckOut
 {
@@ -20,3 +21,12 @@ public class CheckOut
 
     public string Reason { get; set; } = string.Empty;
 }
+=======
+public class CheckOut
+{
+    public int Id { get; set; }
+    public int StudentId { get; set; }
+    public int RoomId { get; set; }
+    public DateTime CheckOutDate { get; set; }
+};
+>>>>>>> ca6ddbeeb2d8d4bf0827dae4d9461809e589ba28

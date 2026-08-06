@@ -1,4 +1,5 @@
 namespace DormitoryManagementSystem.Domain.Entities;
+<<<<<<< HEAD
 
 public class Violation
 {
@@ -25,3 +26,11 @@ public class Violation
 
     public string Status { get; set; } = string.Empty;
 }
+=======
+public class Violation
+{
+    public int Id { get; set; }
+    public string Description { get; set; } = string.Empty;
+    public DateTime DateOccurred { get; set; }
+};
+>>>>>>> ca6ddbeeb2d8d4bf0827dae4d9461809e589ba28
