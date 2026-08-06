@@ -5,7 +5,7 @@ public class QRCode
     public int QRCodeId { get; set; }
 
     // Foreign Key: Student
-    public int StudentId { get; set; }
+    public int Id { get; set; }
     public Student? Student { get; set; }
 
     public string QRCodeValue { get; set; } = string.Empty;
