@@ -1,6 +1,4 @@
 namespace DormitoryManagementSystem.Domain.Entities;
-<<<<<<< HEAD
-
 public class Inspection
 {
     public int InspectionId { get; set; }
@@ -24,13 +22,5 @@ public class Inspection
 
     // One Inspection can have many findings
     public ICollection<InspectionFinding> Findings { get; set; } = new List<InspectionFinding>();
-}
-=======
-public class Inspection
-{
-    public int Id { get; set; }
-    public int RoomId { get; set; }
-    public DateTime InspectionDate { get; set; }
-    public string InspectorName { get; set; } = string.Empty;
+
 };
->>>>>>> ca6ddbeeb2d8d4bf0827dae4d9461809e589ba28
