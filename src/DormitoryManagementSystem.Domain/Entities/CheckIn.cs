@@ -5,7 +5,7 @@ public class CheckIn
 {
     public int CheckInId { get; set; }
 
-    public int StudentId { get; set; }
+    public int Id { get; set; }
     public Student? Student { get; set; }
 
     public int RoomAssignmentId { get; set; }

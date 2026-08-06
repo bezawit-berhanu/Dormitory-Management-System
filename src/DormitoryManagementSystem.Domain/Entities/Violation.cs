@@ -7,7 +7,7 @@ public class Violation
 
 
     // Foreign Key: Student
-    public int StudentId { get; set; }
+    public int Id { get; set; }
     public Student? Student { get; set; }
 
 

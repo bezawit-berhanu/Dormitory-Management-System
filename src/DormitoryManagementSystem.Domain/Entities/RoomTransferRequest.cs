@@ -6,7 +6,7 @@ public class RoomTransferRequest
     public int TransferRequestId { get; set; }
 
     // Foreign Key: Student
-    public int StudentId { get; set; }
+    public int Id { get; set; }
     public Student? Student { get; set; }
 
 
