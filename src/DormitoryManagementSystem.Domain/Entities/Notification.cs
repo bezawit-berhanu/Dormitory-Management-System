@@ -1,2 +1,7 @@
 namespace DormitoryManagementSystem.Domain.Entities;
-public class Notification {};
+public class Notification
+{
+    public int Id { get; set; }
+    public string Message { get; set; } = string.Empty;
+    public DateTime DateCreated { get; set; }
+};
