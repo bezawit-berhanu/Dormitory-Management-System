@@ -1,5 +1,4 @@
 namespace DormitoryManagementSystem.Domain.Entities;
-
 public class RoomAssignment
 {
     public int RoomAssignmentId { get; set; }
@@ -25,4 +24,6 @@ public class RoomAssignment
 
     // Active, Transferred, CheckedOut, Cancelled, etc.
     public string Status { get; set; } = string.Empty;
-}
+
+
+};

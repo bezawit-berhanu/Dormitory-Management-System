@@ -1,5 +1,4 @@
 namespace DormitoryManagementSystem.Domain.Entities;
-
 public class QRCode
 {
     public int QRCodeId { get; set; }
@@ -15,4 +14,7 @@ public class QRCode
     public DateTime ExpiryDate { get; set; }
 
     public string Status { get; set; } = string.Empty;
-}
+
+};
+
+

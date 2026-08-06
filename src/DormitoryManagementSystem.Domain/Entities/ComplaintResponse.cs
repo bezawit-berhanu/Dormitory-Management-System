@@ -1,5 +1,4 @@
 namespace DormitoryManagementSystem.Domain.Entities;
-
 public class ComplaintResponse
 {
     public int ResponseId { get; set; }
@@ -17,4 +16,4 @@ public class ComplaintResponse
     public string Response { get; set; } = string.Empty;
 
     public DateTime ResponseDate { get; set; }
-}
+};

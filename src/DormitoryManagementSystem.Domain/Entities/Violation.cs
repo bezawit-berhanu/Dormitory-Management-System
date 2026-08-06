@@ -1,5 +1,4 @@
 namespace DormitoryManagementSystem.Domain.Entities;
-
 public class Violation
 {
     public int ViolationId { get; set; }
@@ -24,4 +23,5 @@ public class Violation
     public string Penalty { get; set; } = string.Empty;
 
     public string Status { get; set; } = string.Empty;
-}
+
+};

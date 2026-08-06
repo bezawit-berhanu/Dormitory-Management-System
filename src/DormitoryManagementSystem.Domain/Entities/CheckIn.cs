@@ -14,6 +14,4 @@ public class CheckIn
 
     public int CheckedInByUserId { get; set; }
     public User? CheckedInByUser { get; set; }
-
-    // New attribute
 };

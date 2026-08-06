@@ -21,4 +21,6 @@ public class Complaint
 
     // Navigation: One Complaint can have many responses
     public ICollection<ComplaintResponse> Responses { get; set; } = new List<ComplaintResponse>();
-}
+
+};
+
