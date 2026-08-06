@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DormitoryManagementSystem.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b8c8979b4e526c3705cb88aa6bcc09f3bb80e1b0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5d00a94747d1689f622b85f774c27739f999ce6a")]
 [assembly: System.Reflection.AssemblyProductAttribute("DormitoryManagementSystem.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DormitoryManagementSystem.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
