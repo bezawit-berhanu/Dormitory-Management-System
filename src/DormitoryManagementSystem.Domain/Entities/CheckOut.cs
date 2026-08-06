@@ -5,7 +5,7 @@ public class CheckOut
     public int CheckOutId { get; set; }
 
     // Foreign Key: Student
-    public int StudentId { get; set; }
+    public int Id { get; set; }
     public Student? Student { get; set; }
 
     // Foreign Key: RoomAssignment
