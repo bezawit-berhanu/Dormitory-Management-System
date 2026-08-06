@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bVJXQ9e8iYI=",
+  "dgSpecHash": "6BHPzLRLH5g=",
   "success": true,
-  "projectFilePath": "C:\\Users\\hp\\OneDrive\\Desktop\\Internship Projects\\Dormitory Management System\\src\\DormitoryManagementSystem.Infrastructure\\DormitoryManagementSystem.Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\hp\\desktop\\repos\\Dormitory-Management-System\\src\\DormitoryManagementSystem.Infrastructure\\DormitoryManagementSystem.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\hp\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
