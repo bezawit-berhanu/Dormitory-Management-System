@@ -28,16 +28,17 @@ public class ApplicationDbContext : DbContext
     public DbSet<Notification> Notifications => Set<Notification>();
     public DbSet<QRCode> QRCodes => Set<QRCode>();
     public DbSet<Role> Roles => Set<Role>();
-    public DbSet<Student> Students => Set<Student>();   
+    public DbSet<Student> Students => Set<Student>();
     public DbSet<Room> Rooms => Set<Room>();
-    public DbSet <RoomAssignment> RoomAssignments => Set<RoomAssignment>();
-    public DbSet <RoomTransferRequest> RoomTransferRequests => Set<RoomTransferRequest>();
-    public DbSet <RoomTransferResponse> RoomTransferResponses => Set<RoomTransferResponse>();
-    public DbSet <SecurityIncident> SecurityIncidents => Set<SecurityIncident>();
-    public DbSet <Violation> Violations => Set<Violation>();
+    public DbSet<RoomAssignment> RoomAssignments => Set<RoomAssignment>();
+    public DbSet<RoomTransferRequest> RoomTransferRequests => Set<RoomTransferRequest>();
+    public DbSet<RoomTransferResponse> RoomTransferResponses => Set<RoomTransferResponse>();
+    public DbSet<SecurityIncident> SecurityIncidents => Set<SecurityIncident>();
+    public DbSet<Violation> Violations => Set<Violation>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
     }
+
 }
