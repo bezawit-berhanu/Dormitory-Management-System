@@ -16,5 +16,4 @@ public class CheckIn
     public User? CheckedInByUser { get; set; }
 
     // New attribute
-    public string CheckInStatus { get; set; } = "Active";
-}
+};
