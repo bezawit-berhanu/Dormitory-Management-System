@@ -35,6 +35,9 @@ public class ApplicationDbContext : DbContext
     public DbSet <RoomTransferResponse> RoomTransferResponses => Set<RoomTransferResponse>();
     public DbSet <SecurityIncident> SecurityIncidents => Set<SecurityIncident>();
     public DbSet <Violation> Violations => Set<Violation>();
+    public DbSet <Department> Departments => Set<Department>();
+     public DbSet <MaintenanceAssignment> MaintainenanceAssignments => Set<MaintenanceAssignment>();
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
