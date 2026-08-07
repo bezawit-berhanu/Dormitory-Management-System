@@ -4,7 +4,7 @@ public class QRCode
     public int QRCodeId { get; set; }
 
     // Foreign Key: Student
-    public int Id { get; set; }
+    public int StudentId { get; set; }
     public Student? Student { get; set; }
 
     public string QRCodeValue { get; set; } = string.Empty;
@@ -14,7 +14,5 @@ public class QRCode
     public DateTime ExpiryDate { get; set; }
 
     public string Status { get; set; } = string.Empty;
-
 };
-
 

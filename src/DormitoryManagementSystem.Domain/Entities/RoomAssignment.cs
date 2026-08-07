@@ -4,7 +4,7 @@ public class RoomAssignment
     public int RoomAssignmentId { get; set; }
 
     // Student assigned to the room
-    public int Id { get; set; }
+    public int StudentId { get; set; }
     public Student? Student { get; set; }
 
     // Assigned room
@@ -24,6 +24,5 @@ public class RoomAssignment
 
     // Active, Transferred, CheckedOut, Cancelled, etc.
     public string Status { get; set; } = string.Empty;
-
 
 };
