@@ -25,6 +25,8 @@ builder.Services.AddScoped<IMaintenanceActivityService, MaintenanceActivityServi
 builder.Services.AddScoped<IMaintenanceActivityRepository, MaintenanceActivityRepository>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IAuditService, AuditService>();
+builder.Services.AddScoped<IAuditRepository, AuditRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
