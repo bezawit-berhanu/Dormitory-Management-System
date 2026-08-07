@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DormitoryManagementSystem.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ac958d8cf8eb38fb81276bf2de14efb967b5bd68")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b2367a8497a9550b2fc4f3cc95afbffa0282df47")]
 [assembly: System.Reflection.AssemblyProductAttribute("DormitoryManagementSystem.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DormitoryManagementSystem.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

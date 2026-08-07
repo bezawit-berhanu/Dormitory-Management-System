@@ -2,7 +2,7 @@ using DormitoryManagementSystem.Application.DTOs;
 using DormitoryManagementSystem.Application.Interfaces;
 using DormitoryManagementSystem.Domain.Entities;
 using DormitoryManagementSystem.Domain.Enums;
-
+using DormitoryManagementSystem.Domain.Interfaces;
 namespace DormitoryManagementSystem.Application.Services;
 
 public class AuthenticationService : IAuthenticationService

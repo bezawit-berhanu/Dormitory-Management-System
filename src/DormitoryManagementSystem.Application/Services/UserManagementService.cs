@@ -1,8 +1,9 @@
 using DormitoryManagementSystem.Application.DTOs;
 using DormitoryManagementSystem.Application.Interfaces;
+using DormitoryManagementSystem.Domain.Interfaces;
 using DormitoryManagementSystem.Domain.Entities;
 
-namespace DormitoryManagementSystem.Infrastructure.Services;
+namespace DormitoryManagementSystem.Application.Services;
 
 public class UserManagementService : IUserManagementService
 {
@@ -69,7 +70,7 @@ public class UserManagementService : IUserManagementService
             return false;
 
 
-        await _userRepository.DeleteAsync(user);
+        await _userRepository.DeleteAsync(id);
         await _userRepository.SaveChangesAsync();
 
 

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using DormitoryManagementSystem.Application.Interfaces;
+using DormitoryManagementSystem.Domain.Interfaces;
 using DormitoryManagementSystem.Domain.Entities;
 using DormitoryManagementSystem.Infrastructure.Data;
 
@@ -44,12 +44,21 @@ public class UserRepository : IUserRepository
         return Task.CompletedTask;
     }
 
+public async Task<IEnumerable<User>> GetAllAsync()
+{
+    return await _context.Users
+        .Include(u => u.Role)
+        .ToListAsync();
+}
+    public async Task DeleteAsync(int id)
+{
+    var user = await GetByIdAsync(id);
 
-    public Task DeleteAsync(User user)
+    if(user != null)
     {
         _context.Users.Remove(user);
-        return Task.CompletedTask;
     }
+}
 
 
     public async Task SaveChangesAsync()
