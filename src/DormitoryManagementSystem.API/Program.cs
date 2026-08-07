@@ -19,6 +19,8 @@ builder.Services.AddScoped<IMaintenanceService, MaintenanceService>();
 builder.Services.AddScoped<IMaintenanceRepository, MaintenanceRepository>();
 builder.Services.AddScoped<IDormitoryStructureRepository, DormitoryStructureRepository>();
 builder.Services.AddScoped<IDormitoryStructureService, DormitoryStructureService>();
+builder.Services.AddScoped<IMaintenanceAssignmentService, MaintenanceAssignmentService>();
+builder.Services.AddScoped<IMaintenanceAssignmentRepository, MaintenanceAssignmentRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
