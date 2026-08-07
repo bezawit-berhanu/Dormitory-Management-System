@@ -16,7 +16,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 builder.Services.AddScoped<IMaintenanceService, MaintenanceService>();
-builder.Services.AddScoped<MaintenanceRepository>();
+builder.Services.AddScoped<IMaintenanceRepository, MaintenanceRepository>();
+builder.Services.AddScoped<IDormitoryStructureRepository, DormitoryStructureRepository>();
+builder.Services.AddScoped<IDormitoryStructureService, DormitoryStructureService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
