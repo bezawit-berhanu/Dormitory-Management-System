@@ -23,6 +23,7 @@ builder.Services.AddScoped<IMaintenanceAssignmentService, MaintenanceAssignmentS
 builder.Services.AddScoped<IMaintenanceAssignmentRepository, MaintenanceAssignmentRepository>();
 builder.Services.AddScoped<IMaintenanceActivityService, MaintenanceActivityService>();
 builder.Services.AddScoped<IMaintenanceActivityRepository, MaintenanceActivityRepository>();
+builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
