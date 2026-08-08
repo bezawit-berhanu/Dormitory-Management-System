@@ -2,8 +2,6 @@ namespace DormitoryManagementSystem.Domain.Entities;
 public class RoomAssignment
 {
     public int RoomAssignmentId { get; set; }
-
-    // Student assigned to the room
     public int StudentId { get; set; }
     public Student? Student { get; set; }
 
