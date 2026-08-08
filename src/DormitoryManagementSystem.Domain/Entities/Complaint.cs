@@ -5,7 +5,7 @@ public class Complaint
     public int ComplaintId { get; set; }
 
     // Foreign Key: Student
-    public int StudentId { get; set; }
+    public int SId { get; set; }
     public Student? Student { get; set; }
 
     public string Title { get; set; } = string.Empty;
