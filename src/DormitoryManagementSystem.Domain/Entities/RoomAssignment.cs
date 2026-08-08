@@ -4,7 +4,7 @@ public class RoomAssignment
     public int RoomAssignmentId { get; set; }
 
     // Student assigned to the room
-    public int Id { get; set; }
+    public int SId { get; set; }
     public Student? Student { get; set; }
 
     // Assigned room
