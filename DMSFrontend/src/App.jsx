@@ -1,11 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import {BrowserRouter } from "react-router-dom";
+import {AuthProvider } from "./context/AuthContext";
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
- return <h1>Dormitory Management System</h1>
+  return (
+    <BrowserRouter>
+    <AuthProvider>
+        <AppRoutes />
+        </AuthProvider>
+        </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

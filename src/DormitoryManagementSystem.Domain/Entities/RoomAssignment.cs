@@ -1,4 +1,6 @@
+using DormitoryManagementSystem.Domain.Enums;
 namespace DormitoryManagementSystem.Domain.Entities;
+
 public class RoomAssignment
 {
     public int RoomAssignmentId { get; set; }
