@@ -24,15 +24,16 @@ return config; //Send the request onward.
 
 
 //If something goes wrong, reject the request.
-(error) => Promise.reject(error) 
+(error) => 
+    {return Promise.reject(error)} 
 );
 
 
 
 
 /*This runs when the backend repsondes*/
-api.interceptors.response.user(
-    (response) => response,
+api.interceptors.response.use(
+    (response) => {return response; },
 
     (error) => {
         if (error.response?.status === 401) {

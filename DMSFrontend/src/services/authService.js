@@ -1,4 +1,4 @@
-import api from "./api" // Import our configured axios client
+import api from "../constants/api" // Import our configured axios client
 
 const authService = {
 
@@ -66,4 +66,4 @@ isAuthenticated() {
 },
 };
 
-export default authServices;
+export default authService;
