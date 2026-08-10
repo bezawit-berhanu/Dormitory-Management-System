@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-    getFloors,
-    deactivateFloor,
+    getRooms,
+    deactivateRoom,
 } from "../../services/dormitoryService";
 import "../../App.css";
 
-const Floors = () => {
-    const [floors, setFloors] = useState([]);
+const Rooms = () => {
+    const [rooms, setRooms] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
@@ -16,16 +16,16 @@ const Floors = () => {
     useEffect(() => {
         let cancelled = false;
 
-        const loadFloors = async () => {
+        const loadRooms = async () => {
             try {
-                const data = await getFloors();
+                const data = await getRooms();
 
                 if (!cancelled) {
-                    setFloors(data);
+                    setRooms(data);
                 }
             } catch {
                 if (!cancelled) {
-                    setError("Unable to load floor records.");
+                    setError("Unable to load room records.");
                 }
             } finally {
                 if (!cancelled) {
@@ -34,16 +34,16 @@ const Floors = () => {
             }
         };
 
-        loadFloors();
+        loadRooms();
 
         return () => {
             cancelled = true;
         };
     }, []);
 
-    const handleDeactivate = async (id, floorNumber) => {
+    const handleDeactivate = async (id, roomNumber) => {
         const confirmed = window.confirm(
-            `Are you sure you want to deactivate Floor "${floorNumber}"?`
+            `Are you sure you want to deactivate Room "${roomNumber}"?`
         );
 
         if (!confirmed) {
@@ -54,24 +54,24 @@ const Floors = () => {
             setError("");
             setDeactivatingId(id);
 
-            await deactivateFloor(id);
+            await deactivateRoom(id);
 
-            setFloors((currentFloors) =>
-                currentFloors.map((floor) =>
-                    floor.floorId === id
-                        ? { ...floor, isActive: false }
-                        : floor
+            setRooms((currentRooms) =>
+                currentRooms.map((room) =>
+                    room.roomId === id
+                        ? { ...room, isActive: false }
+                        : room
                 )
             );
         } catch {
-            setError("Unable to deactivate the floor.");
+            setError("Unable to deactivate the room.");
         } finally {
             setDeactivatingId(null);
         }
     };
 
-    const filteredFloors = floors.filter((floor) =>
-        `${floor.floorNumber} ${floor.description} ${floor.blockId}`
+    const filteredRooms = rooms.filter((room) =>
+        `${room.roomNumber} ${room.floorId} ${room.capacity} ${room.status}`
             .toLowerCase()
             .includes(searchTerm.toLowerCase())
     );
@@ -80,7 +80,7 @@ const Floors = () => {
         return (
             <div className="page-container">
                 <div className="loading-state">
-                    Loading floor records...
+                    Loading room records...
                 </div>
             </div>
         );
@@ -90,32 +90,32 @@ const Floors = () => {
         <div className="page-container">
             <div className="page-header">
                 <div>
-                    <h1>Floors</h1>
+                    <h1>Rooms</h1>
                     <p>
-                        Manage floors within the dormitory blocks.
+                        Manage rooms within the dormitory floors.
                     </p>
                 </div>
 
                 <div className="action-buttons">
                     <Link
-                        to="/blocks"
+                        to="/floors"
                         className="secondary-button"
                     >
-                        ← Back to Blocks
+                        ← Back to Floors
                     </Link>
 
                     <Link
-                        to="/floors/create"
+                        to="/rooms/create"
                         className="primary-button"
                     >
-                        + Add Floor
+                        + Add Room
                     </Link>
 
                     <Link
-                        to="/rooms"
+                        to="/beds"
                         className="secondary-button"
                     >
-                        View Rooms →
+                        View Beds →
                     </Link>
                 </div>
             </div>
@@ -129,18 +129,18 @@ const Floors = () => {
 
                 <div className="table-toolbar">
                     <div>
-                        <h2>Floor Records</h2>
+                        <h2>Room Records</h2>
 
                         <span className="record-count">
-                            {floors.length} record
-                            {floors.length !== 1 ? "s" : ""}
+                            {rooms.length} record
+                            {rooms.length !== 1 ? "s" : ""}
                         </span>
                     </div>
 
                     <input
                         type="text"
                         className="search-input"
-                        placeholder="Search by floor, block ID, or description..."
+                        placeholder="Search by room, floor, capacity, or status..."
                         value={searchTerm}
                         onChange={(event) =>
                             setSearchTerm(event.target.value)
@@ -148,14 +148,14 @@ const Floors = () => {
                     />
                 </div>
 
-                {filteredFloors.length === 0 ? (
+                {filteredRooms.length === 0 ? (
                     <div className="empty-state">
-                        <h3>No floors found</h3>
+                        <h3>No rooms found</h3>
 
                         <p>
                             {searchTerm
                                 ? "Try a different search term."
-                                : "There are no floor records yet."}
+                                : "There are no room records yet."}
                         </p>
                     </div>
                 ) : (
@@ -164,31 +164,32 @@ const Floors = () => {
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Floor Number</th>
-                                    <th>Block ID</th>
-                                    <th>Description</th>
+                                    <th>Room Number</th>
+                                    <th>Floor ID</th>
+                                    <th>Capacity</th>
                                     <th>Status</th>
+                                    <th>Active Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                {filteredFloors.map((floor) => (
-                                    <tr key={floor.floorId}>
-                                        <td>{floor.floorId}</td>
+                                {filteredRooms.map((room) => (
+                                    <tr key={room.roomId}>
+                                        <td>{room.roomId}</td>
 
                                         <td className="name-cell">
-                                            {floor.floorNumber}
+                                            {room.roomNumber}
                                         </td>
 
-                                        <td>{floor.blockId}</td>
+                                        <td>{room.floorId}</td>
+
+                                        <td>{room.capacity}</td>
+
+                                        <td>{room.status}</td>
 
                                         <td>
-                                            {floor.description}
-                                        </td>
-
-                                        <td>
-                                            {floor.isActive !== false ? (
+                                            {room.isActive !== false ? (
                                                 <span className="status-active">
                                                     Active
                                                 </span>
@@ -201,10 +202,10 @@ const Floors = () => {
 
                                         <td>
                                             <div className="action-buttons">
-                                                {floor.isActive !== false && (
+                                                {room.isActive !== false && (
                                                     <>
                                                         <Link
-                                                            to={`/floors/edit/${floor.floorId}`}
+                                                            to={`/rooms/edit/${room.roomId}`}
                                                             className="edit-button"
                                                         >
                                                             Edit
@@ -215,24 +216,24 @@ const Floors = () => {
                                                             className="deactivate-button"
                                                             onClick={() =>
                                                                 handleDeactivate(
-                                                                    floor.floorId,
-                                                                    floor.floorNumber
+                                                                    room.roomId,
+                                                                    room.roomNumber
                                                                 )
                                                             }
                                                             disabled={
                                                                 deactivatingId ===
-                                                                floor.floorId
+                                                                room.roomId
                                                             }
                                                         >
                                                             {deactivatingId ===
-                                                                floor.floorId
+                                                                room.roomId
                                                                 ? "Deactivating..."
                                                                 : "Deactivate"}
                                                         </button>
                                                     </>
                                                 )}
 
-                                                {floor.isActive === false && (
+                                                {room.isActive === false && (
                                                     <span className="inactive-label">
                                                         Deactivated
                                                     </span>
@@ -250,4 +251,4 @@ const Floors = () => {
     );
 };
 
-export default Floors;
+export default Rooms;

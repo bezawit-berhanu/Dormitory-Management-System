@@ -38,14 +38,18 @@ public class DormitoryStructureRepository : IDormitoryStructureRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteDormitoryAsync(int id)
+    public async Task<bool> DeactivateDormitoryAsync(int id)
     {
         var dormitory = await _context.Dormitories.FindAsync(id);
 
         if (dormitory == null)
             return false;
 
-        _context.Dormitories.Remove(dormitory);
+        if (!dormitory.IsActive)
+            return false;
+
+        dormitory.IsActive = false;
+
         await _context.SaveChangesAsync();
 
         return true;
@@ -75,14 +79,18 @@ public class DormitoryStructureRepository : IDormitoryStructureRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteBlockAsync(int id)
+    public async Task<bool> DeactivateBlockAsync(int id)
     {
         var block = await _context.Blocks.FindAsync(id);
 
         if (block == null)
             return false;
 
-        _context.Blocks.Remove(block);
+        if (!block.IsActive)
+            return false;
+
+        block.IsActive = false;
+
         await _context.SaveChangesAsync();
 
         return true;
@@ -112,14 +120,18 @@ public class DormitoryStructureRepository : IDormitoryStructureRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteFloorAsync(int id)
+    public async Task<bool> DeactivateFloorAsync(int id)
     {
         var floor = await _context.Floors.FindAsync(id);
 
         if (floor == null)
             return false;
 
-        _context.Floors.Remove(floor);
+        if (!floor.IsActive)
+            return false;
+
+        floor.IsActive = false;
+
         await _context.SaveChangesAsync();
 
         return true;
@@ -149,14 +161,18 @@ public class DormitoryStructureRepository : IDormitoryStructureRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteRoomAsync(int id)
+    public async Task<bool> DeactivateRoomAsync(int id)
     {
         var room = await _context.Rooms.FindAsync(id);
 
         if (room == null)
             return false;
 
-        _context.Rooms.Remove(room);
+        if (!room.IsActive)
+            return false;
+
+        room.IsActive = false;
+
         await _context.SaveChangesAsync();
 
         return true;
@@ -186,14 +202,18 @@ public class DormitoryStructureRepository : IDormitoryStructureRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteBedAsync(int id)
+    public async Task<bool> DeactivateBedAsync(int id)
     {
         var bed = await _context.Beds.FindAsync(id);
 
         if (bed == null)
             return false;
 
-        _context.Beds.Remove(bed);
+        if (!bed.IsActive)
+            return false;
+
+        bed.IsActive = false;
+
         await _context.SaveChangesAsync();
 
         return true;

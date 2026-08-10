@@ -9,33 +9,33 @@ public interface IDormitoryStructureService
     Task<DormitoryDto?> GetDormitoryByIdAsync(int id);
     Task<DormitoryDto> CreateDormitoryAsync(DormitoryDto dto);
     Task<bool> UpdateDormitoryAsync(int id, DormitoryDto dto);
-    Task<bool> DeleteDormitoryAsync(int id);
+    Task<bool> DeactivateDormitoryAsync(int id);
 
     // Block
     Task<IEnumerable<BlockDto>> GetAllBlocksAsync();
     Task<BlockDto?> GetBlockByIdAsync(int id);
     Task<BlockDto> CreateBlockAsync(BlockDto dto);
     Task<bool> UpdateBlockAsync(int id, BlockDto dto);
-    Task<bool> DeleteBlockAsync(int id);
+    Task<bool> DeactivateBlockAsync(int id);
 
     // Floor
     Task<IEnumerable<FloorDto>> GetAllFloorsAsync();
     Task<FloorDto?> GetFloorByIdAsync(int id);
     Task<FloorDto> CreateFloorAsync(FloorDto dto);
     Task<bool> UpdateFloorAsync(int id, FloorDto dto);
-    Task<bool> DeleteFloorAsync(int id);
+    Task<bool> DeactivateFloorAsync(int id);
 
     // Room
     Task<IEnumerable<RoomDto>> GetAllRoomsAsync();
     Task<RoomDto?> GetRoomByIdAsync(int id);
     Task<RoomDto> CreateRoomAsync(RoomDto dto);
     Task<bool> UpdateRoomAsync(int id, RoomDto dto);
-    Task<bool> DeleteRoomAsync(int id);
+    Task<bool> DeactivateRoomAsync(int id);
 
     // Bed
     Task<IEnumerable<BedDto>> GetAllBedsAsync();
     Task<BedDto?> GetBedByIdAsync(int id);
     Task<BedDto> CreateBedAsync(BedDto dto);
     Task<bool> UpdateBedAsync(int id, BedDto dto);
-    Task<bool> DeleteBedAsync(int id);
+    Task<bool> DeactivateBedAsync(int id);
 }

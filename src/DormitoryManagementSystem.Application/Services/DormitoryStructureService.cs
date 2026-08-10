@@ -73,9 +73,9 @@ public class DormitoryStructureService : IDormitoryStructureService
     }
 
 
-    public async Task<bool> DeleteDormitoryAsync(int id)
+    public async Task<bool> DeactivateDormitoryAsync(int id)
     {
-        return await _repository.DeleteDormitoryAsync(id);
+        return await _repository.DeactivateDormitoryAsync(id);
     }
 
     public async Task<IEnumerable<BlockDto>> GetAllBlocksAsync()
@@ -143,10 +143,11 @@ public class DormitoryStructureService : IDormitoryStructureService
     }
 
 
-    public async Task<bool> DeleteBlockAsync(int id)
+    public async Task<bool> DeactivateBlockAsync(int id)
     {
-        return await _repository.DeleteBlockAsync(id);
+        return await _repository.DeactivateBlockAsync(id);
     }
+
     public async Task<IEnumerable<FloorDto>> GetAllFloorsAsync()
     {
         var floors = await _repository.GetAllFloorsAsync();
@@ -212,9 +213,9 @@ public class DormitoryStructureService : IDormitoryStructureService
     }
 
 
-    public async Task<bool> DeleteFloorAsync(int id)
+    public async Task<bool> DeactivateFloorAsync(int id)
     {
-        return await _repository.DeleteFloorAsync(id);
+        return await _repository.DeactivateFloorAsync(id);
     }
     public async Task<IEnumerable<RoomDto>> GetAllRoomsAsync()
     {
@@ -285,9 +286,9 @@ public class DormitoryStructureService : IDormitoryStructureService
     }
 
 
-    public async Task<bool> DeleteRoomAsync(int id)
+    public async Task<bool> DeactivateRoomAsync(int id)
     {
-        return await _repository.DeleteRoomAsync(id);
+        return await _repository.DeactivateRoomAsync(id);
     }
     public async Task<IEnumerable<BedDto>> GetAllBedsAsync()
     {
@@ -354,9 +355,9 @@ public class DormitoryStructureService : IDormitoryStructureService
     }
 
 
-    public async Task<bool> DeleteBedAsync(int id)
+    public async Task<bool> DeactivateBedAsync(int id)
     {
-        return await _repository.DeleteBedAsync(id);
+        return await _repository.DeactivateBedAsync(id);
     }
 
 }

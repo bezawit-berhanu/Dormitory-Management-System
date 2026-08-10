@@ -1,6 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace DormitoryManagementSystem.Domain.Entities;
+
 public class MaintenanceAssignment
 {
+    [Key]
     public int AssignmentId { get; set; }
 
     public int MaintenanceRequestId { get; set; }
@@ -14,4 +18,4 @@ public class MaintenanceAssignment
     public MaintenanceRequest MaintenanceRequest { get; set; } = null!;
 
     public User User { get; set; } = null!;
-};
+}

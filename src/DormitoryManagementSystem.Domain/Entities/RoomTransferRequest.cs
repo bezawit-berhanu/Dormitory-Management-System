@@ -1,6 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace DormitoryManagementSystem.Domain.Entities;
 public class RoomTransferRequest
 {
+    [Key]
     public int TransferRequestId { get; set; }
 
     // Foreign Key: Student

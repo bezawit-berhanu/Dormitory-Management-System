@@ -1,6 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace DormitoryManagementSystem.Domain.Entities;
+
 public class RoomTransferResponse
 {
+    [Key]
     public int ResponseId { get; set; }
 
     public int TransferRequestId { get; set; }
@@ -16,5 +20,4 @@ public class RoomTransferResponse
     public RoomTransferRequest TransferRequest { get; set; } = null!;
 
     public User RespondedByUser { get; set; } = null!;
-
-};
+}

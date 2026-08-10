@@ -55,10 +55,10 @@ public class DormitoryStructureController : ControllerBase
     }
 
 
-    [HttpDelete("dormitories/{id}")]
-    public async Task<IActionResult> DeleteDormitory(int id)
+    [HttpPut("dormitories/{id}/deactivate")]
+    public async Task<IActionResult> DeactivateDormitory(int id)
     {
-        var result = await _service.DeleteDormitoryAsync(id);
+        var result = await _service.DeactivateDormitoryAsync(id);
 
         if (!result)
             return NotFound();
@@ -106,10 +106,10 @@ public class DormitoryStructureController : ControllerBase
     }
 
 
-    [HttpDelete("blocks/{id}")]
-    public async Task<IActionResult> DeleteBlock(int id)
+    [HttpPut("blocks/{id}/deactivate")]
+    public async Task<IActionResult> DeactivateBlock(int id)
     {
-        var result = await _service.DeleteBlockAsync(id);
+        var result = await _service.DeactivateBlockAsync(id);
 
         if (!result)
             return NotFound();
@@ -157,10 +157,10 @@ public class DormitoryStructureController : ControllerBase
     }
 
 
-    [HttpDelete("floors/{id}")]
-    public async Task<IActionResult> DeleteFloor(int id)
+    [HttpPut("floors/{id}Deactivate")]
+    public async Task<IActionResult> DeactivateFloor(int id)
     {
-        var result = await _service.DeleteFloorAsync(id);
+        var result = await _service.DeactivateFloorAsync(id);
 
         if (!result)
             return NotFound();
@@ -208,10 +208,10 @@ public class DormitoryStructureController : ControllerBase
     }
 
 
-    [HttpDelete("rooms/{id}")]
-    public async Task<IActionResult> DeleteRoom(int id)
+    [HttpPut("rooms/{id}Deactivate")]
+    public async Task<IActionResult> DeactivateRoom(int id)
     {
-        var result = await _service.DeleteRoomAsync(id);
+        var result = await _service.DeactivateRoomAsync(id);
 
         if (!result)
             return NotFound();
@@ -259,10 +259,10 @@ public class DormitoryStructureController : ControllerBase
     }
 
 
-    [HttpDelete("beds/{id}")]
-    public async Task<IActionResult> DeleteBed(int id)
+    [HttpPut("beds/{id}Deactivate")]
+    public async Task<IActionResult> DeactivateBed(int id)
     {
-        var result = await _service.DeleteBedAsync(id);
+        var result = await _service.DeactivateBedAsync(id);
 
         if (!result)
             return NotFound();

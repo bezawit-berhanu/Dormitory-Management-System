@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-    getFloors,
-    deactivateFloor,
+    getBeds,
+    deactivateBed,
 } from "../../services/dormitoryService";
 import "../../App.css";
 
-const Floors = () => {
-    const [floors, setFloors] = useState([]);
+const Beds = () => {
+    const [beds, setBeds] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
@@ -16,16 +16,16 @@ const Floors = () => {
     useEffect(() => {
         let cancelled = false;
 
-        const loadFloors = async () => {
+        const loadBeds = async () => {
             try {
-                const data = await getFloors();
+                const data = await getBeds();
 
                 if (!cancelled) {
-                    setFloors(data);
+                    setBeds(data);
                 }
             } catch {
                 if (!cancelled) {
-                    setError("Unable to load floor records.");
+                    setError("Unable to load bed records.");
                 }
             } finally {
                 if (!cancelled) {
@@ -34,16 +34,16 @@ const Floors = () => {
             }
         };
 
-        loadFloors();
+        loadBeds();
 
         return () => {
             cancelled = true;
         };
     }, []);
 
-    const handleDeactivate = async (id, floorNumber) => {
+    const handleDeactivate = async (id, bedNumber) => {
         const confirmed = window.confirm(
-            `Are you sure you want to deactivate Floor "${floorNumber}"?`
+            `Are you sure you want to deactivate Bed "${bedNumber}"?`
         );
 
         if (!confirmed) {
@@ -54,24 +54,24 @@ const Floors = () => {
             setError("");
             setDeactivatingId(id);
 
-            await deactivateFloor(id);
+            await deactivateBed(id);
 
-            setFloors((currentFloors) =>
-                currentFloors.map((floor) =>
-                    floor.floorId === id
-                        ? { ...floor, isActive: false }
-                        : floor
+            setBeds((currentBeds) =>
+                currentBeds.map((bed) =>
+                    bed.bedId === id
+                        ? { ...bed, isActive: false }
+                        : bed
                 )
             );
         } catch {
-            setError("Unable to deactivate the floor.");
+            setError("Unable to deactivate the bed.");
         } finally {
             setDeactivatingId(null);
         }
     };
 
-    const filteredFloors = floors.filter((floor) =>
-        `${floor.floorNumber} ${floor.description} ${floor.blockId}`
+    const filteredBeds = beds.filter((bed) =>
+        `${bed.bedNumber} ${bed.roomId} ${bed.status}`
             .toLowerCase()
             .includes(searchTerm.toLowerCase())
     );
@@ -80,7 +80,7 @@ const Floors = () => {
         return (
             <div className="page-container">
                 <div className="loading-state">
-                    Loading floor records...
+                    Loading bed records...
                 </div>
             </div>
         );
@@ -90,32 +90,25 @@ const Floors = () => {
         <div className="page-container">
             <div className="page-header">
                 <div>
-                    <h1>Floors</h1>
+                    <h1>Beds</h1>
                     <p>
-                        Manage floors within the dormitory blocks.
+                        Manage beds within the dormitory rooms.
                     </p>
                 </div>
 
                 <div className="action-buttons">
                     <Link
-                        to="/blocks"
-                        className="secondary-button"
-                    >
-                        ← Back to Blocks
-                    </Link>
-
-                    <Link
-                        to="/floors/create"
-                        className="primary-button"
-                    >
-                        + Add Floor
-                    </Link>
-
-                    <Link
                         to="/rooms"
                         className="secondary-button"
                     >
-                        View Rooms →
+                        ← Back to Rooms
+                    </Link>
+
+                    <Link
+                        to="/beds/create"
+                        className="primary-button"
+                    >
+                        + Add Bed
                     </Link>
                 </div>
             </div>
@@ -129,18 +122,18 @@ const Floors = () => {
 
                 <div className="table-toolbar">
                     <div>
-                        <h2>Floor Records</h2>
+                        <h2>Bed Records</h2>
 
                         <span className="record-count">
-                            {floors.length} record
-                            {floors.length !== 1 ? "s" : ""}
+                            {beds.length} record
+                            {beds.length !== 1 ? "s" : ""}
                         </span>
                     </div>
 
                     <input
                         type="text"
                         className="search-input"
-                        placeholder="Search by floor, block ID, or description..."
+                        placeholder="Search by bed, room ID, or status..."
                         value={searchTerm}
                         onChange={(event) =>
                             setSearchTerm(event.target.value)
@@ -148,14 +141,14 @@ const Floors = () => {
                     />
                 </div>
 
-                {filteredFloors.length === 0 ? (
+                {filteredBeds.length === 0 ? (
                     <div className="empty-state">
-                        <h3>No floors found</h3>
+                        <h3>No beds found</h3>
 
                         <p>
                             {searchTerm
                                 ? "Try a different search term."
-                                : "There are no floor records yet."}
+                                : "There are no bed records yet."}
                         </p>
                     </div>
                 ) : (
@@ -164,31 +157,29 @@ const Floors = () => {
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Floor Number</th>
-                                    <th>Block ID</th>
-                                    <th>Description</th>
+                                    <th>Bed Number</th>
+                                    <th>Room ID</th>
                                     <th>Status</th>
+                                    <th>Active Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                {filteredFloors.map((floor) => (
-                                    <tr key={floor.floorId}>
-                                        <td>{floor.floorId}</td>
+                                {filteredBeds.map((bed) => (
+                                    <tr key={bed.bedId}>
+                                        <td>{bed.bedId}</td>
 
                                         <td className="name-cell">
-                                            {floor.floorNumber}
+                                            {bed.bedNumber}
                                         </td>
 
-                                        <td>{floor.blockId}</td>
+                                        <td>{bed.roomId}</td>
+
+                                        <td>{bed.status}</td>
 
                                         <td>
-                                            {floor.description}
-                                        </td>
-
-                                        <td>
-                                            {floor.isActive !== false ? (
+                                            {bed.isActive !== false ? (
                                                 <span className="status-active">
                                                     Active
                                                 </span>
@@ -201,10 +192,10 @@ const Floors = () => {
 
                                         <td>
                                             <div className="action-buttons">
-                                                {floor.isActive !== false && (
+                                                {bed.isActive !== false && (
                                                     <>
                                                         <Link
-                                                            to={`/floors/edit/${floor.floorId}`}
+                                                            to={`/beds/edit/${bed.bedId}`}
                                                             className="edit-button"
                                                         >
                                                             Edit
@@ -215,24 +206,24 @@ const Floors = () => {
                                                             className="deactivate-button"
                                                             onClick={() =>
                                                                 handleDeactivate(
-                                                                    floor.floorId,
-                                                                    floor.floorNumber
+                                                                    bed.bedId,
+                                                                    bed.bedNumber
                                                                 )
                                                             }
                                                             disabled={
                                                                 deactivatingId ===
-                                                                floor.floorId
+                                                                bed.bedId
                                                             }
                                                         >
                                                             {deactivatingId ===
-                                                                floor.floorId
+                                                                bed.bedId
                                                                 ? "Deactivating..."
                                                                 : "Deactivate"}
                                                         </button>
                                                     </>
                                                 )}
 
-                                                {floor.isActive === false && (
+                                                {bed.isActive === false && (
                                                     <span className="inactive-label">
                                                         Deactivated
                                                     </span>
@@ -250,4 +241,4 @@ const Floors = () => {
     );
 };
 
-export default Floors;
+export default Beds;

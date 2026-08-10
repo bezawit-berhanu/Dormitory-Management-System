@@ -1,6 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace DormitoryManagementSystem.Domain.Entities;
 public class SecurityIncident
 {
+    [Key]
     public int IncidentId { get; set; }
 
     public int RoomId { get; set; }
