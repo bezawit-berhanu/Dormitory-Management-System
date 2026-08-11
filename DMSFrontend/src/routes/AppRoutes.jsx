@@ -1,164 +1,78 @@
-// ==========================================
-// REACT ROUTER
-// ==========================================
-//
-// Routes = container for all our routes.
-//
-// Route = defines one URL and the page
-//         that should appear at that URL.
-//
-// Navigate = redirects the user to another
-//            URL.
-// ==========================================
-
+// React Router tools.
+// BrowserRouter is NOT needed here because App.jsx
+// already provides it.
 import {
   Routes,
   Route,
   Navigate
 } from "react-router-dom";
 
+// Authentication pages
+import Login from "../pages/Authentication/Login";
+import ForgotPassword from "../pages/Authentication/ForgotPassword";
+import Profile from "../pages/Authentication/Profile";
 
-// ==========================================
-// AUTHENTICATION PAGES
-// ==========================================
-
-import Login
-  from "../pages/Authentication/Login";
-
-import ForgotPassword
-  from "../pages/Authentication/ForgotPassword";
-
-import Profile
-  from "../pages/Authentication/Profile";
-
-
-// ==========================================
-// PROTECTED ROUTE
-// ==========================================
-//
-// This component checks whether the user
-// is authenticated before allowing access
-// to protected pages.
-// ==========================================
-
-import ProtectedRoute
-  from "../routes/ProtectedRoute";
-
-
-// ==========================================
-// APP ROUTES
-// ==========================================
+// Protects pages that require login
+import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
-
   return (
-
-    // IMPORTANT:
-    // Every <Route> must be inside <Routes>.
     <Routes>
 
+      {/* =====================================
+          DEFAULT PAGE
+          =====================================
+          When we visit:
+              http://localhost:5173/
+
+          send the user to /login.
+      */}
+      <Route
+        path="/"
+        element={<Navigate to="/login" replace />}
+      />
 
       {/* =====================================
           LOGIN
-          =====================================
-
-          URL:
-          http://localhost:5173/login
-
-          Anyone can access Login.
-      */}
-
+          ===================================== */}
       <Route
         path="/login"
         element={<Login />}
       />
 
-
       {/* =====================================
           FORGOT PASSWORD
-          =====================================
-
-          URL:
-          /forgot-password
-      */}
-
+          ===================================== */}
       <Route
         path="/forgot-password"
         element={<ForgotPassword />}
       />
 
-
       {/* =====================================
-          PROFILE
+          PROTECTED PAGES
           =====================================
-
-          URL:
-          /profile
-
-          This page requires authentication.
-
-          ProtectedRoute decides whether the
-          user is allowed to see Profile.
+          Anything inside this route requires
+          the user to be logged in.
       */}
+      <Route element={<ProtectedRoute />}>
 
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        }
-      />
+        <Route
+          path="/profile"
+          element={<Profile />}
+        />
 
-
-      {/* =====================================
-          DEFAULT PAGE
-          =====================================
-
-          If someone visits:
-
-          http://localhost:5173/
-
-          redirect them to:
-
-          /login
-      */}
-
-      <Route
-        path="/"
-        element={
-          <Navigate
-            to="/login"
-            replace
-          />
-        }
-      />
-
+      </Route>
 
       {/* =====================================
           UNKNOWN URL
-          =====================================
-
-          If somebody types:
-
-          /something-random
-
-          redirect them to Login for now.
-      */}
-
+          ===================================== */}
       <Route
         path="*"
-        element={
-          <Navigate
-            to="/login"
-            replace
-          />
-        }
+        element={<h1>404 - Page Not Found</h1>}
       />
 
     </Routes>
   );
 }
-
 
 export default AppRoutes;

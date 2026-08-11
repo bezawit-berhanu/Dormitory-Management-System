@@ -1,179 +1,145 @@
-import studentService from "../../services/studentService";
+import { useEffect, useState } from "react";
+import {
+  useNavigate,
+  useParams
+} from "react-router-dom";
+
+import registrarService from "../../services/registrarService";
 
 const StudentDetails = () => {
-    const {id} = useParams();
-    const navigate = useNavigate();
 
-    //StudentInformation
-    const [student, setStudents] = useState([]);
-    const [loading, setLoaading] = useState(true);
-    const [error, setError] = useState("");
+  const { studentId } = useParams();
 
-    useEffect(() => {
-        loadStudent()
-    }, []);
+  const navigate = useNavigate();
 
-    const loadStudent = async () => {
-        try {
-            setLoading(true);
+  const [student, setStudent] = useState(null);
 
-            const data = await getStudentById();
+  const [loading, setLoading] = useState(true);
 
-            setStudents(data);
-        }
-        catch(err) {
-            console.error(err);
-        setError(err?.response?.data?.message || "Unable to load student detail.");
-        }
-        finally {
-            setLoading(false);
-        }
+  const [error, setError] = useState("");
+
+  // ==========================================
+  // LOAD STUDENT FROM REGISTRAR
+  // ==========================================
+
+  useEffect(() => {
+
+    loadStudent();
+
+  }, [studentId]);
+
+  const loadStudent = async () => {
+
+    try {
+
+      setLoading(true);
+
+      const data =
+        await registrarService
+          .getStudentById(studentId);
+
+      setStudent(data);
+
+    } catch (err) {
+
+      console.error(err);
+
+      setError(
+        "Student could not be found."
+      );
+
+    } finally {
+
+      setLoading(false);
+    }
+  };
+
+  // ==========================================
+  // STATUS
+  // ==========================================
+
+  const getStatusName = (status) => {
+
+    const statuses = {
+      1: "Active",
+      2: "Inactive",
+      3: "Graduated",
+      4: "Suspended"
     };
 
-    
-  if (loading) {
-     return (
-      <div>
-        Loading student...
-      </div>
-    );
-  }
+    return statuses[Number(status)]
+      || "Unknown";
+  };
 
+  if (loading)
+    return <p>Loading student...</p>;
 
-  if (error) {
+  if (error)
+    return <p>{error}</p>;
 
-    return (
-      <div>
-
-        <h2>
-          Student not found
-        </h2>
-
-        <p>
-          {error}
-        </p>
-
-        <button
-          onClick={() =>
-            navigate("/students")
-          }
-        >
-          Back to Students
-        </button>
-
-      </div>
-    );
-  }
-
-
-  if (!student) {
-
-    return (
-      <div>
-        Student not found.
-      </div>
-    );
-  }
-
+  if (!student)
+    return <p>Student not found.</p>;
 
   return (
 
-    <div className="student-details-page">
+    <div>
 
-      <div className="page-header">
-
-        <div>
-
-          <h1>
-            Student Details
-          </h1>
-
-          <p>
-            View student information.
-          </p>
-
-        </div>
-
-
-        <button
-          type="button"
-          onClick={() =>
-            navigate(
-              `/students/${student.sId}/edit`
-            )
-          }
-        >
-          Edit Student
-        </button>
-
-      </div>
-
-
-      <div className="student-details-card">
-
-        <h2>
-          {student.name ||
-            student.fullName ||
-            "Student"}
-        </h2>
-
-
-        <p>
-          <strong>Student ID:</strong>{" "}
-          {student.studentId || "N/A"}
-        </p>
-
-
-        <p>
-          <strong>Department:</strong>{" "}
-          {student.department ||
-            student.departmentName ||
-            student.departmentId ||
-            "N/A"}
-        </p>
-
-
-        <p>
-          <strong>Gender:</strong>{" "}
-          {student.gender || "N/A"}
-        </p>
-
-
-        <p>
-          <strong>Date of Birth:</strong>{" "}
-          {student.dateOfBirth
-            ? new Date(
-                student.dateOfBirth
-              ).toLocaleDateString()
-            : "N/A"}
-        </p>
-
-
-        <p>
-          <strong>Year of Study:</strong>{" "}
-          {student.yearOfStudy || "N/A"}
-        </p>
-
-
-        <p>
-          <strong>Emergency Contact:</strong>{" "}
-          {student.emergencyContact ||
-            student.emergencyContactNumber ||
-            "N/A"}
-        </p>
-
-
-        <p>
-          <strong>Status:</strong>{" "}
-          {student.status ?? "N/A"}
-        </p>
-
-      </div>
-
-
-      <Link to="/students">
+      <button
+        onClick={() =>
+          navigate("/students")
+        }
+      >
         ← Back to Students
-      </Link>
+      </button>
+
+      <h1>
+        {student.fullName}
+      </h1>
+
+      <p>
+        Student ID: {student.studentId}
+      </p>
+
+      <p>
+        Department: {student.department}
+      </p>
+
+      <p>
+        Year of Study: {student.yearOfStudy}
+      </p>
+
+      <p>
+        Gender: {student.gender}
+      </p>
+
+      <p>
+        Date of Birth:
+        {" "}
+        {new Date(
+          student.dateOfBirth
+        ).toLocaleDateString()}
+      </p>
+
+      <p>
+        Status:
+        {" "}
+        {getStatusName(student.status)}
+      </p>
+
+      {/* ======================================
+          THIS IS WHERE RESIDENCE MANAGEMENT
+          STARTS.
+          ====================================== */}
+
+      <button
+        onClick={() =>
+          navigate(
+            `/assignments/${student.studentId}`
+          )
+        }
+      >
+        Assign Room
+      </button>
 
     </div>
   );

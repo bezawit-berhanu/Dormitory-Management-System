@@ -37,6 +37,12 @@ builder.Services.AddScoped<IQRCodeRepository, QRCodeRepository>();
 
 builder.Services.AddScoped<ICheckOutRepository, CheckOutRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddHttpClient<IRegistrarService, RegistrarService>(
+    client =>
+    {
+        client.BaseAddress =
+            new Uri("http://localhost:5100/");
+    });
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
