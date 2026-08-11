@@ -23,7 +23,6 @@ builder.Services.AddScoped<ITransferRepository, TransferRepository>();
 builder.Services.AddScoped<IViolationService, ViolationService>();
 builder.Services.AddScoped<IViolationRepository, ViolationRepository>();
 builder.Services.AddOpenApi();
-var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -37,7 +36,7 @@ builder.Services.AddCors(options =>
                   .AllowAnyMethod();
         });
 });
-
+var app = builder.Build();
 
 // Development
 
@@ -68,7 +67,6 @@ builder.Services.AddScoped<IQRCodeRepository, QRCodeRepository>();
 builder.Services.AddScoped<ICheckOutRepository, CheckOutRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
