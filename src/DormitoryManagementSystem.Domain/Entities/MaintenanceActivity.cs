@@ -1,6 +1,8 @@
 namespace DormitoryManagementSystem.Domain.Entities;
+
 public class MaintenanceActivity
 {
+
     public int ActivityId { get; set; }
 
     public int MaintenanceRequestId { get; set; }

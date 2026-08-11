@@ -1,4 +1,5 @@
 namespace DormitoryManagementSystem.Domain.Entities;
+
 public class ComplaintResponse
 {
     public int ResponseId { get; set; }
