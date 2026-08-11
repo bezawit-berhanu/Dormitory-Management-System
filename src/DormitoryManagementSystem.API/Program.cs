@@ -2,9 +2,7 @@ using DormitoryManagementSystem.Application.Interfaces;
 using DormitoryManagementSystem.Application.Services;
 using DormitoryManagementSystem.Domain.Interfaces;
 using DormitoryManagementSystem.Infrastructure.Data;
-<<<<<<< HEAD
-using DormitoryManagementSystem.Application.Interfaces;
-using DormitoryManagementSystem.Application.Services;
+using Microsoft.EntityFrameworkCore;
 using DormitoryManagementSystem.Infrastructure.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 Console.WriteLine(
@@ -25,17 +23,10 @@ builder.Services.AddScoped<ITransferRepository, TransferRepository>();
 builder.Services.AddScoped<IViolationService, ViolationService>();
 builder.Services.AddScoped<IViolationRepository, ViolationRepository>();
 builder.Services.AddOpenApi();
-=======
-using DormitoryManagementSystem.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
-
-var builder = WebApplication.CreateBuilder(args);
->>>>>>> origin
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-<<<<<<< HEAD
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact",
@@ -50,10 +41,8 @@ var app = builder.Build();
 
 
 // Development
-=======
-
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAutoMapper(typeof(StudentService).Assembly);
 
@@ -79,8 +68,6 @@ builder.Services.AddScoped<IQRCodeRepository, QRCodeRepository>();
 builder.Services.AddScoped<ICheckOutRepository, CheckOutRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-var app = builder.Build();
->>>>>>> origin
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -88,14 +75,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-<<<<<<< HEAD
 app.UseCors("AllowReact");
 app.UseAuthorization();
-=======
 
 app.UseAuthorization();
 
->>>>>>> origin
 app.MapControllers();
 
 app.Run();
