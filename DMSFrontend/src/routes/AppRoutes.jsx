@@ -1,4 +1,8 @@
-
+import {
+  Routes,
+  Route,
+  Navigate
+} from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import AnnouncementList from "../pages/Announcement/AnnouncementList";
 import CreateAnnouncement from "../pages/Announcement/CreateAnnouncement";
@@ -51,12 +55,6 @@ function AppRoutes() {
 // Navigate = redirects the user to another
 //            URL.
 // 
-
-import {
-  Routes,
-  Route,
-  Navigate
-} from "react-router-dom";
 
 
 // AUTHENTICATION PAGES
