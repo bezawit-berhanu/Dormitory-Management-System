@@ -10,9 +10,7 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    // ===============================
-    // DbSets
-    // ===============================
+  
 
     public DbSet<Announcement> Announcements => Set<Announcement>();
 
@@ -48,22 +46,12 @@ public class ApplicationDbContext : DbContext
     public DbSet<MaintenanceAssignment> MaintenanceAssignments => Set<MaintenanceAssignment>();
 
     public DbSet<Notification> Notifications => Set<Notification>();
-<<<<<<< HEAD
-    public DbSet<QRCode> QRCodes => Set<QRCode>();
-    public DbSet<Role> Roles => Set<Role>();
-    public DbSet<Student> Students => Set<Student>();
-    public DbSet<Room> Rooms => Set<Room>();
-    public DbSet<RoomAssignment> RoomAssignments => Set<RoomAssignment>();
-=======
-
->>>>>>> origin
     public DbSet<RoomTransferRequest> RoomTransferRequests => Set<RoomTransferRequest>();
     public DbSet<RoomTransferResponse> RoomTransferResponses => Set<RoomTransferResponse>();
 
     public DbSet<SecurityIncident> SecurityIncidents => Set<SecurityIncident>();
 
     public DbSet<Violation> Violations => Set<Violation>();
-<<<<<<< HEAD
     public DbSet<Department> Departments => Set<Department>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -180,9 +168,8 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<SecurityIncident>()
             .HasKey(x => x.IncidentId);
-=======
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+
     {
         base.OnModelCreating(modelBuilder);
 
@@ -348,6 +335,5 @@ public class ApplicationDbContext : DbContext
             .WithMany(r => r.Beds)
             .HasForeignKey(b => b.RoomId)
             .OnDelete(DeleteBehavior.Restrict);
->>>>>>> origin
     }
 }
