@@ -8,7 +8,7 @@ public int DepartmentId { get; set; }
 public string Gender { get; set; } = string.Empty;
     public DateTime DateOfBirth { get; set; }
     public string YearOfStudy { get; set; } = string.Empty;
-    public string EmergencyContact { get; set; } = string.Empty;    
+    public string EmergencyContactNumber { get; set; } = string.Empty;    
     public string Department { get; set; } = string.Empty;
     public string RoomNumber { get; set; } = string.Empty;
     public UserStatus Status { get; set; }
