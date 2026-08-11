@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import { Routes, Route } from "react-router-dom";
 import AnnouncementList from "../pages/Announcement/AnnouncementList";
 import CreateAnnouncement from "../pages/Announcement/CreateAnnouncement";
@@ -41,10 +41,7 @@ function AppRoutes() {
 <Route path="/inspections" element={<InspectionList/>}/>
 
 <Route path="/notifications" element={<NotificationList/>}/>
-=======
-// ==========================================
 // REACT ROUTER
-// ==========================================
 //
 // Routes = container for all our routes.
 //
@@ -53,7 +50,7 @@ function AppRoutes() {
 //
 // Navigate = redirects the user to another
 //            URL.
-// ==========================================
+// 
 
 import {
   Routes,
@@ -62,9 +59,7 @@ import {
 } from "react-router-dom";
 
 
-// ==========================================
 // AUTHENTICATION PAGES
-// ==========================================
 
 import Login
   from "../pages/Authentication/Login";
@@ -76,20 +71,18 @@ import Profile
   from "../pages/Authentication/Profile";
 
 
-// ==========================================
 // PROTECTED ROUTE
-// ==========================================
 //
 // This component checks whether the user
 // is authenticated before allowing access
 // to protected pages.
-// ==========================================
+// 
 
 import ProtectedRoute
   from "../routes/ProtectedRoute";
 
 
-// ==========================================
+// 
 // APP ROUTES
 // ==========================================
 
@@ -168,27 +161,6 @@ function AppRoutes() {
           /login
       */}
 
-      <Route
-        path="/"
-        element={
-          <Navigate
-            to="/login"
-            replace
-          />
-        }
-      />
-
-
-      {/* =====================================
-          UNKNOWN URL
-          =====================================
-
-          If somebody types:
-
-          /something-random
-
-          redirect them to Login for now.
-      */}
 
       <Route
         path="*"
@@ -199,14 +171,8 @@ function AppRoutes() {
           />
         }
       />
-
->>>>>>> origin
     </Routes>
   );
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin
 export default AppRoutes;
