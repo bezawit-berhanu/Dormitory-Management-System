@@ -10,10 +10,6 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    // ===============================
-    // DbSets
-    // ===============================
-
     public DbSet<Announcement> Announcements => Set<Announcement>();
 
     public DbSet<User> Users => Set<User>();
@@ -48,23 +44,12 @@ public class ApplicationDbContext : DbContext
     public DbSet<MaintenanceAssignment> MaintenanceAssignments => Set<MaintenanceAssignment>();
 
     public DbSet<Notification> Notifications => Set<Notification>();
-<<<<<<< HEAD
-    public DbSet<QRCode> QRCodes => Set<QRCode>();
-    public DbSet<Role> Roles => Set<Role>();
-    public DbSet<Student> Students => Set<Student>();
-    public DbSet<Room> Rooms => Set<Room>();
-    public DbSet<RoomAssignment> RoomAssignments => Set<RoomAssignment>();
-=======
-
->>>>>>> origin
     public DbSet<RoomTransferRequest> RoomTransferRequests => Set<RoomTransferRequest>();
     public DbSet<RoomTransferResponse> RoomTransferResponses => Set<RoomTransferResponse>();
 
     public DbSet<SecurityIncident> SecurityIncidents => Set<SecurityIncident>();
 
     public DbSet<Violation> Violations => Set<Violation>();
-<<<<<<< HEAD
-    public DbSet<Department> Departments => Set<Department>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ComplaintResponse>(entity =>
@@ -180,9 +165,6 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<SecurityIncident>()
             .HasKey(x => x.IncidentId);
-=======
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
@@ -190,16 +172,8 @@ public class ApplicationDbContext : DbContext
             typeof(ApplicationDbContext).Assembly
         );
 
-        // ===============================
-        // Role
-        // ===============================
-
         modelBuilder.Entity<Role>()
             .HasKey(r => r.RoleId);
-
-        // ===============================
-        // User
-        // ===============================
 
         modelBuilder.Entity<User>()
             .HasKey(u => u.UserId);
@@ -209,10 +183,6 @@ public class ApplicationDbContext : DbContext
             .WithMany(r => r.Users)
             .HasForeignKey(u => u.RoleId)
             .OnDelete(DeleteBehavior.Restrict);
-
-        // ===============================
-        // Student
-        // ===============================
 
         modelBuilder.Entity<Student>()
             .HasKey(s => s.SId);
@@ -228,10 +198,6 @@ public class ApplicationDbContext : DbContext
             .WithMany()
             .HasForeignKey(s => s.DepartmentId)
             .OnDelete(DeleteBehavior.Restrict);
-
-        // ===============================
-        // Room Assignment
-        // ===============================
 
         modelBuilder.Entity<RoomAssignment>()
             .HasKey(ra => ra.RoomAssignmentId);
@@ -259,11 +225,6 @@ public class ApplicationDbContext : DbContext
             .WithMany()
             .HasForeignKey(ra => ra.AssignedByUserId)
             .OnDelete(DeleteBehavior.Restrict);
-
-        // ===============================
-        // Check In
-        // ===============================
-
         modelBuilder.Entity<CheckIn>()
             .HasKey(c => c.CheckInId);
 
@@ -285,9 +246,6 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(c => c.CheckedInByUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // ===============================
-        // Check Out
-        // ===============================
 
         modelBuilder.Entity<CheckOut>()
             .HasKey(c => c.CheckOutId);
@@ -310,10 +268,6 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(c => c.CheckedOutBy)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // ===============================
-        // QR Code
-        // ===============================
-
         modelBuilder.Entity<QRCode>()
             .HasKey(q => q.QRCodeId);
 
@@ -323,9 +277,6 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(q => q.SId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // ===============================
-        // Room
-        // ===============================
 
         modelBuilder.Entity<Room>()
             .HasKey(r => r.RoomId);
@@ -336,10 +287,6 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(r => r.FloorId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // ===============================
-        // Bed
-        // ===============================
-
         modelBuilder.Entity<Bed>()
             .HasKey(b => b.BedId);
 
@@ -348,6 +295,6 @@ public class ApplicationDbContext : DbContext
             .WithMany(r => r.Beds)
             .HasForeignKey(b => b.RoomId)
             .OnDelete(DeleteBehavior.Restrict);
->>>>>>> origin
     }
+}
 }
