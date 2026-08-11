@@ -1,11 +1,10 @@
 namespace DormitoryManagementSystem.Domain.Entities;
+
 public class Announcement
 {
     public int AnnouncementId { get; set; }
-
     // Foreign Key
     public int CreatedBy { get; set; }
-
     public string Title { get; set; } = string.Empty;
 
     public string Message { get; set; } = string.Empty;
@@ -19,3 +18,4 @@ public class Announcement
     // Navigation Property
     public User CreatedByUser { get; set; } = null!;
 };
+
