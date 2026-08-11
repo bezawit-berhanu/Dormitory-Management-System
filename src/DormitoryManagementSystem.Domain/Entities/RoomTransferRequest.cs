@@ -7,7 +7,7 @@ public class RoomTransferRequest
     public int TransferRequestId { get; set; }
 
     // Foreign Key: Student
-    public int Id { get; set; }
+    public int SId { get; set; }
     public Student? Student { get; set; }
 
 
@@ -31,6 +31,5 @@ public class RoomTransferRequest
     // Foreign Key: User who approves request
     public int ApprovedBy { get; set; }
     public User? ApprovedByUser { get; set; }
-
 
 };

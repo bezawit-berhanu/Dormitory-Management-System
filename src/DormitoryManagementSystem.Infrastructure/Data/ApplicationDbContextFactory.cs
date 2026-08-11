@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace DormitoryManagementSystem.Infrastructure.Data;
 
-public class ApplicationDbContextFactory 
+public class ApplicationDbContextFactory
     : IDesignTimeDbContextFactory<ApplicationDbContext>
 {
     public ApplicationDbContext CreateDbContext(string[] args)
@@ -11,7 +11,7 @@ public class ApplicationDbContextFactory
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
         var connectionString =
-            "Server=localhost;Database=DormitoryManagementSystemDB;Trusted_Connection=True;TrustServerCertificate=True;";
+            "Server=(localdb)\\MSSQLLocalDB;Database=DormitoryManagementSystem;Trusted_Connection=True;TrustServerCertificate=True;";
 
         optionsBuilder.UseSqlServer(connectionString);
 

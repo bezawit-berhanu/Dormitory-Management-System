@@ -1,6 +1,7 @@
 ﻿using DormitoryManagementSystem.Application.DTOs;
 using DormitoryManagementSystem.Application.Interfaces;
 using DormitoryManagementSystem.Domain.Entities;
+using DormitoryManagementSystem.Domain.Enums;
 
 namespace DormitoryManagementSystem.Application.Services;
 
@@ -12,6 +13,11 @@ public class DormitoryStructureService : IDormitoryStructureService
     {
         _repository = repository;
     }
+
+    // =========================================================
+    // Dormitory
+    // =========================================================
+
     public async Task<IEnumerable<DormitoryDto>> GetAllDormitoriesAsync()
     {
         var dormitories = await _repository.GetAllDormitoriesAsync();
@@ -23,7 +29,6 @@ public class DormitoryStructureService : IDormitoryStructureService
             Location = d.Location
         });
     }
-
 
     public async Task<DormitoryDto?> GetDormitoryByIdAsync(int id)
     {
@@ -40,7 +45,6 @@ public class DormitoryStructureService : IDormitoryStructureService
         };
     }
 
-
     public async Task<DormitoryDto> CreateDormitoryAsync(DormitoryDto dto)
     {
         var dormitory = new Dormitory
@@ -55,7 +59,6 @@ public class DormitoryStructureService : IDormitoryStructureService
 
         return dto;
     }
-
 
     public async Task<bool> UpdateDormitoryAsync(int id, DormitoryDto dto)
     {
@@ -72,11 +75,14 @@ public class DormitoryStructureService : IDormitoryStructureService
         return true;
     }
 
-
     public async Task<bool> DeactivateDormitoryAsync(int id)
     {
         return await _repository.DeactivateDormitoryAsync(id);
     }
+
+    // =========================================================
+    // Block
+    // =========================================================
 
     public async Task<IEnumerable<BlockDto>> GetAllBlocksAsync()
     {
@@ -90,7 +96,6 @@ public class DormitoryStructureService : IDormitoryStructureService
             Description = b.Description
         });
     }
-
 
     public async Task<BlockDto?> GetBlockByIdAsync(int id)
     {
@@ -108,7 +113,6 @@ public class DormitoryStructureService : IDormitoryStructureService
         };
     }
 
-
     public async Task<BlockDto> CreateBlockAsync(BlockDto dto)
     {
         var block = new Block
@@ -124,7 +128,6 @@ public class DormitoryStructureService : IDormitoryStructureService
 
         return dto;
     }
-
 
     public async Task<bool> UpdateBlockAsync(int id, BlockDto dto)
     {
@@ -142,11 +145,14 @@ public class DormitoryStructureService : IDormitoryStructureService
         return true;
     }
 
-
     public async Task<bool> DeactivateBlockAsync(int id)
     {
         return await _repository.DeactivateBlockAsync(id);
     }
+
+    // =========================================================
+    // Floor
+    // =========================================================
 
     public async Task<IEnumerable<FloorDto>> GetAllFloorsAsync()
     {
@@ -160,7 +166,6 @@ public class DormitoryStructureService : IDormitoryStructureService
             Description = f.Description
         });
     }
-
 
     public async Task<FloorDto?> GetFloorByIdAsync(int id)
     {
@@ -178,7 +183,6 @@ public class DormitoryStructureService : IDormitoryStructureService
         };
     }
 
-
     public async Task<FloorDto> CreateFloorAsync(FloorDto dto)
     {
         var floor = new Floor
@@ -194,7 +198,6 @@ public class DormitoryStructureService : IDormitoryStructureService
 
         return dto;
     }
-
 
     public async Task<bool> UpdateFloorAsync(int id, FloorDto dto)
     {
@@ -212,12 +215,16 @@ public class DormitoryStructureService : IDormitoryStructureService
         return true;
     }
 
-
     public async Task<bool> DeactivateFloorAsync(int id)
     {
         return await _repository.DeactivateFloorAsync(id);
     }
-    public async Task<IEnumerable<RoomDto>> GetAllRoomsAsync()
+
+    // =========================================================
+    // Room
+    // =========================================================
+   
+public async Task<IEnumerable<RoomDto>> GetAllRoomsAsync()
     {
         var rooms = await _repository.GetAllRoomsAsync();
 
@@ -226,11 +233,10 @@ public class DormitoryStructureService : IDormitoryStructureService
             RoomId = r.RoomId,
             RoomNumber = r.RoomNumber,
             FloorId = r.FloorId,
-            Capacity = r.Capacity,
-            Status = r.Status
+            Capacity = r.Capacity.ToString(),
+            Status = r.Status.ToString()
         });
     }
-
 
     public async Task<RoomDto?> GetRoomByIdAsync(int id)
     {
@@ -244,19 +250,21 @@ public class DormitoryStructureService : IDormitoryStructureService
             RoomId = room.RoomId,
             RoomNumber = room.RoomNumber,
             FloorId = room.FloorId,
-            Capacity = room.Capacity,
-            Status = room.Status
+            Capacity = room.Capacity.ToString(),
+            Status = room.Status.ToString()
         };
     }
 
-
     public async Task<RoomDto> CreateRoomAsync(RoomDto dto)
     {
+        if (!int.TryParse(dto.Capacity, out var capacity))
+            throw new ArgumentException("Capacity must be a valid number.");
+
         var room = new Room
         {
             RoomNumber = dto.RoomNumber,
             FloorId = dto.FloorId,
-            Capacity = dto.Capacity,
+            Capacity = capacity,
             Status = dto.Status
         };
 
@@ -267,7 +275,6 @@ public class DormitoryStructureService : IDormitoryStructureService
         return dto;
     }
 
-
     public async Task<bool> UpdateRoomAsync(int id, RoomDto dto)
     {
         var room = await _repository.GetRoomByIdAsync(id);
@@ -275,9 +282,12 @@ public class DormitoryStructureService : IDormitoryStructureService
         if (room == null)
             return false;
 
+        if (!int.TryParse(dto.Capacity, out var capacity))
+            throw new ArgumentException("Capacity must be a valid number.");
+
         room.RoomNumber = dto.RoomNumber;
         room.FloorId = dto.FloorId;
-        room.Capacity = dto.Capacity;
+        room.Capacity = capacity;
         room.Status = dto.Status;
 
         await _repository.UpdateRoomAsync(room);
@@ -285,11 +295,16 @@ public class DormitoryStructureService : IDormitoryStructureService
         return true;
     }
 
-
     public async Task<bool> DeactivateRoomAsync(int id)
     {
         return await _repository.DeactivateRoomAsync(id);
     }
+
+
+    // =========================================================
+    // Bed
+    // =========================================================
+
     public async Task<IEnumerable<BedDto>> GetAllBedsAsync()
     {
         var beds = await _repository.GetAllBedsAsync();
@@ -299,10 +314,9 @@ public class DormitoryStructureService : IDormitoryStructureService
             BedId = b.BedId,
             BedNumber = b.BedNumber,
             RoomId = b.RoomId,
-            Status = b.Status
+            Status = b.Status.ToString()
         });
     }
-
 
     public async Task<BedDto?> GetBedByIdAsync(int id)
     {
@@ -316,18 +330,20 @@ public class DormitoryStructureService : IDormitoryStructureService
             BedId = bed.BedId,
             BedNumber = bed.BedNumber,
             RoomId = bed.RoomId,
-            Status = bed.Status
+            Status = bed.Status.ToString()
         };
     }
 
-
     public async Task<BedDto> CreateBedAsync(BedDto dto)
     {
+        if (!Enum.TryParse<UserStatus>(dto.Status, true, out var status))
+            throw new ArgumentException("Status is invalid.");
+
         var bed = new Bed
         {
             BedNumber = dto.BedNumber,
             RoomId = dto.RoomId,
-            Status = dto.Status
+            Status = status
         };
 
         var created = await _repository.AddBedAsync(bed);
@@ -337,7 +353,6 @@ public class DormitoryStructureService : IDormitoryStructureService
         return dto;
     }
 
-
     public async Task<bool> UpdateBedAsync(int id, BedDto dto)
     {
         var bed = await _repository.GetBedByIdAsync(id);
@@ -345,19 +360,20 @@ public class DormitoryStructureService : IDormitoryStructureService
         if (bed == null)
             return false;
 
+        if (!Enum.TryParse<UserStatus>(dto.Status, true, out var status))
+            throw new ArgumentException("Status is invalid.");
+
         bed.BedNumber = dto.BedNumber;
         bed.RoomId = dto.RoomId;
-        bed.Status = dto.Status;
+        bed.Status = status;
 
         await _repository.UpdateBedAsync(bed);
 
         return true;
     }
 
-
     public async Task<bool> DeactivateBedAsync(int id)
     {
         return await _repository.DeactivateBedAsync(id);
     }
-
 }

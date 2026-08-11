@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {AuthProvider } from "./context/AuthContext";
+import AppRoutes from "./routes/AppRoutes";
 
 import Dormitory from "./pages/Dormitory";
 import DormitoryList from "./pages/Dormitory/DormitoryList";
@@ -18,9 +20,11 @@ import CreateBed from "./pages/Dormitory/CreateBed";
 import EditBed from "./pages/Dormitory/EditBed";
 
 function App() {
-    return (
-        <BrowserRouter>
-            <Routes>
+  return (
+    <BrowserRouter>
+    <AuthProvider>
+        <AppRoutes />
+         <Routes>
                 <Route path="/" element={<Dormitory />} />
 
                 <Route path="/dormitories" element={<DormitoryList />} />
@@ -74,8 +78,9 @@ function App() {
                     element={<EditBed />}
                 />
             </Routes>
+        </AuthProvider>
         </BrowserRouter>
-    );
+  );
 }
 
 export default App;
