@@ -1,311 +1,238 @@
-// useState lets us remember form values,
-// loading state, and errors.
 import { useState } from "react";
-
-// React Router tools.
 import {
-  useLocation,
-  useNavigate
+    useLocation,
+    useNavigate
 } from "react-router-dom";
 
-// Our custom authentication hook.
 import { useAuth } from "../../context/AuthContext";
-
 
 const Login = () => {
 
+    const navigate = useNavigate();
+    const location = useLocation();
 
-  // navigate() lets us change the URL
-  // from JavaScript.
-  const navigate = useNavigate();
+    const { login } = useAuth();
 
+    const [formData, setFormData] = useState({
+        identifier: "",
+        password: ""
+    });
 
-  // location tells us information
-  // about the current URL.
-  const location = useLocation();
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
 
-  // Get our login function from AuthContext.
-  const { login } = useAuth();
+    const handleChange = (e) => {
 
+        const {
+            name,
+            value
+        } = e.target;
 
-  // ==========================================
-  // FORM STATE
-  // ==========================================
+        setFormData((previous) => ({
+            ...previous,
+            [name]: value
+        }));
+    };
 
-  // React remembers what the user types.
-  const [formData, setFormData] = useState({
 
-    email: "",
+    const handleSubmit = async (e) => {
 
-    password: "",
-  });
+        e.preventDefault();
 
+        setError("");
 
-  // Error message state.
-  const [error, setError] =
-    useState("");
+        if (
+            !formData.identifier ||
+            !formData.password
+        ) {
+            setError(
+                "Student ID/email and password are required."
+            );
 
+            return;
+        }
 
-  // Used to disable the button
-  // while login is happening.
-  const [loading, setLoading] =
-    useState(false);
 
+        try {
 
-  // ==========================================
-  // WHEN USER TYPES
-  // ==========================================
+            setLoading(true);
 
-  const handleChange = (e) => {
+            const data =
+                await login(formData);
 
-    // Get the input's name and value.
-    const {
-      name,
-      value
-    } = e.target;
 
+            const user =
+                data?.user ||
+                data?.data?.user ||
+                JSON.parse(
+                    localStorage.getItem("user") || "null"
+                );
 
-    // Update formData.
-    setFormData((previous) => ({
 
-      // Keep the existing fields.
-      ...previous,
+            const role =
+                user?.roleName ||
+                user?.role;
 
-      // Update only the field
-      // the user changed.
-      [name]: value,
-    }));
-  };
 
+            const redirectPath =
+                location.state?.from?.pathname;
 
-  // ==========================================
-  // WHEN USER SUBMITS FORM
-  // ==========================================
 
-  const handleSubmit = async (e) => {
+            if (
+                redirectPath &&
+                redirectPath !== "/login"
+            ) {
 
-    // Stop normal browser form submission.
-    e.preventDefault();
+                navigate(redirectPath);
 
+                return;
+            }
 
-    // Clear previous error.
-    setError("");
 
+            // =====================================
+            // STUDENT
+            // =====================================
 
-    // Basic frontend validation.
-    if (
-      !formData.email ||
-      !formData.password
-    ) {
+            if (role === "Student") {
 
-      setError(
-        "Email and password are required."
-      );
+                navigate("/student/dashboard");
 
-      return;
-    }
+                return;
+            }
 
 
-    try {
+            // =====================================
+            // ADMIN
+            // =====================================
 
-      // Show loading state.
-      setLoading(true);
+            if (
+                role === "Admin" ||
+                role === "Administrator"
+            ) {
 
+                navigate("/admin/users");
 
-      // Actually call our authentication system.
-      const data =
-        await login(formData);
+                return;
+            }
 
 
-      // Get the logged-in user.
-      const user =
-        data?.user ||
-        data?.data?.user ||
-        JSON.parse(
-          localStorage.getItem("user")
-          || "null"
-        );
+            // =====================================
+            // STAFF / OTHER USERS
+            // =====================================
 
+            navigate("/profile");
 
-      // Determine their role.
-      const role =
-        user?.roleName ||
-        user?.role;
+        } catch (err) {
 
+            console.error(err);
 
-      // ========================================
-      // REDIRECT AFTER LOGIN
-      // ========================================
+            setError(
+                err.response?.data?.message ||
+                err.response?.data ||
+                "Invalid Student ID/email or password."
+            );
 
-      // If the user was originally trying
-      // to visit a protected page,
-      // send them there.
-      const redirectPath =
-        location.state?.from?.pathname;
+        } finally {
 
+            setLoading(false);
+        }
+    };
 
-      if (
-        redirectPath &&
-        redirectPath !== "/login"
-      ) {
 
-        navigate(redirectPath);
+    return (
 
-        return;
-      }
+        <div className="auth-page">
 
+            <div className="auth-card">
 
-      // Otherwise redirect based on role.
-      if (
-        role === "Admin" ||
-        role === "Administrator"
-      ) {
+                <h1>Login</h1>
 
-        navigate("/admin/users");
+                <p>
+                    Sign in to your dormitory account.
+                </p>
 
-      } else if (role === "Student") {
 
-        navigate("/student/dashboard");
+                {error && (
+                    <div className="error-message">
+                        {error}
+                    </div>
+                )}
 
-      } else {
 
-        navigate("/profile");
-      }
+                <form onSubmit={handleSubmit}>
 
+                    <div className="form-group">
 
-    } catch (err) {
+                        <label htmlFor="identifier">
+                            Student ID / Email
+                        </label>
 
-      // Print the technical error
-      // in the browser console.
-      console.error(err);
+                        <input
+                            id="identifier"
+                            name="identifier"
+                            type="text"
+                            value={formData.identifier}
+                            onChange={handleChange}
+                            placeholder="Enter Student ID or email"
+                        />
 
+                    </div>
 
-      // Show a friendly message to the user.
-      setError(
-        err.response?.data?.message ||
-        "Invalid email or password."
-      );
 
+                    <div className="form-group">
 
-    } finally {
+                        <label htmlFor="password">
+                            Password
+                        </label>
 
-      // Stop loading whether login
-      // succeeded or failed.
-      setLoading(false);
-    }
-  };
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            placeholder="Enter your password"
+                        />
 
+                    </div>
 
-  // ==========================================
-  // WHAT THE USER SEES
-  // ==========================================
 
-  return (
+                    <button
+                        type="submit"
+                        disabled={loading}
+                    >
+                        {loading
+                            ? "Signing in..."
+                            : "Login"}
+                    </button>
 
-    <div className="auth-page">
+                </form>
 
-      <div className="auth-card">
 
-        <h1>Login</h1>
+                <button
+                    type="button"
+                    onClick={() =>
+                        navigate("/create-account")
+                    }
+                >
+                    Create Account
+                </button>
 
-        <p>
-          Sign in to your dormitory account.
-        </p>
 
+                <button
+                    type="button"
+                    onClick={() =>
+                        navigate("/forgot-password")
+                    }
+                >
+                    Forgot Password?
+                </button>
 
-        {/* Show error ONLY if there is one. */}
-        {error && (
-          <div className="error-message">
-            {error}
-          </div>
-        )}
+            </div>
 
-
-        <form onSubmit={handleSubmit}>
-
-          <div className="form-group">
-
-            <label htmlFor="email">
-              Email
-            </label>
-
-            <input
-              id="email"
-
-              // IMPORTANT:
-              // This "name" must match
-              // our formData property.
-              name="email"
-
-              type="email"
-
-              // Show React's current email value.
-              value={formData.email}
-
-              // Update React when user types.
-              onChange={handleChange}
-
-              placeholder="Enter your email"
-            />
-
-          </div>
-
-
-          <div className="form-group">
-
-            <label htmlFor="password">
-              Password
-            </label>
-
-            <input
-              id="password"
-              name="password"
-              type="password"
-
-              value={formData.password}
-
-              onChange={handleChange}
-
-              placeholder="Enter your password"
-            />
-
-          </div>
-
-
-          <button
-            type="submit"
-
-            // Don't allow another login
-            // while one is already happening.
-            disabled={loading}
-          >
-
-            {/* Change button text while loading. */}
-            {loading
-              ? "Signing in..."
-              : "Login"}
-
-          </button>
-
-        </form>
-
-
-        {/* Go to forgot-password page. */}
-        <button
-          type="button"
-          onClick={() =>
-            navigate("/forgot-password")
-          }
-        >
-          Forgot Password?
-        </button>
-
-      </div>
-
-    </div>
-  );
+        </div>
+    );
 };
-
 
 export default Login;

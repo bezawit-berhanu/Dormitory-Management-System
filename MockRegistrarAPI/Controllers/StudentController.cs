@@ -8,21 +8,12 @@ namespace MockRegistrarAPI.Controllers;
 [Route("api/students")]
 public class StudentsController : ControllerBase
 {
-    // ==========================================
-    // GET ALL STUDENTS
-    // ==========================================
 
     [HttpGet]
     public IActionResult GetStudents()
     {
         return Ok(MockStudentData.Students);
     }
-
-    // ==========================================
-    // GET ONE STUDENT
-    // Example:
-    // /api/students/AAU20240001
-    // ==========================================
 
     [HttpGet("{studentId}")]
     public IActionResult GetStudent(string studentId)
@@ -42,13 +33,7 @@ public class StudentsController : ControllerBase
         return Ok(student);
     }
 
-    // ==========================================
-    // SEARCH STUDENTS
-    //
-    // Example:
-    // /api/students/search?query=Abebe
-    // ==========================================
-
+  
     [HttpGet("search")]
     public IActionResult SearchStudents(
         [FromQuery] string query)

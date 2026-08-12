@@ -32,7 +32,7 @@ const StudentDashboard = () => {
 
  const totalStudents = students.length;
  const activeStudents = students.filter((student) => Number(student.status) ===1 ).length;
- const inactiveStudents = students.filiter((student) => Number(student.status) === 2).length;
+ const inactiveStudents = students.filter((student) => Number(student.status) === 2).length;
  const Graduated =students.filter((student)=> Number(student.status) === 3).length;
  const suspended = students.filter((student) => Number(student.status) === 4).length;
 if (loading) {
@@ -64,7 +64,7 @@ if (loading) {
           {error}
         </div>
 
-      )}s
+      )}a
 
 {/* ==========================================
     STUDENT STATISTICS
@@ -95,7 +95,7 @@ if (loading) {
 
   {/* Graduated students */}
   <div className="dashboard-card">
-    <h2>{graduatedStudents}</h2>
+    <h2>{Graduated}</h2>
     <p>Graduated Students</p>
   </div>
 
@@ -116,11 +116,6 @@ if (loading) {
 
         <Link to="/students">
           View All Students
-        </Link>
-
-
-        <Link to="/students/create">
-          Add Student
         </Link>
 
       </div>
