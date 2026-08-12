@@ -1,178 +1,67 @@
-// ==========================================
-// TEMPORARY MOCK AUTHENTICATION SERVICE
-// ==========================================
-//
-// We don't have our database/API ready yet.
-//
-// So for frontend testing, this file pretends
-// that we have a working authentication API.
-//
-// LATER:
-// We will replace this with the real API call.
-// ==========================================
-
-
-// ==========================================
-// FAKE TEST USERS
-// ==========================================
-//
-// These users are temporary.
-//
-// They exist ONLY so that we can test:
-// Login
-// AuthContext
-// ProtectedRoute
-// Dashboard
-//
-// They are NOT stored in the database.
-//
-const fakeUsers = [
-  {
-    id: 1,
-    fullName: "System Administrator",
-    email: "admin@dormitory.com",
-    password: "Admin123",
-    role: "Admin"
-  },
-
-  {
-    id: 2,
-    fullName: "Test Student",
-    email: "student@dormitory.com",
-    password: "Student123",
-    role: "Student"
-  }
-];
-
-
-// ==========================================
-// AUTHENTICATION SERVICE
-// ==========================================
+import api from "../constants/api"; // Import our configured axios client
 
 const authService = {
 
-  // ========================================
-  // LOGIN
-  // ========================================
-
   async login(credentials) {
+    // Send the email and password to our .NET login endpoint.
+    const response = await api.post("/auth/login", credentials);
 
-    // Find a fake user whose email and
-    // password match what the user entered.
-    const user = fakeUsers.find(
-      (fakeUser) =>
-        fakeUser.email === credentials.email &&
-        fakeUser.password === credentials.password
-    );
+    // Different backends may call the JWT token or accessToken.
+    const token = data.token || data.accessToken;
 
-
-    // No matching user?
-    if (!user) {
-
-      // This behaves like a failed API request.
-      throw {
-        response: {
-          data: {
-            message: "Invalid email or password."
-          }
-        }
-      };
+    // If the backend gave us a token save it in the user's browser.
+    if (token) {
+      localStorage.setItem("token", token);
     }
 
+    // If the backend returned user information save that too.
+    if (data.user) {
+      localStorage.setItem("user", JSON.stringify(data.user));
+    } else {
+      // Fallback in case the backend returns user directly.
+      localStorage.setItem("user", JSON.stringify(data));
+    }
 
-    // ======================================
-    // CREATE FAKE TOKEN
-    // ======================================
-    //
-    // In the real system this will be a JWT
-    // returned by ASP.NET.
-    //
-    // For now, this simple string is enough
-    // to prove that the user is authenticated.
-    //
-    const token = "fake-jwt-token";
-
-
-    // Don't store the password!
-    const userWithoutPassword = {
-      id: user.id,
-      fullName: user.fullName,
-      email: user.email,
-      role: user.role
-    };
-
-
-    // Save the fake token.
-    localStorage.setItem(
-      "token",
-      token
-    );
-
-
-    // Save the logged-in user.
-    localStorage.setItem(
-      "user",
-      JSON.stringify(userWithoutPassword)
-    );
-
-
-    // Return data in a shape similar to
-    // what our real API will eventually return.
-    return {
-      token,
-      user: userWithoutPassword
-    };
+    // Give the login result back to whoever called the login.
+    return data;
   },
 
+  async forgotPassword(email) {
+    // Send the email to the backend.
+    const response = await api.post("/auth/forgot-password", { email });
+    return response.data;
+  },
 
-  // ========================================
-  // GET CURRENT USER
-  // ========================================
+  logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+  },
+
+  getToken() {
+    // Return the stored JWT.
+    return localStorage.getItem("token");
+  },
 
   getCurrentUser() {
+    const user = localStorage.getItem("user");
 
-    // Get the saved user from browser storage.
-    const user =
-      localStorage.getItem("user");
-
-
-    // Nothing saved?
     if (!user) {
       return null;
     }
 
-
-    // Convert JSON text back into
-    // a JavaScript object.
-    return JSON.parse(user);
+    // localStorage stores things as text.
+    // JSON.parse converts the text back into a JavaScript object.
+    try {
+      return JSON.parse(user);
+    } catch {
+      return null;
+    }
   },
-
-
-  // ========================================
-  // CHECK AUTHENTICATION
-  // ========================================
 
   isAuthenticated() {
-
-    // If a token exists, we consider
-    // the user logged in.
+    // If there is a token, we consider the user logged in.
     return !!localStorage.getItem("token");
   },
-
-
-  // ========================================
-  // LOGOUT
-  // ========================================
-
-  logout() {
-
-    // Remove authentication information.
-    localStorage.removeItem("token");
-
-    localStorage.removeItem("user");
-  }
-
 };
-
 
 export default authService;
