@@ -1,202 +1,224 @@
-/*useEffect- lets you perform side effects in react functional componenets
----- It helps in fetching data from API, Adding event listeners or timers, 
-updating the document title, or changiing the manual DOM.
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-Noarray -> runs after every single render.
-[] -> runs only once the componenet first loads.
-[prop, state] -> runs on the first load and whenever thos specific value changes.
-prop -> data passed down from a parent component to a child component.
-(Read only).
-
-state-> data manged internally within a single component.
-
-*/
-
-
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-
-import studentService from "../../services/studentServices";
-import studentCard from "../../components/StudentCard/StudentCard";
+import registrarService from "../../services/registrarService";
 
 const StudentList = () => {
 
-    //Stores the students returned by the API.
-    const [students, setStudents] = useState([]);
+  const navigate = useNavigate();
 
-    //Shows while students are being loaded.
-    const [loading, setLoading] = useState(true);
+  // Students received from Registrar
+  const [students, setStudents] = useState([]);
 
-    //stores an error message if the API fails.
-    const [error, setError] = useState("");
+  // Search box
+  const [search, setSearch] = useState("");
 
-    //used to navigate to pages.
-    const navigate = useNavigate();
+  // Loading indicator
+  const [loading, setLoading] = useState(true);
 
-//Load Students
-//Use effect runs when this page appears.
-useEffect(() => {
+  // Error message
+  const [error, setError] = useState("");
+
+  // ==========================================
+  // LOAD STUDENTS
+  // ==========================================
+
+  useEffect(() => {
     loadStudents();
-}, []);
+  }, []);
 
-
-//Get students from backend.
-const loadStudents = async () => {
-//Put the code that might fail here (Fetching network data, parsing a file)
-    try {
-        setLoading(true);
-        setError("");
-
-        const data = await studentService.getAllStudents();
-
-//Backend might return an array so the fall back prevents the page from breaking.
-        setStudents(Array.isArray(data) ? data : []);
-    }
-    //If error occurs control jums to this block.
-    catch(err) {
-        console.error("Failed to load students", err); 
-
-        setError(err.response?.data?.message || "Unable to load students.");
-    }
-    finally {
-        setLoading(false);
-    }
-};
-//DELETE STUDENT
-/* 
-Asynchronous vs Synchronous - differ in how they handle time and blocking during execution.
-
-Async - tells the function it is going to execute asynchronous operations. It automatically forces the function to return a promise.
-Await - between async and promise - it pauses the execution of the function until that promise
-resolves.
-Promise: represents the eventual completion or failure of an asynchronous operation and its resulting value.
-*/
-const handleDelete = async (id) => {
-    const confirmed = window.confirm("Are you sure you want to delete this student?");
-
-    if(!confirmed) {
-        return;
-    }
+  const loadStudents = async () => {
 
     try {
-        await studentService.deleteStudent(id);
 
-        setStudents((previousStudent) => previousStudents.filter((student) => 
-        student.sId !== id));
+      setLoading(true);
+      setError("");
+
+      const data =
+        await registrarService.getStudents();
+
+      setStudents(data);
+
+    } catch (err) {
+
+      console.error(err);
+
+      setError(
+        "Could not load students from Registrar."
+      );
+
+    } finally {
+
+      setLoading(false);
     }
-    catch(err) {
-        console.error(err);
+  };
 
-        setError(err?.response?.data?.message || "Unable to delete Students");
+  // ==========================================
+  // SEARCH
+  // ==========================================
+
+  const handleSearch = async (e) => {
+
+    e.preventDefault();
+
+    try {
+
+      setLoading(true);
+      setError("");
+
+      // Empty search = get everyone
+      const data = search.trim()
+        ? await registrarService.searchStudents(search)
+        : await registrarService.getStudents();
+
+      setStudents(data);
+
+    } catch (err) {
+
+      console.error(err);
+
+      setError("Student search failed.");
+
+    } finally {
+
+      setLoading(false);
     }
-};
+  };
 
- if (loading) {
+  // ==========================================
+  // STATUS TEXT
+  // ==========================================
 
-    return (
-      <div>
-        <h2>Students</h2>
-        <p>Loading students...</p>
-      </div>
-    );
-  }
+  const getStatusName = (status) => {
 
+    switch (Number(status)) {
+
+      case 1:
+        return "Active";
+
+      case 2:
+        return "Inactive";
+
+      case 3:
+        return "Graduated";
+
+      case 4:
+        return "Suspended";
+
+      default:
+        return "Unknown";
+    }
+  };
+
+  // ==========================================
+  // UI
+  // ==========================================
 
   return (
+    <div>
 
-    <div className="student-list-page">
+      <h1>Students</h1>
 
-      {/* Page heading */}
-      <div className="page-header">
+      <p>
+        Students are retrieved from the Registrar.
+      </p>
 
-        <div>
+      {/* Search */}
+      <form onSubmit={handleSearch}>
 
-          <h1>
-            Students
-          </h1>
-
-          <p>
-            Manage registered students.
-          </p>
-
-        </div>
-
-
-        {/* Add student button */}
-        <button
-          type="button"
-          onClick={() =>
-            navigate("/students/create")
+        <input
+          type="text"
+          value={search}
+          onChange={(e) =>
+            setSearch(e.target.value)
           }
-        >
-          + Add Student
+          placeholder="Search by ID, name or department"
+        />
+
+        <button type="submit">
+          Search
         </button>
 
-      </div>
-
+      </form>
 
       {/* Error */}
       {error && (
-
-        <div className="error-message">
-          {error}
-        </div>
-
+        <p>{error}</p>
       )}
 
+      {/* Loading */}
+      {loading && (
+        <p>Loading students...</p>
+      )}
 
-      {/* ==================================
-          STUDENT CARDS
-          ================================== */}
+      {/* Student table */}
+      {!loading && (
 
-      {students.length === 0 ? (
+        <table>
 
-        <div>
+          <thead>
+            <tr>
+              <th>Student ID</th>
+              <th>Name</th>
+              <th>Department</th>
+              <th>Year</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
 
-          <h3>
-            No students found.
-          </h3>
+          <tbody>
 
-          <p>
-            Add a student to get started.
-          </p>
+            {students.map((student) => (
 
-        </div>
+              <tr key={student.studentId}>
 
-      ) : (
+                <td>
+                  {student.studentId}
+                </td>
 
-        <div className="student-grid">
+                <td>
+                  {student.fullName}
+                </td>
 
-          {students.map((student) => (
+                <td>
+                  {student.department}
+                </td>
 
-            <StudentCard
-              key={student.sId}
-              student={student}
+                <td>
+                  {student.yearOfStudy}
+                </td>
 
-              onView={(id) =>
-                navigate(
-                  `/students/${id}`
-                )
-              }
+                <td>
+                  {getStatusName(student.status)}
+                </td>
 
-              onEdit={(id) =>
-                navigate(
-                  `/students/${id}/edit`
-                )
-              }
+                <td>
 
-              onDelete={handleDelete}
-            />
+                  <button
+                    onClick={() =>
+                      navigate(
+                        `/students/${student.studentId}`
+                      )
+                    }
+                  >
+                    View
+                  </button>
 
-          ))}
+                </td>
 
-        </div>
+              </tr>
+
+            ))}
+
+          </tbody>
+
+        </table>
 
       )}
 
     </div>
   );
 };
-
 
 export default StudentList;

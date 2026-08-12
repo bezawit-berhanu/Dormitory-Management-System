@@ -1,3 +1,6 @@
+// React Router tools.
+// BrowserRouter is NOT needed here because App.jsx
+// already provides it.
 import {
   Routes,
   Route,
@@ -58,6 +61,10 @@ function AppRoutes() {
 
 <Route path="/notifications" element={<NotificationList/>}/>
       <Route
+        path="/"
+        element={<Navigate to="/login" replace />}
+      />
+      <Route
         path="/login"
         element={<Login />}
       />
@@ -66,23 +73,27 @@ function AppRoutes() {
         element={<ForgotPassword />}
       />
 
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        }
-      />
+      {/* =====================================
+          PROTECTED PAGES
+          =====================================
+          Anything inside this route requires
+          the user to be logged in.
+      */}
+      <Route element={<ProtectedRoute />}>
 
+        <Route
+          path="/profile"
+          element={<Profile />}
+        />
+
+      </Route>
+
+      {/* =====================================
+          UNKNOWN URL
+          ===================================== */}
       <Route
         path="*"
-        element={
-          <Navigate
-            to="/login"
-            replace
-          />
-        }
+        element={<h1>404 - Page Not Found</h1>}
       />
     </Routes>
   );
