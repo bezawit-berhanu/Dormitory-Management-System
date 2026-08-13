@@ -15,11 +15,13 @@ public class AuthenticationService
     private readonly IStudentRepository _studentRepository;
     private readonly IRegistrarService _registrarService;
     private readonly IJwtService _jwtService;
+    private readonly IDepartmentRepository _departmentRepository;
 
     public AuthenticationService(
         IUserRepository userRepository,
         IStudentRepository studentRepository,
         IRegistrarService registrarService,
+        IDepartmentRepository departmentRepository,
         IJwtService jwtService,  
         IPasswordHasher<User> passwordHasher)
     {
@@ -28,6 +30,7 @@ public class AuthenticationService
         _registrarService = registrarService;
         _jwtService = jwtService;
          _passwordHasher = passwordHasher;
+         _departmentRepository = departmentRepository;
     }
 
 
@@ -99,7 +102,19 @@ public class AuthenticationService
                 "This email is already registered."
             );
         }
+// --------------------------------------
+// 5. Validate Password
+// --------------------------------------
 
+if (dto.Password != dto.ConfirmPassword)
+{
+    throw new Exception("Passwords do not match.");
+}
+
+if (string.IsNullOrWhiteSpace(dto.Password))
+{
+    throw new Exception("Password is required.");
+}
 
         // --------------------------------------
         // 5. Create User
@@ -113,7 +128,7 @@ public class AuthenticationService
 
             PhoneNumber = dto.PhoneNumber,
 
-            RoleId = dto.RoleId,
+            RoleId = 3,
 
             Status = UserStatus.Active,
 
@@ -129,36 +144,39 @@ public class AuthenticationService
 
         await _userRepository.SaveChangesAsync();
 
+var department = await _departmentRepository
+    .GetByRegistrarIdAsync(registrarStudent.DepartmentId);
 
+if (department == null)
+{
+    department = new Department
+    {
+        RegistrarDepartmentId = registrarStudent.DepartmentId,
+        DepartmentName = registrarStudent.Department
+    };
+
+    await _departmentRepository.AddAsync(department);
+    await _departmentRepository.SaveChangesAsync();
+}
         // --------------------------------------
         // 6. Create Student record
         // --------------------------------------
 
-        var student = new Student
-        {
-            UserId = user.UserId,
+      var student = new Student
+{
+    UserId = user.UserId,
+    StudentId = registrarStudent.StudentId,
 
-            StudentId = registrarStudent.StudentId,
+    DepartmentId = department.DepartmentId,
 
-            DepartmentId =
-                registrarStudent.DepartmentId,
-
-            Gender =
-                registrarStudent.Gender,
-
-            DateOfBirth =
-                registrarStudent.DateOfBirth,
-
-            YearOfStudy =
-                registrarStudent.YearOfStudy,
-
-            Status =
-                (UserStatus)registrarStudent.Status
-        };
-
+    Gender = registrarStudent.Gender,
+    DateOfBirth = registrarStudent.DateOfBirth,
+    YearOfStudy = registrarStudent.YearOfStudy,
+    Status = (UserStatus)registrarStudent.Status
+};
 
         await _studentRepository.AddAsync(student);
-
+         await _studentRepository.SaveChangesAsync();
 
         // --------------------------------------
         // 7. Generate JWT

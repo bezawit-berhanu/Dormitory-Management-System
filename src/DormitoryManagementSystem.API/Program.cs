@@ -26,6 +26,7 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped< IUserManagementService,UserManagementService>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
 builder.Services.AddScoped<IRoomAssignmentService, RoomAssignmentService>();
 

@@ -20,7 +20,10 @@ builder.Services.AddCors(options =>
     });
 });
 
-
+app.MapGet("/api/departments", () =>
+{
+    return Results.Ok(MockDepartmentData.Departments);
+});
 var app = builder.Build();
 
 

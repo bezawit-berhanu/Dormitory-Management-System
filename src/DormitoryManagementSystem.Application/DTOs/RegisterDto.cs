@@ -11,6 +11,5 @@ public class RegisterDto
     public string PhoneNumber { get; set; } = string.Empty;
 
     public string Password { get; set; } = string.Empty;
-    
-    public int RoleId { get; set; }
-}
+    public string ConfirmPassword {get; set;} = string.Empty;
+        }
