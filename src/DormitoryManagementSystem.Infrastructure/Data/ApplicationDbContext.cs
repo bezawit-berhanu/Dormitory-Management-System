@@ -20,6 +20,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Role> Roles => Set<Role>();
 
     public DbSet<Student> Students => Set<Student>();
+    public DbSet<Staff> Staff => Set<Staff>();
     public DbSet<Department> Departments => Set<Department>();
 
     public DbSet<Dormitory> Dormitories => Set<Dormitory>();
@@ -106,6 +107,18 @@ public class ApplicationDbContext : DbContext
         // Configure EmergencyContact as an owned/value object
         modelBuilder.Entity<Student>()
             .OwnsOne(s => s.EmergencyContactNumber);
+            // ===============================
+// Staff
+// ===============================
+
+modelBuilder.Entity<Staff>()
+    .HasKey(s => s.StaffId);
+
+modelBuilder.Entity<Staff>()
+    .HasOne(s => s.User)
+    .WithMany()
+    .HasForeignKey(s => s.UserId)
+    .OnDelete(DeleteBehavior.Restrict);
 
         // ===============================
         // Room Assignment

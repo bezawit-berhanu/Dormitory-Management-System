@@ -23,6 +23,20 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddAutoMapper(typeof(StudentService).Assembly);
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<
+    IStaffAuthenticationService,
+    StaffAuthenticationService
+>();
+
+builder.Services.AddScoped<
+    IStaffRegistrarService,
+    StaffRegistrarService
+>();
+
+builder.Services.AddScoped<
+    IStaffRepository,
+    StaffRepository
+>();
 
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped< IUserManagementService,UserManagementService>();
@@ -57,6 +71,15 @@ builder.Services.AddHttpClient<IRegistrarService, RegistrarService>(
             new Uri("http://localhost:5100/");
     });
 
+builder.Services.AddHttpClient<
+    IStaffRegistrarService,
+    StaffRegistrarService
+>(
+    client =>
+    {
+        client.BaseAddress =
+            new Uri("http://localhost:5100/");
+    });
    var jwtKey =
     builder.Configuration["Jwt:Key"];
 

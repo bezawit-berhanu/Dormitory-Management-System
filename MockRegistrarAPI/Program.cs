@@ -1,3 +1,5 @@
+using MockRegistrarAPI.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // ==========================================
@@ -20,12 +22,11 @@ builder.Services.AddCors(options =>
     });
 });
 
-app.MapGet("/api/departments", () =>
-{
-    return Results.Ok(MockDepartmentData.Departments);
-});
-var app = builder.Build();
+// ==========================================
+// BUILD APPLICATION
+// ==========================================
 
+var app = builder.Build();
 
 // ==========================================
 // HTTP PIPELINE
@@ -34,10 +35,23 @@ var app = builder.Build();
 // Allow React to communicate with this API.
 app.UseCors("AllowFrontend");
 
-
-//
 app.MapControllers();
 
+// ==========================================
+// MOCK REGISTRAR ENDPOINTS
+// ==========================================
+
+// Get all departments
+app.MapGet("/api/departments", () =>
+{
+    return Results.Ok(MockDepartmentData.Departments);
+});
+
+// Get all staff
+app.MapGet("/api/staff", () =>
+{
+    return Results.Ok(MockStaffData.Staff);
+});
 
 // Start the API.
 app.Run();
