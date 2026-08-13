@@ -1,49 +1,49 @@
-// useState allows React to remember information
-// that can change while the page is running.
+useState allows React to remember information
+that can change while the page is running.
 import { useState } from "react";
 
-// useNavigate allows us to move the user
-// to another page using JavaScript.
+useNavigate allows us to move the user
+to another page using JavaScript.
 import { useNavigate } from "react-router-dom";
 
-// useAuth gives us access to the currently
-// logged-in user and the logout function.
+useAuth gives us access to the currently
+logged-in user and the logout function.
 import { useAuth } from "../../context/AuthContext";
 
 
 const Profile = () => {
 
-  // Get information from our AuthContext.
-  //
-  // user = currently logged-in user
-  // logout = function that logs the user out
+  Get information from our AuthContext.
+  
+  user = currently logged-in user
+  logout = function that logs the user out
   const {
     user,
     logout
   } = useAuth();
 
 
-  // Used to navigate to another page.
+  Used to navigate to another page.
   const navigate = useNavigate();
 
 
-  // ==========================================
-  // LOGOUT
-  // ==========================================
+  ==========================================
+  LOGOUT
+  ==========================================
 
   const handleLogout = () => {
 
-    // Remove the user's authentication information.
+    Remove the user's authentication information.
     logout();
 
-    // Send the user back to login.
+    Send the user back to login.
     navigate("/login");
   };
 
 
-  // ==========================================
-  // PROFILE PAGE
-  // ==========================================
+  ==========================================
+  PROFILE PAGE
+  ==========================================
 
   return (
 
@@ -99,8 +99,8 @@ const Profile = () => {
 
       ) : (
 
-        // This should normally not happen
-        // because Profile is protected.
+        This should normally not happen
+        because Profile is protected.
         <p>
           No user information found.
         </p>
