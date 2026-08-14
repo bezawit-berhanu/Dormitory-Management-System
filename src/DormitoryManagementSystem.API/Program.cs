@@ -1,4 +1,5 @@
 using DormitoryManagementSystem.Application.Interfaces;
+using DormitoryManagementSystem.Application.Interfaces;
 using DormitoryManagementSystem.Application.Services;
 using DormitoryManagementSystem.Domain.Interfaces;
 using DormitoryManagementSystem.Infrastructure.Data;
@@ -11,18 +12,34 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Identity.Core;
 using DormitoryManagementSystem.Domain.Entities;
+using DormitoryManagementSystem.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendDevelopment", policy =>
+        policy.WithOrigins(
+                "http://localhost:8080",
+                "http://127.0.0.1:8080",
+                "http://localhost:8081",
+                "http://127.0.0.1:8081",
+                "http://localhost:5173",
+                "http://127.0.0.1:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddAutoMapper(typeof(StudentService).Assembly);
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
+builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
 builder.Services.AddScoped<
     IStaffAuthenticationService,
     StaffAuthenticationService
@@ -118,6 +135,7 @@ builder.Services
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider
@@ -132,6 +150,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("FrontendDevelopment");
 app.UseAuthentication();
 
 app.UseAuthorization();

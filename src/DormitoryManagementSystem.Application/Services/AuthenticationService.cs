@@ -4,6 +4,7 @@ using DormitoryManagementSystem.Domain.Entities;
 using DormitoryManagementSystem.Domain.Enums;
 using DormitoryManagementSystem.Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using DormitoryManagementSystem.Application.Validators;
 
 namespace DormitoryManagementSystem.Application.Services;
 
@@ -34,16 +35,16 @@ public class AuthenticationService
     }
 
 
-    // ==========================================
-    // REGISTER STUDENT
-    // ==========================================
+    
 
     public async Task<AuthenticationResponseDto>
         RegisterAsync(RegisterDto dto)
     {
-        // --------------------------------------
-        // 1. Check Registrar
-        // --------------------------------------
+        AuthenticationInputValidator.ValidateRegistration(dto.Email, dto.PhoneNumber, dto.Password, dto.ConfirmPassword);
+        dto.Email = dto.Email.Trim();
+        dto.PhoneNumber = AuthenticationInputValidator.NormalizePhoneNumber(dto.PhoneNumber);
+
+      
 
         var registrarStudent =
             await _registrarService
@@ -57,9 +58,7 @@ public class AuthenticationService
         }
 
 
-        // --------------------------------------
-        // 2. Verify Full Name
-        // --------------------------------------
+     
 
         if (!string.Equals(
                 registrarStudent.FullName.Trim(),
@@ -72,9 +71,7 @@ public class AuthenticationService
         }
 
 
-        // --------------------------------------
-        // 3. Check if account already exists
-        // --------------------------------------
+     
 
         var existingStudent =
             await _studentRepository
@@ -88,10 +85,6 @@ public class AuthenticationService
         }
 
 
-        // --------------------------------------
-        // 4. Check email
-        // --------------------------------------
-
         var existingUser =
             await _userRepository
                 .GetByEmailAsync(dto.Email);
@@ -102,19 +95,6 @@ public class AuthenticationService
                 "This email is already registered."
             );
         }
-// --------------------------------------
-// 5. Validate Password
-// --------------------------------------
-
-if (dto.Password != dto.ConfirmPassword)
-{
-    throw new Exception("Passwords do not match.");
-}
-
-if (string.IsNullOrWhiteSpace(dto.Password))
-{
-    throw new Exception("Password is required.");
-}
 
         // --------------------------------------
         // 5. Create User

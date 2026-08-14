@@ -4,6 +4,7 @@ using DormitoryManagementSystem.Domain.Entities;
 using DormitoryManagementSystem.Domain.Enums;
 using DormitoryManagementSystem.Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using DormitoryManagementSystem.Application.Validators;
 
 namespace DormitoryManagementSystem.Application.Services;
 
@@ -38,6 +39,10 @@ public class StaffAuthenticationService
     public async Task<AuthenticationResponseDto>
         RegisterAsync(RegisterStaffDto dto)
     {
+        AuthenticationInputValidator.ValidateRegistration(dto.Email, dto.PhoneNumber, dto.Password, dto.ConfirmPassword);
+        dto.Email = dto.Email.Trim();
+        dto.PhoneNumber = AuthenticationInputValidator.NormalizePhoneNumber(dto.PhoneNumber);
+
         // --------------------------------------
         // 1. Check Registrar
         // --------------------------------------
@@ -109,25 +114,6 @@ public class StaffAuthenticationService
         {
             throw new Exception(
                 "This email is already registered."
-            );
-        }
-
-
-        // --------------------------------------
-        // 6. Validate password
-        // --------------------------------------
-
-        if (dto.Password != dto.ConfirmPassword)
-        {
-            throw new Exception(
-                "Passwords do not match."
-            );
-        }
-
-        if (string.IsNullOrWhiteSpace(dto.Password))
-        {
-            throw new Exception(
-                "Password is required."
             );
         }
 

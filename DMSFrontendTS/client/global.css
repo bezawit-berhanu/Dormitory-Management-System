@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap");
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+@layer base {
+  :root {
+    --background: 163 75% 10%;
+    --foreground: 150 24% 96%;
+    --card: 163 55% 14%;
+    --card-foreground: 150 24% 96%;
+    --popover: 163 55% 14%;
+    --popover-foreground: 150 24% 96%;
+    --primary: 160 65% 56%;
+    --primary-foreground: 163 75% 10%;
+    --secondary: 162 35% 19%;
+    --secondary-foreground: 150 24% 96%;
+    --muted: 162 35% 19%;
+    --muted-foreground: 148 18% 62%;
+    --accent: 162 35% 19%;
+    --accent-foreground: 150 24% 96%;
+    --destructive: 0 72% 59%;
+    --destructive-foreground: 150 24% 96%;
+    --border: 160 23% 25%;
+    --input: 160 23% 25%;
+    --ring: 160 65% 56%;
+    --radius: 0.75rem;
+    --sidebar-background: 163 75% 10%;
+    --sidebar-foreground: 150 24% 96%;
+    --sidebar-primary: 160 65% 56%;
+    --sidebar-primary-foreground: 163 75% 10%;
+    --sidebar-accent: 162 35% 19%;
+    --sidebar-accent-foreground: 150 24% 96%;
+    --sidebar-border: 160 23% 25%;
+    --sidebar-ring: 160 65% 56%;
+  }
+
+  * { @apply border-border; }
+
+  html { background: #062b25; }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "ss01" 1, "cv11" 1;
+  }
+
+  button, input, textarea, select { font: inherit; }
+  button { cursor: pointer; }
+  :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) { overflow-wrap: anywhere; word-break: break-word; }
+  ::selection { background: rgba(110, 231, 183, .28); color: white; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: rgba(255, 255, 255, .025); }
+  ::-webkit-scrollbar-thumb { background: rgba(110, 231, 183, .18); border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(110, 231, 183, .32); }
+}
+
+@layer components {
+  .font-display { font-family: "Manrope", "DM Sans", ui-sans-serif, system-ui, sans-serif; }
+  .field { @apply h-11 w-full rounded-xl border border-[#d7e1d9] bg-white px-3 text-sm text-[#22483d] outline-none transition placeholder:text-[#a2afa7] focus:border-[#79bc99] focus:ring-4 focus:ring-[#dff0e3]; }
+  .field-dark { @apply h-9 w-full rounded-lg border border-white/[0.08] bg-white/[0.035] text-xs text-white outline-none transition placeholder:text-emerald-50/25 focus:border-emerald-300/35 focus:ring-2 focus:ring-emerald-300/10; }
+  .occupancy-fill-0 { width: 0%; }
+  .occupancy-fill-10 { width: 10%; }
+  .occupancy-fill-20 { width: 20%; }
+  .occupancy-fill-30 { width: 30%; }
+  .occupancy-fill-40 { width: 40%; }
+  .occupancy-fill-50 { width: 50%; }
+  .occupancy-fill-60 { width: 60%; }
+  .occupancy-fill-70 { width: 70%; }
+  .occupancy-fill-80 { width: 80%; }
+  .occupancy-fill-90 { width: 90%; }
+  .occupancy-fill-100 { width: 100%; }
+}

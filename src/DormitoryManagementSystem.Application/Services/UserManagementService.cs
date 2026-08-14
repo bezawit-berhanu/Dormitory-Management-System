@@ -19,9 +19,8 @@ public class UserManagementService : IUserManagementService
 
     public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
     {
-        // Temporary implementation
-        // We will add GetAllAsync to repository later if needed
-        return new List<UserDto>();
+        var users = await _userRepository.GetAllAsync();
+        return users.Select(MapToDto);
     }
 
 
