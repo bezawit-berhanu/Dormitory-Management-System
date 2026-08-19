@@ -87,7 +87,7 @@ const structurePaths: Record<StructureKind, string> = {
 
 const pathFor = (name: string, fallback: string) =>
   import.meta.env[name] ?? fallback;
-const studentPath = pathFor("VITE_STUDENTS_PATH", "/Registrar/students");
+const studentPath = pathFor("VITE_STUDENTS_PATH", "/Student");
 const requestsPath = pathFor("VITE_REQUESTS_PATH", "/requests");
 const transfersPath = pathFor("VITE_TRANSFERS_PATH", "/transfers");
 const checkInOutPath = pathFor("VITE_CHECK_IN_OUT_PATH", "/check-in-out");
@@ -1816,7 +1816,7 @@ export default function Dashboard() {
                 label: "Campus structure",
                 icon: Building2,
               },
-              { id: "students" as View, label: "Students", icon: UsersRound },
+              { id: "students" as View, label: "Students", icon: UsersRound, route: "/students" },
               {
                 id: "requests" as View,
                 label: "Requests & cases",
@@ -1850,11 +1850,18 @@ export default function Dashboard() {
               ...(role === "admin"
                 ? [
                     { id: "audit" as View, label: "Audit log", icon: FileText },
-                    {
-                      id: "team" as View,
-                      label: "Team members",
-                      icon: UserRound,
-                    },
+            {
+              id: "students" as View,
+              label: "Residents",
+              icon: UsersRound,
+              route: "/students",
+            },
+            {
+              id: "assign" as View,
+              label: "Assign student",
+              icon: UserRound,
+              route: "/assign-student",
+            },
                   ]
                 : []),
               { id: "settings" as View, label: "Settings", icon: Settings },

@@ -84,6 +84,15 @@ export function storedUserId(): string {
   return text(storedUser(), "userId", "UserId", "id", "Id");
 }
 
+export function storedCampus(): string {
+  const direct = window.sessionStorage.getItem("dwell_campus");
+  if (direct) return direct;
+  const haystack = text(storedUser(), "email", "Email", "identifier").toLowerCase();
+  if (haystack.includes("4kilo")) return "4kilo";
+  if (haystack.includes("6kilo") || haystack.includes("six kilos")) return "6kilo";
+  return "";
+}
+
 export function useRemoteJson<T>(resource: string | null) {
   const [records, setRecords] = useState<T[]>([]);
   const [loading, setLoading] = useState(Boolean(resource));

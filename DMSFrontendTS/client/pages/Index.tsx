@@ -72,9 +72,21 @@ export default function Index() {
       const user = getAuthUser(response);
       if (user) {
         window.sessionStorage.setItem("dwell_user", JSON.stringify(user));
-      }
-      if (mode === "register") {
-        window.sessionStorage.setItem("dwell_role", accountType === "staff" ? staffRole : "student");
+        const roleValue = String(
+          (user as Record<string, unknown>).Role ??
+            (user as Record<string, unknown>).role ??
+            "student",
+        )
+          .toLowerCase()
+          .trim();
+        window.sessionStorage.setItem("dwell_role", roleValue);
+        const campusValue = String(
+          (user as Record<string, unknown>).campus ??
+            (user as Record<string, unknown>).Campus ??
+            "",
+        );
+        if (campusValue) window.sessionStorage.setItem("dwell_campus", campusValue);
+        else window.sessionStorage.removeItem("dwell_campus");
       }
       navigate("/dashboard");
     } catch (requestError) {

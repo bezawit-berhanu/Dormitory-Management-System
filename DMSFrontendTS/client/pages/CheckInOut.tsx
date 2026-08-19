@@ -455,7 +455,7 @@ export default function CheckInOut() {
                       tone={currentStatus === "in" ? "in" : currentStatus === "out" ? "out" : "muted"}
                     />
                   </div>
-                  {canManage && (
+                  {(canManage || role === "student") && (
                     <div className="flex gap-2">
                       <button
                         type="button"

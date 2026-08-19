@@ -12,6 +12,8 @@ import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import CheckInOut from "./pages/CheckInOut";
 import RoomAssignment from "./pages/RoomAssignment";
+import Students from "./pages/Students";
+import AssignStudent from "./pages/AssignStudent";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +31,8 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/check-in-out" element={<CheckInOut />} />
           <Route path="/room-assignments" element={<RoomAssignment />} />
+          <Route path="/students" element={<Students />} />
+          <Route path="/assign-student" element={<AssignStudent />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
