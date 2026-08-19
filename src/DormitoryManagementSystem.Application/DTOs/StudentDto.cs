@@ -8,7 +8,7 @@ public class StudentDto {
     public int DepartmentId { get; set; }
     public string Gender {get; set;} = string.Empty;
     public DateTime DateOfBirth { get; set; }
-    public string EmergencyContact { get; set; } = string.Empty;
-    public string YearOfStudy { get; set; } =string.Empty;
+    public string EmergencyContactNumber { get; set; } = string.Empty;
+    public int YearOfStudy { get; set; }
     public UserStatus Status { get; set; }
 }

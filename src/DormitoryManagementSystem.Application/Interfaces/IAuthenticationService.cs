@@ -4,7 +4,9 @@ namespace DormitoryManagementSystem.Application.Interfaces;
 
 public interface IAuthenticationService
 {
-    Task<UserDto> RegisterAsync(RegisterDto dto);
+    Task<AuthenticationResponseDto>
+        RegisterAsync(RegisterDto dto);
 
-    Task<UserDto> LoginAsync(LoginDto dto);
+    Task<AuthenticationResponseDto>
+        LoginAsync(LoginDto dto);
 }

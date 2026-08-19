@@ -24,8 +24,14 @@ public class CheckInConfiguration : IEntityTypeConfiguration<CheckIn>
 
 
         builder.HasOne(c => c.CheckedInByUser)
+
      .WithMany()
      .HasForeignKey(c => c.CheckedInByUserId)
      .OnDelete(DeleteBehavior.Restrict);
+
+            .WithMany()
+            .HasForeignKey(c => c.CheckedInByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
     }
 }

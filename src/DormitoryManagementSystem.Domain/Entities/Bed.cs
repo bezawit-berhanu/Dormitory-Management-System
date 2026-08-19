@@ -10,9 +10,11 @@ public class Bed
 
     public string BedNumber { get; set; } = string.Empty;
 
+
     public UserStatus Status { get; set; }
 
     public bool IsActive { get; set; } = true;
+
 
     // Navigation
     public Room? Room { get; set; }

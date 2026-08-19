@@ -11,7 +11,11 @@ public class ApplicationDbContextFactory
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
         var connectionString =
+
             "Server=(localdb)\\MSSQLLocalDB;Database=DormitoryManagementSystem;Trusted_Connection=True;TrustServerCertificate=True;";
+
+
+            "Server=localhost\\SQLEXPRESS;Database=DormitoryDB;Trusted_Connection=True;TrustServerCertificate=True;Encrypt=False;";
 
         optionsBuilder.UseSqlServer(connectionString);
 

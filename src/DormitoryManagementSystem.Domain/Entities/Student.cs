@@ -28,7 +28,7 @@ public class Student
     public UserStatus Status { get; set; }
 
 
-    public EmergencyContact? EmergencyContact { get; set; }
+    public EmergencyContact? EmergencyContactNumber { get; set; }
 
 
 

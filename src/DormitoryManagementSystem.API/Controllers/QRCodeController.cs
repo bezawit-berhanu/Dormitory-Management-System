@@ -22,9 +22,8 @@ public class QRCodeController : ControllerBase
     [HttpPost("generate/{studentId}")]
     public async Task<IActionResult> Generate(int studentId)
     {
-        await _service.GenerateQRCodeAsync(studentId);
-
-        return Ok("QR Code generated successfully");
+        var qrCode = await _service.GenerateQRCodeAsync(studentId);
+        return Ok(qrCode);
     }
 
 
@@ -53,9 +52,9 @@ public class QRCodeController : ControllerBase
 
 
         if(!result)
-            return BadRequest("Invalid QR Code");
+            return BadRequest(new { message = "This QR code is invalid or has expired." });
 
 
-        return Ok("Valid QR Code");
+        return Ok(new { message = "QR code is valid." });
     }
 }

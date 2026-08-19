@@ -17,8 +17,6 @@ public class MappingProfile : Profile {
         CreateMap<CheckOut, CheckOutDto>().ReverseMap();
 
         CreateMap<QRCode, QRCodeDto>().ReverseMap();
-        CreateMap<CreateStudentDto, Student>();
-        CreateMap<UpdateStudentDto, Student>();
         CreateMap<Student, StudentDto>();
             }
 }
