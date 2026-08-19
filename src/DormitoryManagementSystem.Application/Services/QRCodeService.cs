@@ -45,7 +45,7 @@ public class QRCodeService :IQRCodeService
 
            if(qrCode== null) return false;
 
-return qrCode.ExpirationDate > qrCode.GeneratedDate;
+return qrCode.ExpirationDate > DateTime.UtcNow;
     }
 
 }

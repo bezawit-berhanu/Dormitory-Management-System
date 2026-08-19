@@ -12,7 +12,7 @@ public class QRCode
 
     public DateTime GeneratedDate { get; set; }
 
-    public DateTime ExpiryDate { get; set; }
+    public DateTime ExpirationDate { get; set; }
 
     public string Status { get; set; } = string.Empty;
 };

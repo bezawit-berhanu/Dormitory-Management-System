@@ -46,4 +46,14 @@ public class RegistrarService : IRegistrarService
 
         return students ?? [];
     }
+    public async Task<IEnumerable<RegistrarDepartmentDto>>
+    GetDepartmentsAsync()
+{
+    var departments =
+        await _httpClient.GetFromJsonAsync<
+            IEnumerable<RegistrarDepartmentDto>
+        >("api/departments");
+
+    return departments ?? [];
+}
 }

@@ -1,4 +1,4 @@
-namespace DormitoryMangementSystem.Domain.ValueObjects;
+namespace DormitoryManagementSystem.Domain.ValueObjects;
 public class ContactInformation
 {
     public string PhoneNumber { get; set; } = string.Empty;

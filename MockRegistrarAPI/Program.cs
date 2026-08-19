@@ -1,44 +1,57 @@
+using MockRegistrarAPI.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // ==========================================
 // SERVICES
 // ==========================================
 
+// Allows ASP.NET to discover our controllers.
 builder.Services.AddControllers();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// Allows our Dormitory API to communicate
-// with this fake Registrar API.
-
+// Allows the Mock Registrar API to be called
+// from our React frontend running on port 5173.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
         policy
-            .AllowAnyOrigin()
+            .WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
 });
 
+// ==========================================
+// BUILD APPLICATION
+// ==========================================
+
 var app = builder.Build();
 
 // ==========================================
-// MIDDLEWARE
+// HTTP PIPELINE
 // ==========================================
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseCors("AllowAll");
-
-app.UseHttpsRedirection();
+// Allow React to communicate with this API.
+app.UseCors("AllowFrontend");
 
 app.MapControllers();
 
+// ==========================================
+// MOCK REGISTRAR ENDPOINTS
+// ==========================================
+
+// Get all departments
+app.MapGet("/api/departments", () =>
+{
+    return Results.Ok(MockDepartmentData.Departments);
+});
+
+// Get all staff
+app.MapGet("/api/staff", () =>
+{
+    return Results.Ok(MockStaffData.Staff);
+});
+
+// Start the API.
 app.Run();

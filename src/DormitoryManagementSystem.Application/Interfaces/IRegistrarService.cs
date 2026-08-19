@@ -12,4 +12,5 @@ public interface IRegistrarService
 
     Task<IEnumerable<RegistrarStudentDto>>
         SearchStudentsAsync(string query);
+Task<IEnumerable<RegistrarDepartmentDto>> GetDepartmentsAsync();
 }

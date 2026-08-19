@@ -51,4 +51,12 @@ public class RegistrarController : ControllerBase
 
         return Ok(students);
     }
+    [HttpGet("departments")]
+public async Task<IActionResult> GetDepartments()
+{
+    var departments =
+        await _registrarService.GetDepartmentsAsync();
+
+    return Ok(departments);
+}
 }
