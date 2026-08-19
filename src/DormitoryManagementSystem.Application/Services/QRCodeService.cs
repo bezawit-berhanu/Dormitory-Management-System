@@ -5,7 +5,8 @@ using DormitoryManagementSystem.Domain.Entities;
 using DormitoryManagementSystem.Domain.Interfaces;
 
 namespace DormitoryManagementSystem.Application.Services;
-public class QRCodeService :IQRCodeService
+
+public class QRCodeService : IQRCodeService
 {
     private readonly IQRCodeRepository _qrCodeRepository;
     private readonly IMapper _mapper;
@@ -23,29 +24,29 @@ public class QRCodeService :IQRCodeService
             SId = studentId,
             QRCodeValue = Guid.NewGuid().ToString(),
             GeneratedDate = DateTime.UtcNow,
-            ExpirationDate = DateTime.UtcNow.AddYears(1)
+            ExpiryDate = DateTime.UtcNow.AddYears(1)
         };
         await _qrCodeRepository.AddAsync(qrCode);
         return _mapper.Map<QRCodeDto>(qrCode);
     }
 
-    public async Task<QRCodeDto?> GetQRCodeAsync (int studentId)
+    public async Task<QRCodeDto?> GetQRCodeAsync(int studentId)
     {
         var qrCode = await _qrCodeRepository.GetByStudentIdAsync(studentId);
 
-        if(qrCode == null) 
-        return null;
+        if (qrCode == null)
+            return null;
 
         return _mapper.Map<QRCodeDto>(qrCode);
     }
 
-    public async Task<bool> ValidateQRCodeAsync (string qrCodeValue)
+    public async Task<bool> ValidateQRCodeAsync(string qrCodeValue)
     {
         var qrCode = await _qrCodeRepository.GetByValueAsync(qrCodeValue);
 
-           if(qrCode== null) return false;
+        if (qrCode == null) return false;
 
-return qrCode.ExpirationDate > qrCode.GeneratedDate;
+        return qrCode.ExpiryDate > qrCode.GeneratedDate;
     }
 
 }
