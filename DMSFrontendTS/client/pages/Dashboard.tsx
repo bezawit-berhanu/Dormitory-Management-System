@@ -62,6 +62,7 @@ type View =
   | "settings"
   | "room"
   | "assignments"
+  | "assign"
   | "announcements"
   | "work-orders";
 type StructureKind =
