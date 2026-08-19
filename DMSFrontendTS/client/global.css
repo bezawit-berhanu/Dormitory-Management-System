@@ -1,0 +1,657 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap");
+@import "tailwindcss";
+/* @config "../tailwind.config.ts"; */ /* Commented out - Tailwind v4 doesn't use @config */
+
+@layer base {
+  :root {
+    --background: 163 75% 10%;
+    --foreground: 150 24% 96%;
+    --card: 163 55% 14%;
+    --card-foreground: 150 24% 96%;
+    --popover: 163 55% 14%;
+    --popover-foreground: 150 24% 96%;
+    --primary: 160 65% 56%;
+    --primary-foreground: 163 75% 10%;
+    --secondary: 162 35% 19%;
+    --secondary-foreground: 150 24% 96%;
+    --muted: 162 35% 19%;
+    --muted-foreground: 148 18% 62%;
+    --accent: 162 35% 19%;
+    --accent-foreground: 150 24% 96%;
+    --destructive: 0 72% 59%;
+    --destructive-foreground: 150 24% 96%;
+    --border: 160 23% 25%;
+    --input: 160 23% 25%;
+    --ring: 160 65% 56%;
+    --radius: 0.75rem;
+    --sidebar-background: 163 75% 10%;
+    --sidebar-foreground: 150 24% 96%;
+    --sidebar-primary: 160 65% 56%;
+    --sidebar-primary-foreground: 163 75% 10%;
+    --sidebar-accent: 162 35% 19%;
+    --sidebar-accent-foreground: 150 24% 96%;
+    --sidebar-border: 160 23% 25%;
+    --sidebar-ring: 160 65% 56%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    background: #062b25;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "ss01" 1, "cv11" 1;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  ::selection {
+    background: rgba(110, 231, 183, 0.28);
+    color: white;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(110, 231, 183, 0.18);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(110, 231, 183, 0.32);
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: "Manrope", "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .field {
+    height: 2.75rem;
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid #d7e1d9;
+    background-color: white;
+    padding: 0 0.75rem;
+    font-size: 0.875rem;
+    color: #22483d;
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .field::placeholder {
+    color: #a2afa7;
+  }
+
+  .field:focus {
+    border-color: #79bc99;
+    box-shadow: 0 0 0 4px #dff0e3;
+  }
+
+  .field-dark {
+    height: 2.25rem;
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.035);
+    padding: 0 0.75rem;
+    font-size: 0.75rem;
+    color: white;
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .field-dark::placeholder {
+    color: rgba(110, 231, 183, 0.25);
+  }
+
+  .field-dark:focus {
+    border-color: rgba(110, 231, 183, 0.35);
+    box-shadow: 0 0 0 2px rgba(110, 231, 183, 0.1);
+  }
+
+  .occupancy-fill-0 {
+    width: 0%;
+  }
+  .occupancy-fill-10 {
+    width: 10%;
+  }
+  .occupancy-fill-20 {
+    width: 20%;
+  }
+  .occupancy-fill-30 {
+    width: 30%;
+  }
+  .occupancy-fill-40 {
+    width: 40%;
+  }
+  .occupancy-fill-50 {
+    width: 50%;
+  }
+  .occupancy-fill-60 {
+    width: 60%;
+  }
+  .occupancy-fill-70 {
+    width: 70%;
+  }
+  .occupancy-fill-80 {
+    width: 80%;
+  }
+  .occupancy-fill-90 {
+    width: 90%;
+  }
+  .occupancy-fill-100 {
+    width: 100%;
+  }
+
+  /* =========================================================
+     CAMPUS STRUCTURE
+     ========================================================= */
+
+  .structure-page {
+    min-height: 100%;
+  }
+
+  .structure-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .structure-title {
+    font-family: "Manrope", "DM Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: white;
+  }
+
+  .structure-subtitle {
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: rgba(110, 231, 183, 0.55);
+  }
+
+  .structure-breadcrumb {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: rgba(110, 231, 183, 0.45);
+  }
+
+  .structure-breadcrumb-current {
+    color: rgba(110, 231, 183, 0.8);
+  }
+
+  /* Main cards */
+
+  .structure-card {
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.035);
+    transition: all 0.2s;
+  }
+
+  .structure-card:hover {
+    border-color: rgba(110, 231, 183, 0.16);
+    background-color: rgba(255, 255, 255, 0.045);
+  }
+
+  .structure-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 1rem 1.25rem;
+  }
+
+  .structure-card-body {
+    padding: 1.25rem;
+  }
+
+  /* Campus list */
+
+  .campus-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .campus-item {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    background-color: rgba(255, 255, 255, 0.025);
+    padding: 1rem 1rem;
+    text-align: left;
+    transition: all 0.2s;
+  }
+
+  .campus-item:hover {
+    border-color: rgba(110, 231, 183, 0.18);
+    background-color: rgba(110, 231, 183, 0.045);
+  }
+
+  .campus-item-active {
+    border-color: rgba(110, 231, 183, 0.28);
+    background-color: rgba(110, 231, 183, 0.07);
+  }
+
+  .campus-item-content {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .campus-icon {
+    display: flex;
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    background-color: rgba(110, 231, 183, 0.09);
+    color: #6ee7b7;
+  }
+
+  .campus-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: white;
+  }
+
+  .campus-location {
+    margin-top: 0.125rem;
+    font-size: 0.75rem;
+    color: rgba(110, 231, 183, 0.45);
+  }
+
+  .campus-chevron {
+    flex-shrink: 0;
+    color: rgba(110, 231, 183, 0.35);
+    transition: all 0.2s;
+  }
+
+  .campus-item:hover .campus-chevron {
+    transform: translateX(0.125rem);
+    color: #6ee7b7;
+  }
+
+  /* Structure hierarchy */
+
+  .structure-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .structure-node {
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.035);
+    padding: 1.25rem;
+    transition: all 0.2s;
+  }
+
+  .structure-node:hover {
+    border-color: rgba(110, 231, 183, 0.16);
+    background-color: rgba(255, 255, 255, 0.045);
+  }
+
+  .structure-node-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .structure-node-info {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .structure-node-icon {
+    display: flex;
+    height: 2.75rem;
+    width: 2.75rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    background-color: rgba(110, 231, 183, 0.09);
+    color: #6ee7b7;
+  }
+
+  .structure-node-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  .structure-node-description {
+    margin-top: 0.125rem;
+    font-size: 0.75rem;
+    color: rgba(110, 231, 183, 0.45);
+  }
+
+  /* Male / Female dormitory cards */
+
+  .dormitory-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .dormitory-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .dormitory-card {
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.035);
+    padding: 1.25rem;
+    text-align: left;
+    transition: all 0.2s;
+  }
+
+  .dormitory-card:hover {
+    transform: translateY(-0.125rem);
+    border-color: rgba(110, 231, 183, 0.2);
+    background-color: rgba(110, 231, 183, 0.045);
+  }
+
+  .dormitory-card-icon {
+    display: flex;
+    height: 3rem;
+    width: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    background-color: rgba(110, 231, 183, 0.09);
+    color: #6ee7b7;
+  }
+
+  .dormitory-card-title {
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  .dormitory-card-description {
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+    color: rgba(110, 231, 183, 0.5);
+  }
+
+  /* Badges */
+
+  .structure-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    border: 1px solid;
+    padding: 0.125rem 0.625rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+  }
+
+  .structure-badge-success {
+    border-color: rgba(110, 231, 183, 0.18);
+    background-color: rgba(110, 231, 183, 0.08);
+    color: #6ee7b7;
+  }
+
+  .structure-badge-muted {
+    border-color: rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.035);
+    color: rgba(110, 231, 183, 0.45);
+  }
+
+  /* Empty states */
+
+  .structure-empty {
+    display: flex;
+    min-height: 220px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    border: 1px dashed rgba(255, 255, 255, 0.09);
+    background-color: rgba(255, 255, 255, 0.02);
+    padding: 0 1.5rem;
+    text-align: center;
+  }
+
+  .structure-empty-icon {
+    margin-bottom: 0.75rem;
+    display: flex;
+    height: 3rem;
+    width: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background-color: rgba(255, 255, 255, 0.04);
+    color: rgba(110, 231, 183, 0.35);
+  }
+
+  .structure-empty-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: white;
+  }
+
+  .structure-empty-text {
+    margin-top: 0.25rem;
+    max-width: 24rem;
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+    color: rgba(110, 231, 183, 0.45);
+  }
+
+  /* Back button */
+
+  .structure-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(110, 231, 183, 0.55);
+    transition: all 0.2s;
+  }
+
+  .structure-back:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    color: #6ee7b7;
+  }
+
+  /* Add button */
+
+  .structure-add-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.75rem;
+    background-color: #6ee7b7;
+    padding: 0.625rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #062b25;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s;
+  }
+
+  .structure-add-button:hover {
+    background-color: #a7f3d0;
+  }
+
+  .structure-add-button:active {
+    transform: scale(0.98);
+  }
+
+  /* Search */
+
+  .structure-search {
+    height: 2.5rem;
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.035);
+    padding: 0 0.75rem;
+    font-size: 0.75rem;
+    color: white;
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .structure-search::placeholder {
+    color: rgba(110, 231, 183, 0.3);
+  }
+
+  .structure-search:focus {
+    border-color: rgba(110, 231, 183, 0.3);
+    background-color: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 0 2px rgba(110, 231, 183, 0.08);
+  }
+
+  /* Modal */
+
+  .structure-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 1rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .structure-modal {
+    width: 100%;
+    max-width: 32rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background-color: #0a342d;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  .structure-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 1rem 1.25rem;
+  }
+
+  .structure-modal-title {
+    font-family: "Manrope", "DM Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  .structure-modal-body {
+    padding: 1.25rem;
+  }
+
+  .structure-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 1rem 1.25rem;
+  }
+
+  .structure-cancel-button {
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.035);
+    padding: 0.625rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(110, 231, 183, 0.7);
+    transition: all 0.2s;
+  }
+
+  .structure-cancel-button:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: white;
+  }
+
+  /* Loading */
+
+  .structure-spinner {
+    height: 1.25rem;
+    width: 1.25rem;
+    animation: spin 1s linear infinite;
+    border-radius: 9999px;
+    border: 2px solid rgba(110, 231, 183, 0.15);
+    border-top-color: #6ee7b7;
+  }
+  
+
+
+  
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+}
