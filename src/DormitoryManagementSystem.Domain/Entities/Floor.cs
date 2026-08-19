@@ -5,5 +5,7 @@ public class Floor
     public string FloorNumber { get; set; } = string.Empty;
     public int BlockId { get; set; }
     public string Description { get; set; } = string.Empty;
-    public Block Block { get; set; } = null!;
+    public Block? Block { get; set; } = null!;
+    public ICollection<Room> Rooms { get; set; }
+        = new List<Room>();
 };

@@ -77,8 +77,8 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
 
 export const dmsApi = {
   login: (payload: AuthCredentials) => request<AuthResponse>(endpoint("VITE_AUTH_LOGIN_PATH", "/Authentication/login"), { method: "POST", body: JSON.stringify(payload) }),
-  forgotPassword: (email: string) => request<{ message: string }>(endpoint("VITE_FORGOT_PASSWORD_PATH", "/password/forgot"), { method: "POST", body: JSON.stringify({ email }) }),
-  resetPassword: (payload: { token: string; newPassword: string; confirmPassword: string }) => request<{ message: string }>(endpoint("VITE_RESET_PASSWORD_PATH", "/password/reset"), { method: "POST", body: JSON.stringify(payload) }),
+  forgotPassword: (email: string) => request<{ message: string }>(endpoint("VITE_FORGOT_PASSWORD_PATH", "/password/forgot"), { method: "POST", body: JSON.stringify({ Email: email }) }),
+  resetPassword: (payload: { token: string; newPassword: string; confirmPassword: string }) => request<{ message: string }>(endpoint("VITE_RESET_PASSWORD_PATH", "/password/reset"), { method: "POST", body: JSON.stringify({ Token: payload.token, NewPassword: payload.newPassword, ConfirmPassword: payload.confirmPassword }) }),
   register: (payload: StudentRegistration | StaffRegistration) => {
     const path = payload.accountType === "staff"
       ? endpoint("VITE_STAFF_AUTH_REGISTER_PATH", "/staff-authentication/register")
@@ -94,6 +94,109 @@ export const dmsApi = {
   },
   create: <T>(resource: string, payload: unknown) => request<T>(resource, { method: "POST", body: JSON.stringify(payload) }),
   remove: (resource: string) => request<void>(resource, { method: "DELETE" }),
+  students: {
+    list: <T = unknown>() => request<T[]>(`/Student`),
+  },
+  checkIn: {
+    history: <T = unknown>(studentId: string | number) =>
+      request<T[]>(`/CheckIn/history/${encodeURIComponent(String(studentId))}`),
+    create: <T = unknown>(payload: unknown) =>
+      request<T>(`/CheckIn`, { method: "POST", body: JSON.stringify(payload) }),
+  },
+  checkOut: {
+    history: <T = unknown>(studentId: string | number) =>
+      request<T[]>(`/CheckOut/student/${encodeURIComponent(String(studentId))}`),
+    create: <T = unknown>(payload: unknown) =>
+      request<T>(`/CheckOut`, { method: "POST", body: JSON.stringify(payload) }),
+    update: <T = unknown>(id: string | number, payload: unknown) =>
+      request<T>(`/CheckOut/${encodeURIComponent(String(id))}`, { method: "PUT", body: JSON.stringify(payload) }),
+    remove: (id: string | number) =>
+      request<void>(`/CheckOut/${encodeURIComponent(String(id))}`, { method: "DELETE" }),
+  },
+  roomAssignment: {
+    student: <T = unknown>(sId: string | number) =>
+      request<T[]>(`/RoomAssignment/student/${encodeURIComponent(String(sId))}`),
+    create: <T = unknown>(payload: unknown) =>
+      request<T>(`/RoomAssignment`, { method: "POST", body: JSON.stringify(payload) }),
+    update: <T = unknown>(id: string | number, payload: unknown) =>
+      request<T>(`/RoomAssignment/${encodeURIComponent(String(id))}`, { method: "PUT", body: JSON.stringify(payload) }),
+    remove: (id: string | number) =>
+      request<void>(`/RoomAssignment/${encodeURIComponent(String(id))}`, { method: "DELETE" }),
+  },
+};
+
+export type DmsStudent = {
+  sId?: number | string;
+  SId?: number | string;
+  id?: number | string;
+  name?: string;
+  Name?: string;
+  fullName?: string;
+  studentId?: string;
+  StudentId?: string;
+  email?: string;
+  Email?: string;
+  departmentId?: number;
+  DepartmentId?: number;
+  gender?: string;
+  Gender?: string;
+  yearOfStudy?: number;
+  YearOfStudy?: number;
+  status?: string;
+  Status?: string;
+};
+
+export type CheckInHistory = {
+  checkInId?: number;
+  CheckInId?: number;
+  studentId?: number;
+  StudentId?: number;
+  studentName?: string;
+  StudentName?: string;
+  roomAssignmentId?: number;
+  RoomAssignmentId?: number;
+  roomNumber?: string;
+  RoomNumber?: string;
+  dormitoryName?: string;
+  DormitoryName?: string;
+  checkInDate?: string;
+  CheckInDate?: string;
+  checkOutDate?: string | null;
+  CheckOutDate?: string | null;
+  status?: string;
+  Status?: string;
+  checkedInBy?: string;
+  CheckedInBy?: string;
+};
+
+export type CheckOutRecord = {
+  checkOutId?: number;
+  CheckOutId?: number;
+  roomAssignmentId?: number;
+  RoomAssignmentId?: number;
+  checkOutDate?: string;
+  CheckOutDate?: string;
+  reason?: string;
+  Reason?: string;
+};
+
+export type RoomAssignmentRecord = {
+  roomAssignmentId?: number;
+  RoomAssignmentId?: number;
+  studentId?: string;
+  StudentId?: string;
+  roomId?: number;
+  RoomId?: number;
+  bedId?: number;
+  BedId?: number;
+  studentName?: string;
+  StudentName?: string;
+  assignedDate?: string;
+  AssignedDate?: string;
+  assignedByUserId?: number;
+  AssignedByUserId?: number;
+  status?: string;
+  Status?: string;
 };
 
 export function getAuthToken(response: AuthResponse) {

@@ -1731,6 +1731,18 @@ export default function Dashboard() {
       ? [
           { id: "overview" as View, label: "Overview", icon: LayoutDashboard },
           { id: "room" as View, label: "My room", icon: House },
+          {
+            id: "assignments" as View,
+            label: "Room assignment",
+            icon: BedDouble,
+            route: "/room-assignments",
+          },
+          {
+            id: "check-in-out" as View,
+            label: "Check-in / out",
+            icon: DoorOpen,
+            route: "/check-in-out",
+          },
           { id: "requests" as View, label: "My requests", icon: ClipboardList },
           { id: "transfers" as View, label: "Room transfers", icon: ArrowLeftRight },
           { id: "maintenance" as View, label: "Maintenance", icon: Wrench },
@@ -1751,11 +1763,17 @@ export default function Dashboard() {
               id: "assignments" as View,
               label: "Room availability",
               icon: DoorOpen,
+              route: "/room-assignments",
             },
             { id: "students" as View, label: "Residents", icon: UsersRound },
             { id: "requests" as View, label: "Incidents", icon: AlertTriangle },
             { id: "transfers" as View, label: "Room transfers", icon: ArrowLeftRight },
-            { id: "check-in-out" as View, label: "Check-in / out", icon: DoorOpen },
+            {
+              id: "check-in-out" as View,
+              label: "Check-in / out",
+              icon: DoorOpen,
+              route: "/check-in-out",
+            },
             { id: "complaints" as View, label: "Complaints", icon: MessageSquareWarning },
             { id: "violations" as View, label: "Violations", icon: AlertTriangle },
             { id: "security" as View, label: "Security incidents", icon: Shield },
@@ -1805,7 +1823,18 @@ export default function Dashboard() {
                 icon: ClipboardList,
               },
               { id: "transfers" as View, label: "Room transfers", icon: ArrowLeftRight },
-              { id: "check-in-out" as View, label: "Check-in / out", icon: DoorOpen },
+              {
+                id: "check-in-out" as View,
+                label: "Check-in / out",
+                icon: DoorOpen,
+                route: "/check-in-out",
+              },
+              {
+                id: "assignments" as View,
+                label: "Room assignments",
+                icon: BedDouble,
+                route: "/room-assignments",
+              },
               { id: "maintenance" as View, label: "Maintenance", icon: Wrench },
               { id: "complaints" as View, label: "Complaints", icon: MessageSquareWarning },
               {
@@ -2066,11 +2095,16 @@ export default function Dashboard() {
           </div>
         </div>
         <nav className="mt-7 flex-1 space-y-1">
-          {navItems.map(({ id, label, icon: Icon }) => (
+          {navItems.map(({ id, label, icon: Icon, route }) => (
             <button
               type="button"
               key={id}
               onClick={() => {
+                if (route) {
+                  setSidebarOpen(false);
+                  navigate(route);
+                  return;
+                }
                 setView(id);
                 setSidebarOpen(false);
               }}
