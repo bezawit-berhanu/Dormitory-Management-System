@@ -41,9 +41,9 @@ public static class MockStaffData
             },
 
 
-            // ==========================================
+             
             // CAMPUS 5K
-            // ==========================================
+             
 
             new RegistrarStaff
             {
@@ -79,9 +79,9 @@ public static class MockStaffData
             },
 
 
-            // ==========================================
+             
             // CAMPUS 6K
-            // ==========================================
+             
 
             new RegistrarStaff
             {
@@ -117,9 +117,9 @@ public static class MockStaffData
             },
 
 
-            // ==========================================
+             
             // SEFERSELAM CAMPUS
-            // ==========================================
+             
 
             new RegistrarStaff
             {
@@ -155,9 +155,9 @@ public static class MockStaffData
             },
 
 
-            // ==========================================
+             
             // COMMERCE CAMPUS
-            // ==========================================
+             
 
             new RegistrarStaff
             {
@@ -193,9 +193,9 @@ public static class MockStaffData
             },
 
 
-            // ==========================================
+             
             // TIKUR ANBESSA CAMPUS
-            // ==========================================
+             
 
             new RegistrarStaff
             {
@@ -231,9 +231,9 @@ public static class MockStaffData
             },
 
 
-            // ==========================================
+             
             // FBE CAMPUS
-            // ==========================================
+             
 
             new RegistrarStaff
             {

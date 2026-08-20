@@ -10,9 +10,9 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    // ===============================
+     
     // DbSets
-    // ===============================
+     
 
     public DbSet<Announcement> Announcements => Set<Announcement>();
     public DbSet<User> Users => Set<User>();
@@ -67,17 +67,17 @@ public class ApplicationDbContext : DbContext
         );
 
 
-        // ===============================
+         
         // Role
-        // ===============================
+         
 
         modelBuilder.Entity<Role>()
             .HasKey(r => r.RoleId);
 
 
-        // ===============================
+         
         // User
-        // ===============================
+         
 
         modelBuilder.Entity<User>()
             .HasKey(u => u.UserId);
@@ -89,12 +89,12 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Student
-        // ===============================
+         
 
         modelBuilder.Entity<Student>()
-            .HasKey(s => s.StudentId);
+            .HasKey(s => s.SId);
 
         // Student -> User
         // No Student.User navigation exists,
@@ -115,9 +115,9 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Staff
-        // ===============================
+         
 
         modelBuilder.Entity<Staff>()
             .HasKey(s => s.StaffId);
@@ -129,41 +129,41 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Department
-        // ===============================
+         
 
         modelBuilder.Entity<Department>()
             .HasKey(d => d.DepartmentId);
 
 
-        // ===============================
+         
         // Dormitory
-        // ===============================
+         
 
         modelBuilder.Entity<Dormitory>()
             .HasKey(d => d.DormitoryId);
 
 
-        // ===============================
+         
         // Block
-        // ===============================
+         
 
         modelBuilder.Entity<Block>()
             .HasKey(b => b.BlockId);
 
 
-        // ===============================
+         
         // Floor
-        // ===============================
+         
 
         modelBuilder.Entity<Floor>()
             .HasKey(f => f.FloorId);
 
 
-        // ===============================
+         
         // Room
-        // ===============================
+         
 
         modelBuilder.Entity<Room>()
             .HasKey(r => r.RoomId);
@@ -175,9 +175,9 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Bed
-        // ===============================
+         
 
         modelBuilder.Entity<Bed>()
             .HasKey(b => b.BedId);
@@ -189,9 +189,9 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Room Assignment
-        // ===============================
+         
 
         modelBuilder.Entity<RoomAssignment>()
             .HasKey(ra => ra.RoomAssignmentId);
@@ -223,9 +223,9 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Check In
-        // ===============================
+         
 
         modelBuilder.Entity<CheckIn>()
             .HasKey(c => c.CheckInId);
@@ -249,9 +249,9 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Check Out
-        // ===============================
+         
 
         modelBuilder.Entity<CheckOut>()
             .HasKey(c => c.CheckOutId);
@@ -275,9 +275,9 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // QR Code
-        // ===============================
+         
 
         modelBuilder.Entity<QRCode>()
             .HasKey(q => q.QRCodeId);
@@ -290,9 +290,9 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Complaint
-        // ===============================
+         
 
         modelBuilder.Entity<Complaint>()
             .HasKey(c => c.ComplaintId);
@@ -304,9 +304,9 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Complaint Response
-        // ===============================
+         
 
         modelBuilder.Entity<ComplaintResponse>()
             .HasKey(cr => cr.ResponseId);
@@ -324,9 +324,9 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Inspection
-        // ===============================
+         
 
         modelBuilder.Entity<Inspection>()
             .HasKey(i => i.InspectionId);
@@ -342,9 +342,9 @@ public class ApplicationDbContext : DbContext
         // does not expose an InspectedBy property.
 
 
-        // ===============================
+         
         // Inspection Finding
-        // ===============================
+         
 
         modelBuilder.Entity<InspectionFinding>()
             .HasKey(f => f.FindingId);
@@ -356,17 +356,17 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
 
-        // ===============================
+         
         // Maintenance Request
-        // ===============================
+         
 
         modelBuilder.Entity<MaintenanceRequest>()
             .HasKey(m => m.MaintenanceRequestId);
 
 
-        // ===============================
+         
         // Maintenance Activity
-        // ===============================
+         
 
         modelBuilder.Entity<MaintenanceActivity>()
             .HasKey(a => a.ActivityId);
@@ -384,9 +384,9 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Maintenance Assignment
-        // ===============================
+         
 
         modelBuilder.Entity<MaintenanceAssignment>()
             .HasKey(ma => ma.AssignmentId);
@@ -404,9 +404,9 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Room Transfer Request
-        // ===============================
+         
 
         modelBuilder.Entity<RoomTransferRequest>()
             .HasKey(rtr => rtr.TransferRequestId);
@@ -435,9 +435,9 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Room Transfer Response
-        // ===============================
+         
 
         modelBuilder.Entity<RoomTransferResponse>()
             .HasKey(rtr => rtr.ResponseId);
@@ -455,9 +455,9 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Announcement
-        // ===============================
+         
 
         modelBuilder.Entity<Announcement>()
             .HasKey(a => a.AnnouncementId);
@@ -469,25 +469,25 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Notification
-        // ===============================
+         
 
         modelBuilder.Entity<Notification>()
             .HasKey(n => n.NotificationId);
 
 
-        // ===============================
+         
         // Audit Log
-        // ===============================
+         
 
         modelBuilder.Entity<AuditLog>()
             .HasKey(a => a.AuditLogId);
 
 
-        // ===============================
+         
         // Security Incident
-        // ===============================
+         
 
         modelBuilder.Entity<SecurityIncident>()
             .HasKey(si => si.IncidentId);
@@ -505,9 +505,9 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        // ===============================
+         
         // Violation
-        // ===============================
+         
 
         modelBuilder.Entity<Violation>()
             .HasKey(v => v.ViolationId);

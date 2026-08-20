@@ -30,11 +30,11 @@ public class AuthController : ControllerBase
         };
 
         // Temporary fake token.
-        //
+        
         // It is NOT a real JWT.
         // It only allows us to test the frontend
         // authentication flow.
-        var token = "mock-test-token";
+        var token = "mocktest-token";
 
         return Ok(new
         {

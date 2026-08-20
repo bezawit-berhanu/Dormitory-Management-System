@@ -2,9 +2,7 @@ using MockRegistrarAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ==========================================
 // SERVICES
-// ==========================================
 
 // Allows ASP.NET to discover our controllers.
 builder.Services.AddControllers();
@@ -22,24 +20,15 @@ builder.Services.AddCors(options =>
     });
 });
 
-// ==========================================
 // BUILD APPLICATION
-// ==========================================
 
 var app = builder.Build();
 
-// ==========================================
 // HTTP PIPELINE
-// ==========================================
 
-// Allow React to communicate with this API.
 app.UseCors("AllowFrontend");
 
 app.MapControllers();
-
-// ==========================================
-// MOCK REGISTRAR ENDPOINTS
-// ==========================================
 
 // Get all departments
 app.MapGet("/api/departments", () =>

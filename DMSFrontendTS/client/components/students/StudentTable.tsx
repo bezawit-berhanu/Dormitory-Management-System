@@ -61,7 +61,7 @@ export default function StudentTable({
           <tbody>
             {students.map((student) => (
               <StudentRow
-                key={student.sId}
+                key={student.studentId}
                 student={student}
                 onClick={onStudentClick}
               />

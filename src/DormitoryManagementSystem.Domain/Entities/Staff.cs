@@ -19,9 +19,9 @@ public class Staff
     public UserStatus Status { get; set; }
 
 
-    // ==========================================
+    
     // NAVIGATION
-    // ==========================================
+    
 
     public User? User { get; set; }
 }

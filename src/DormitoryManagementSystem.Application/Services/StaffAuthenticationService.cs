@@ -32,9 +32,9 @@ public class StaffAuthenticationService
     }
 
 
-    // ==========================================
+    
     // REGISTER STAFF
-    // ==========================================
+    
 
     public async Task<AuthenticationResponseDto>
         RegisterAsync(RegisterStaffDto dto)
@@ -43,9 +43,9 @@ public class StaffAuthenticationService
         dto.Email = dto.Email.Trim();
         dto.PhoneNumber = AuthenticationInputValidator.NormalizePhoneNumber(dto.PhoneNumber);
 
-        // --------------------------------------
+        
         // 1. Check Registrar
-        // --------------------------------------
+        
 
         var registrarStaff =
             await _staffRegistrarService
@@ -59,9 +59,9 @@ public class StaffAuthenticationService
         }
 
 
-        // --------------------------------------
+        
         // 2. Verify Full Name
-        // --------------------------------------
+        
 
         if (!string.Equals(
                 registrarStaff.FullName.Trim(),
@@ -74,9 +74,9 @@ public class StaffAuthenticationService
         }
 
 
-        // --------------------------------------
+        
         // 3. Check Registrar Status
-        // --------------------------------------
+        
 
         if (registrarStaff.Status != 1)
         {
@@ -86,9 +86,9 @@ public class StaffAuthenticationService
         }
 
 
-        // --------------------------------------
+        
         // 4. Check existing staff account
-        // --------------------------------------
+        
 
         var existingStaff =
             await _staffRepository
@@ -102,9 +102,9 @@ public class StaffAuthenticationService
         }
 
 
-        // --------------------------------------
+        
         // 5. Check email
-        // --------------------------------------
+        
 
         var existingUser =
             await _userRepository
@@ -118,9 +118,9 @@ public class StaffAuthenticationService
         }
 
 
-        // --------------------------------------
+        
         // 7. Create User
-        // --------------------------------------
+        
 
         var user = new User
         {
@@ -149,9 +149,9 @@ public class StaffAuthenticationService
         await _userRepository.SaveChangesAsync();
 
 
-        // --------------------------------------
+        
         // 8. Create Staff record
-        // --------------------------------------
+        
 
         var staff = new Staff
         {
@@ -173,9 +173,9 @@ public class StaffAuthenticationService
         await _staffRepository.SaveChangesAsync();
 
 
-        // --------------------------------------
+        
         // 9. Generate JWT
-        // --------------------------------------
+        
 
         var role = "Staff";
 
@@ -187,9 +187,9 @@ public class StaffAuthenticationService
             );
 
 
-        // --------------------------------------
+        
         // 10. Return response
-        // --------------------------------------
+        
 
         return new AuthenticationResponseDto
         {
@@ -204,16 +204,16 @@ public class StaffAuthenticationService
     }
 
 
-    // ==========================================
+    
     // STAFF LOGIN
-    // ==========================================
+    
 
     public async Task<AuthenticationResponseDto>
         LoginAsync(StaffLoginDto dto)
     {
-        // --------------------------------------
+        
         // 1. Find User
-        // --------------------------------------
+        
 
         var user =
             await _userRepository
@@ -227,9 +227,9 @@ public class StaffAuthenticationService
         }
 
 
-        // --------------------------------------
+        
         // 2. Find Staff
-        // --------------------------------------
+        
 var staff =
     await _staffRepository
         .GetByUserIdAsync(user.UserId);
@@ -242,9 +242,9 @@ var staff =
         }
 
 
-        // --------------------------------------
+        
         // 3. Check password
-        // --------------------------------------
+        
 
         var passwordResult =
             _passwordHasher.VerifyHashedPassword(
@@ -262,9 +262,9 @@ var staff =
         }
 
 
-        // --------------------------------------
+        
         // 4. Check active status
-        // --------------------------------------
+        
 
         if (user.Status != UserStatus.Active)
         {
@@ -274,9 +274,9 @@ var staff =
         }
 
 
-        // --------------------------------------
+        
         // 5. Generate JWT
-        // --------------------------------------
+        
 
         var role = "Staff";
 
@@ -288,9 +288,9 @@ var staff =
             );
 
 
-        // --------------------------------------
+        
         // 6. Return response
-        // --------------------------------------
+        
 
         return new AuthenticationResponseDto
         {
@@ -305,9 +305,9 @@ var staff =
     }
 
 
-    // ==========================================
+    
     // MAP STAFF TO DTO
-    // ==========================================
+    
 
     private static UserDto MapToDto(
         User user,

@@ -33,9 +33,9 @@ public class AuthenticationService : IAuthenticationService
         _departmentRepository = departmentRepository;
     }
 
-    // ==========================================
+    
     // REGISTER
-    // ==========================================
+    
 
     public async Task<AuthenticationResponseDto> RegisterAsync(RegisterDto dto)
     {
@@ -49,9 +49,9 @@ public class AuthenticationService : IAuthenticationService
         dto.PhoneNumber =
             AuthenticationInputValidator.NormalizePhoneNumber(dto.PhoneNumber);
 
-        // --------------------------------------
+        
         // 1. Get student from Registrar
-        // --------------------------------------
+        
 
         var registrarStudent =
             await _registrarService.GetStudentByIdAsync(dto.StudentId);
@@ -62,9 +62,9 @@ public class AuthenticationService : IAuthenticationService
                 "Student was not found in the Registrar system.");
         }
 
-        // --------------------------------------
+        
         // 2. Verify full name
-        // --------------------------------------
+        
 
         if (!string.Equals(
                 registrarStudent.FullName.Trim(),
@@ -75,9 +75,9 @@ public class AuthenticationService : IAuthenticationService
                 "Student ID and full name do not match Registrar records.");
         }
 
-        // --------------------------------------
+        
         // 3. Check if student already exists
-        // --------------------------------------
+        
 
         var existingStudent =
             await _studentRepository.GetByStudentIdAsync(dto.StudentId);
@@ -88,9 +88,9 @@ public class AuthenticationService : IAuthenticationService
                 "An account already exists for this student.");
         }
 
-        // --------------------------------------
+        
         // 4. Check if email already exists
-        // --------------------------------------
+        
 
         var existingUser =
             await _userRepository.GetByEmailAsync(dto.Email);
@@ -101,9 +101,9 @@ public class AuthenticationService : IAuthenticationService
                 "This email is already registered.");
         }
 
-        // --------------------------------------
+        
         // 5. Create User
-        // --------------------------------------
+        
 
         var user = new User
         {
@@ -122,9 +122,9 @@ public class AuthenticationService : IAuthenticationService
         await _userRepository.AddAsync(user);
         await _userRepository.SaveChangesAsync();
 
-        // --------------------------------------
+        
         // 6. Get or create Department
-        // --------------------------------------
+        
 
         var department =
             await _departmentRepository
@@ -142,9 +142,9 @@ public class AuthenticationService : IAuthenticationService
             await _departmentRepository.SaveChangesAsync();
         }
 
-        // --------------------------------------
+        
         // 7. Create Student
-        // --------------------------------------
+        
 
         var student = new Student
         {
@@ -170,9 +170,7 @@ public class AuthenticationService : IAuthenticationService
         await _studentRepository.AddAsync(student);
         await _studentRepository.SaveChangesAsync();
 
-        // --------------------------------------
-        // 8. Generate JWT
-        // --------------------------------------
+        
 
         const string role = "Student";
 
@@ -181,9 +179,9 @@ public class AuthenticationService : IAuthenticationService
             student.StudentId,
             role);
 
-        // --------------------------------------
+        
         // 9. Return response
-        // --------------------------------------
+        
 
         return new AuthenticationResponseDto
         {
@@ -195,18 +193,18 @@ public class AuthenticationService : IAuthenticationService
         };
     }
 
-    // ==========================================
+    
     // LOGIN
-    // ==========================================
+    
 
     public async Task<AuthenticationResponseDto> LoginAsync(LoginDto dto)
     {
         User? user = null;
         Student? student = null;
 
-        // --------------------------------------
+        
         // STUDENT LOGIN
-        // --------------------------------------
+        
 
         if (!dto.Identifier.Contains("@"))
         {
@@ -225,9 +223,9 @@ public class AuthenticationService : IAuthenticationService
                     .GetByIdAsync(student.UserId);
         }
 
-        // --------------------------------------
+        
         // STAFF LOGIN
-        // --------------------------------------
+        
 
         else
         {
@@ -236,9 +234,9 @@ public class AuthenticationService : IAuthenticationService
                     .GetByEmailAsync(dto.Identifier);
         }
 
-        // --------------------------------------
+        
         // Check user
-        // --------------------------------------
+        
 
         if (user == null)
         {
@@ -246,9 +244,9 @@ public class AuthenticationService : IAuthenticationService
                 "Invalid Student ID/email or password.");
         }
 
-        // --------------------------------------
+        
         // Verify password
-        // --------------------------------------
+        
 
         var passwordResult =
             _passwordHasher.VerifyHashedPassword(
@@ -262,9 +260,9 @@ public class AuthenticationService : IAuthenticationService
                 "Invalid Student ID/email or password.");
         }
 
-        // --------------------------------------
+        
         // Rehash password if necessary
-        // --------------------------------------
+        
 
         if (passwordResult ==
             PasswordVerificationResult.SuccessRehashNeeded)
@@ -278,9 +276,9 @@ public class AuthenticationService : IAuthenticationService
             await _userRepository.SaveChangesAsync();
         }
 
-        // --------------------------------------
+        
         // Determine role
-        // --------------------------------------
+        
 
         var role =
             user.Role?.RoleName;
@@ -289,17 +287,17 @@ public class AuthenticationService : IAuthenticationService
             throw new Exception("User role is not configured.");
         }
 
-        // --------------------------------------
+        
         // JWT identifier
-        // --------------------------------------
+        
 
         var identifier =
             student?.StudentId
             ?? user.Email;
 
-        // --------------------------------------
+        
         // Generate JWT
-        // --------------------------------------
+        
 
         var token =
             _jwtService.GenerateToken(
@@ -307,9 +305,9 @@ public class AuthenticationService : IAuthenticationService
                 identifier,
                 role);
 
-        // --------------------------------------
+        
         // Return response
-        // --------------------------------------
+        
 
         return new AuthenticationResponseDto
         {
@@ -321,9 +319,9 @@ public class AuthenticationService : IAuthenticationService
         };
     }
 
-    // ==========================================
+    
     // MAP USER TO DTO
-    // ==========================================
+    
 
     private static UserDto MapToDto(
         User user,
