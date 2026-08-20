@@ -6,7 +6,6 @@ export enum StudentStatus {
 }
 
 export interface Student {
-  sId: number;
   studentId: string;
   name: string;
   departmentName: string;
