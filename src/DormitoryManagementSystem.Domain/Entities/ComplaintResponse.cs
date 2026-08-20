@@ -17,4 +17,4 @@ public class ComplaintResponse
     public string Response { get; set; } = string.Empty;
 
     public DateTime ResponseDate { get; set; }
-}
+};

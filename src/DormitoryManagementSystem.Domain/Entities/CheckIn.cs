@@ -1,11 +1,10 @@
 namespace DormitoryManagementSystem.Domain.Entities;
 
-
 public class CheckIn
 {
     public int CheckInId { get; set; }
 
-    public int Id { get; set; }
+    public int SId { get; set; }
     public Student? Student { get; set; }
 
     public int RoomAssignmentId { get; set; }
@@ -15,5 +14,4 @@ public class CheckIn
 
     public int CheckedInByUserId { get; set; }
     public User? CheckedInByUser { get; set; }
-}
-
+};

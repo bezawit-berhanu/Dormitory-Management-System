@@ -1,0 +1,40 @@
+[33mcommit 5ecc919958429f0c6e90492be5bec875d22193ec[m
+Author: Bezawit <bezawitberhan070@gmail.com>
+Date:   Tue Aug 11 16:00:45 2026 +0300
+
+    Added a Mock Registrar Data and fake API for testing purposes, redone the student management, deleted update, delete and create student files and functions.
+
+M	DMSFrontend/src/context/AuthContext.jsx
+M	DMSFrontend/src/pages/Dashboard/StudentDashboard.jsx
+D	DMSFrontend/src/pages/Student/CreateStudent.jsx
+D	DMSFrontend/src/pages/Student/EditStudent.jsx
+M	DMSFrontend/src/pages/Student/StudentDetails.jsx
+M	DMSFrontend/src/pages/Student/StudentList.jsx
+M	DMSFrontend/src/routes/AppRoutes.jsx
+M	DMSFrontend/src/services/authService.js
+A	DMSFrontend/src/services/registrarService.js
+A	MockRegistrarAPI/Controllers/StudentController.cs
+A	MockRegistrarAPI/Data/MockStudentData.cs
+A	MockRegistrarAPI/MockRegistrarAPI.csproj
+A	MockRegistrarAPI/MockRegistrarAPI.http
+A	MockRegistrarAPI/Models/RegistrarStudent.cs
+A	MockRegistrarAPI/Program.cs
+A	MockRegistrarAPI/Properties/launchSettings.json
+A	MockRegistrarAPI/appsettings.Development.json
+A	MockRegistrarAPI/appsettings.json
+A	src/DormitoryManagementSystem.API/Controllers/RegistrarController.cs
+M	src/DormitoryManagementSystem.API/Controllers/RoomAssignmentController.cs
+M	src/DormitoryManagementSystem.API/Controllers/StudentController.cs
+M	src/DormitoryManagementSystem.API/Program.cs
+D	src/DormitoryManagementSystem.Application/DTOs/CreateStudentDto.cs
+A	src/DormitoryManagementSystem.Application/DTOs/RegistrarStudentDTO.cs
+M	src/DormitoryManagementSystem.Application/DTOs/RoomAssignmentDto.cs
+D	src/DormitoryManagementSystem.Application/DTOs/UpdateStudentDto.cs
+D	src/DormitoryManagementSystem.Application/Interfaces/IAssignmentService.cs
+A	src/DormitoryManagementSystem.Application/Interfaces/IRegistrarService.cs
+M	src/DormitoryManagementSystem.Application/Interfaces/IRoomAssignmentService.cs
+M	src/DormitoryManagementSystem.Application/Interfaces/IStudentService.cs
+A	src/DormitoryManagementSystem.Application/Services/RegistrarService.cs
+M	src/DormitoryManagementSystem.Application/Services/RoomAssignmentService.cs
+M	src/DormitoryManagementSystem.Application/Services/StudentService.cs
+M	src/DormitoryManagementSystem.Domain/Entities/RoomAssignment.cs

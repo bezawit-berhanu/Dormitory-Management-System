@@ -1,13 +1,12 @@
 namespace DormitoryManagementSystem.Domain.Entities;
 
-
 public class Violation
 {
     public int ViolationId { get; set; }
 
 
     // Foreign Key: Student
-    public int Id { get; set; }
+    public int SId { get; set; }
     public Student? Student { get; set; }
 
 
@@ -25,4 +24,5 @@ public class Violation
     public string Penalty { get; set; } = string.Empty;
 
     public string Status { get; set; } = string.Empty;
-}
+
+};

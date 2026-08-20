@@ -1,12 +1,11 @@
 namespace DormitoryManagementSystem.Domain.Entities;
 
-
 public class CheckOut
 {
     public int CheckOutId { get; set; }
 
     // Foreign Key: Student
-    public int Id { get; set; }
+    public int SId { get; set; }
     public Student? Student { get; set; }
 
     // Foreign Key: RoomAssignment
@@ -20,4 +19,5 @@ public class CheckOut
     public User? CheckedOutByUser { get; set; }
 
     public string Reason { get; set; } = string.Empty;
-}
+};
+
