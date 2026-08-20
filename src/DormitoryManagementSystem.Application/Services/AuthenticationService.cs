@@ -164,7 +164,7 @@ public class AuthenticationService : IAuthenticationService
             YearOfStudy = registrarStudent.YearOfStudy,
 
             // Registrar gives int, Student stores string
-            Status = registrarStudent.Status.ToString()
+            Status = StudentStatus.Active
         };
 
         await _studentRepository.AddAsync(student);

@@ -65,7 +65,7 @@ export default function StudentsPage() {
   const handleStudentClick = (
     student: Student
   ) => {
-    navigate(`/students/${student.sId}`);
+    navigate(`/students/${student.studentId}`);
   };
 
   if (loading) {

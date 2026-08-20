@@ -17,6 +17,14 @@ public class MappingProfile : Profile {
         CreateMap<CheckOut, CheckOutDto>().ReverseMap();
 
         CreateMap<QRCode, QRCodeDto>().ReverseMap();
-        CreateMap<Student, StudentDto>();
+       CreateMap<Student, StudentDto>()
+    .ForMember(
+        dest => dest.DepartmentName,
+        opt => opt.MapFrom(src =>
+            src.Department != null
+                ? src.Department.DepartmentName
+                : string.Empty
+        )
+    );
             }
 }

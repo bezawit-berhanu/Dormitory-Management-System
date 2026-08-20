@@ -1,3 +1,11 @@
+import axios from "axios";
+
+export const api = axios.create({
+  baseURL: "http://localhost:5069/api",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 export type AuthRole = "admin" | "maintenance" | "proctor" | "dorm manager" | "student";
 
 export type AuthCredentials = {
@@ -209,3 +217,5 @@ export function getAuthUser(response: AuthResponse): AuthUser | undefined {
   if ("user" in user) return user.user;
   return user as AuthUser;
 }
+
+export default api;

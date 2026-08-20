@@ -4,7 +4,6 @@ export enum StudentStatus {
   Graduated = 3,
   Suspended = 4,
 }
-
 export interface Student {
   studentId: string;
   name: string;
