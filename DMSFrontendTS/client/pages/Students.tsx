@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import {
   AlertTriangle,
   ArrowLeft,
-  Build,
   Plus,
   RefreshCw,
   Search,
@@ -201,7 +200,7 @@ export default function Students() {
     role === "admin"
       ? "Resident directory"
       : isStaffManager
-        ? `Residents · ${campusLabels[campus] ?? (campus || "All campuses")}`
+         ? `Residents · ${campusLabels[campus] ?? (campus || "All campuses")}`
         : isProctor
           ? "Residents with dormitory"
           : "My residence";
