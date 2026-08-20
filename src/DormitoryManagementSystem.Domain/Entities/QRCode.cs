@@ -1,5 +1,6 @@
 using DormitoryManagementSystem.Domain.Enums;
 namespace DormitoryManagementSystem.Domain.Entities;
+
 public class QRCode
 {
     public int QRCodeId { get; set; }

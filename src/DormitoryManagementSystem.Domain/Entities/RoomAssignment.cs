@@ -8,7 +8,7 @@ public class RoomAssignment
     // Student assigned to the room
     public int SId { get; set; }
     public Student? Student { get; set; }
-    public string StudentId {get; set;} = string.Empty;
+    public string StudentId { get; set; } = string.Empty;
     public int RoomId { get; set; }
     public Room? Room { get; set; }
 

@@ -33,7 +33,7 @@ public class StudentsController : ControllerBase
         return Ok(student);
     }
 
-  
+
     [HttpGet("search")]
     public IActionResult SearchStudents(
         [FromQuery] string query)

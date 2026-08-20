@@ -28,7 +28,7 @@ public class RoomAssignmentController : ControllerBase
         return Ok(assignments);
     }
 
-   
+
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
@@ -42,7 +42,7 @@ public class RoomAssignmentController : ControllerBase
         return Ok(assignment);
     }
 
- 
+
 
     [HttpPost]
     public async Task<IActionResult> Assign(

@@ -7,11 +7,11 @@ public interface IRoomAssignmentService
     Task<IEnumerable<RoomAssignmentDto>>
         GetStudentAssignmentsAsync(int sId);
 
-    
+
     Task<RoomAssignmentDto?>
         GetAssignmentByIdAsync(int id);
 
-   
+
     Task<RoomAssignmentDto>
         AssignRoomAsync(RoomAssignmentDto dto);
 

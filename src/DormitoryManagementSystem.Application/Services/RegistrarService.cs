@@ -13,7 +13,7 @@ public class RegistrarService : IRegistrarService
         _httpClient = httpClient;
     }
 
-    
+
 
     public async Task<IEnumerable<RegistrarStudentDto>>
         GetStudentsAsync()

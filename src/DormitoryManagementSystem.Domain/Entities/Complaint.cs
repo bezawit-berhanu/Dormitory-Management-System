@@ -6,6 +6,7 @@ public class Complaint
 
     // Foreign Key: Student
     public int SId { get; set; }
+
     public Student? Student { get; set; }
 
     public string Title { get; set; } = string.Empty;
@@ -18,7 +19,7 @@ public class Complaint
 
     public string Status { get; set; } = string.Empty;
 
-
-    // Navigation: One Complaint can have many responses
-    public ICollection<ComplaintResponse> Responses { get; set; } = new List<ComplaintResponse>();
-};
+    // One complaint can have many responses
+    public ICollection<ComplaintResponse> Responses { get; set; }
+        = new List<ComplaintResponse>();
+}

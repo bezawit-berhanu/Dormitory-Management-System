@@ -1,4 +1,5 @@
 namespace DormitoryManagementSystem.Domain.Entities;
+
 public class Violation
 {
     public int ViolationId { get; set; }

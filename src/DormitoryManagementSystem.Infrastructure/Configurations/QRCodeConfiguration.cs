@@ -17,7 +17,7 @@ public class QRCodeConfiguration : IEntityTypeConfiguration<QRCode>
 
 
         builder.HasOne(q => q.Student)
-            .WithMany(s => s.QRCode)
+            .WithMany(s => s.QRCodes)
             .HasForeignKey(q => q.SId)
             .OnDelete(DeleteBehavior.Restrict);
     }

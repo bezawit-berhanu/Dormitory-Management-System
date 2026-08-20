@@ -3,13 +3,12 @@ using DormitoryManagementSystem.Application.Interfaces;
 using DormitoryManagementSystem.Domain.Entities;
 using DormitoryManagementSystem.Domain.Enums;
 using DormitoryManagementSystem.Domain.Interfaces;
-using Microsoft.AspNetCore.Identity;
 using DormitoryManagementSystem.Application.Validators;
+using Microsoft.AspNetCore.Identity;
 
 namespace DormitoryManagementSystem.Application.Services;
 
-public class AuthenticationService
-    : IAuthenticationService
+public class AuthenticationService : IAuthenticationService
 {
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IUserRepository _userRepository;
@@ -23,42 +22,49 @@ public class AuthenticationService
         IStudentRepository studentRepository,
         IRegistrarService registrarService,
         IDepartmentRepository departmentRepository,
-        IJwtService jwtService,  
+        IJwtService jwtService,
         IPasswordHasher<User> passwordHasher)
     {
         _userRepository = userRepository;
         _studentRepository = studentRepository;
         _registrarService = registrarService;
         _jwtService = jwtService;
-         _passwordHasher = passwordHasher;
-         _departmentRepository = departmentRepository;
+        _passwordHasher = passwordHasher;
+        _departmentRepository = departmentRepository;
     }
 
+    // ==========================================
+    // REGISTER
+    // ==========================================
 
-    
-
-    public async Task<AuthenticationResponseDto>
-        RegisterAsync(RegisterDto dto)
+    public async Task<AuthenticationResponseDto> RegisterAsync(RegisterDto dto)
     {
-        AuthenticationInputValidator.ValidateRegistration(dto.Email, dto.PhoneNumber, dto.Password, dto.ConfirmPassword);
-        dto.Email = dto.Email.Trim();
-        dto.PhoneNumber = AuthenticationInputValidator.NormalizePhoneNumber(dto.PhoneNumber);
+        AuthenticationInputValidator.ValidateRegistration(
+            dto.Email,
+            dto.PhoneNumber,
+            dto.Password,
+            dto.ConfirmPassword);
 
-      
+        dto.Email = dto.Email.Trim();
+        dto.PhoneNumber =
+            AuthenticationInputValidator.NormalizePhoneNumber(dto.PhoneNumber);
+
+        // --------------------------------------
+        // 1. Get student from Registrar
+        // --------------------------------------
 
         var registrarStudent =
-            await _registrarService
-                .GetStudentByIdAsync(dto.StudentId);
+            await _registrarService.GetStudentByIdAsync(dto.StudentId);
 
         if (registrarStudent == null)
         {
             throw new Exception(
-                "Student was not found in the Registrar system."
-            );
+                "Student was not found in the Registrar system.");
         }
 
-
-     
+        // --------------------------------------
+        // 2. Verify full name
+        // --------------------------------------
 
         if (!string.Equals(
                 registrarStudent.FullName.Trim(),
@@ -66,34 +72,33 @@ public class AuthenticationService
                 StringComparison.OrdinalIgnoreCase))
         {
             throw new Exception(
-                "Student ID and full name do not match Registrar records."
-            );
+                "Student ID and full name do not match Registrar records.");
         }
 
-
-     
+        // --------------------------------------
+        // 3. Check if student already exists
+        // --------------------------------------
 
         var existingStudent =
-            await _studentRepository
-                .GetByStudentIdAsync(dto.StudentId);
+            await _studentRepository.GetByStudentIdAsync(dto.StudentId);
 
         if (existingStudent != null)
         {
             throw new Exception(
-                "An account already exists for this student."
-            );
+                "An account already exists for this student.");
         }
 
+        // --------------------------------------
+        // 4. Check if email already exists
+        // --------------------------------------
 
         var existingUser =
-            await _userRepository
-                .GetByEmailAsync(dto.Email);
+            await _userRepository.GetByEmailAsync(dto.Email);
 
         if (existingUser != null)
         {
             throw new Exception(
-                "This email is already registered."
-            );
+                "This email is already registered.");
         }
 
         // --------------------------------------
@@ -103,78 +108,81 @@ public class AuthenticationService
         var user = new User
         {
             FullName = registrarStudent.FullName,
-
             Email = dto.Email,
-
             PhoneNumber = dto.PhoneNumber,
-
             RoleId = 3,
-
             Status = UserStatus.Active,
-
             CreatedAt = DateTime.UtcNow
         };
-           user.PasswordHash = _passwordHasher.HashPassword(
-    user,
-    dto.Password
-);
 
+        user.PasswordHash = _passwordHasher.HashPassword(
+            user,
+            dto.Password);
 
         await _userRepository.AddAsync(user);
-
         await _userRepository.SaveChangesAsync();
 
-var department = await _departmentRepository
-    .GetByRegistrarIdAsync(registrarStudent.DepartmentId);
-
-if (department == null)
-{
-    department = new Department
-    {
-        RegistrarDepartmentId = registrarStudent.DepartmentId,
-        DepartmentName = registrarStudent.Department
-    };
-
-    await _departmentRepository.AddAsync(department);
-    await _departmentRepository.SaveChangesAsync();
-}
         // --------------------------------------
-        // 6. Create Student record
+        // 6. Get or create Department
         // --------------------------------------
 
-      var student = new Student
-{
-    UserId = user.UserId,
-    StudentId = registrarStudent.StudentId,
+        var department =
+            await _departmentRepository
+                .GetByRegistrarIdAsync(registrarStudent.DepartmentId);
 
-    DepartmentId = department.DepartmentId,
+        if (department == null)
+        {
+            department = new Department
+            {
+                RegistrarDepartmentId = registrarStudent.DepartmentId,
+                DepartmentName = registrarStudent.Department
+            };
 
-    Gender = registrarStudent.Gender,
-    DateOfBirth = registrarStudent.DateOfBirth,
-    YearOfStudy = registrarStudent.YearOfStudy,
-    Status = (UserStatus)registrarStudent.Status
-};
+            await _departmentRepository.AddAsync(department);
+            await _departmentRepository.SaveChangesAsync();
+        }
+
+        // --------------------------------------
+        // 7. Create Student
+        // --------------------------------------
+
+        var student = new Student
+        {
+            UserId = user.UserId,
+
+            // RegistrarStudent.StudentId is string
+            // Student.StudentId must also be string
+            StudentId = registrarStudent.StudentId,
+
+            DepartmentId = department.DepartmentId,
+
+            Gender = registrarStudent.Gender,
+
+            DateOfBirth = registrarStudent.DateOfBirth,
+
+            // Registrar gives int, Student stores string
+            YearOfStudy = registrarStudent.YearOfStudy.ToString(),
+
+            // Registrar gives int, Student stores string
+            Status = registrarStudent.Status.ToString()
+        };
 
         await _studentRepository.AddAsync(student);
-         await _studentRepository.SaveChangesAsync();
+        await _studentRepository.SaveChangesAsync();
 
         // --------------------------------------
-        // 7. Generate JWT
+        // 8. Generate JWT
         // --------------------------------------
 
-        var role =
-            "Student";
+        const string role = "Student";
 
-        var token =
-            _jwtService.GenerateToken(
-                user.UserId,
-                student.StudentId,
-                role
-            );
-
+        var token = _jwtService.GenerateToken(
+            user.UserId,
+            student.StudentId,
+            role);
 
         // --------------------------------------
-        // 8. Return response
+        // 9. Return response
         // --------------------------------------
 
         return new AuthenticationResponseDto
@@ -183,23 +191,18 @@ if (department == null)
 
             User = MapToDto(
                 user,
-                role
-            )
+                role)
         };
     }
-
 
     // ==========================================
     // LOGIN
     // ==========================================
 
-    public async Task<AuthenticationResponseDto>
-        LoginAsync(LoginDto dto)
+    public async Task<AuthenticationResponseDto> LoginAsync(LoginDto dto)
     {
         User? user = null;
-
         Student? student = null;
-
 
         // --------------------------------------
         // STUDENT LOGIN
@@ -209,23 +212,18 @@ if (department == null)
         {
             student =
                 await _studentRepository
-                    .GetByStudentIdAsync(
-                        dto.Identifier
-                    );
+                    .GetByStudentIdAsync(dto.Identifier);
 
             if (student == null)
             {
                 throw new Exception(
-                    "Invalid Student ID or password."
-                );
+                    "Invalid Student ID or password.");
             }
-
 
             user =
                 await _userRepository
                     .GetByIdAsync(student.UserId);
         }
-
 
         // --------------------------------------
         // STAFF LOGIN
@@ -235,50 +233,50 @@ if (department == null)
         {
             user =
                 await _userRepository
-                    .GetByEmailAsync(
-                        dto.Identifier
-                    );
+                    .GetByEmailAsync(dto.Identifier);
         }
 
+        // --------------------------------------
+        // Check user
+        // --------------------------------------
 
         if (user == null)
         {
             throw new Exception(
-                "Invalid Student ID/email or password."
-            );
+                "Invalid Student ID/email or password.");
         }
 
-
         // --------------------------------------
-        // Password
+        // Verify password
         // --------------------------------------
 
         var passwordResult =
-    _passwordHasher.VerifyHashedPassword(
-        user,
-        user.PasswordHash,
-        dto.Password
-    );
+            _passwordHasher.VerifyHashedPassword(
+                user,
+                user.PasswordHash,
+                dto.Password);
 
-if (passwordResult == PasswordVerificationResult.Failed)
-{
-    throw new Exception(
-        "Invalid Student ID/email or password."
-    );
-}
+        if (passwordResult == PasswordVerificationResult.Failed)
+        {
+            throw new Exception(
+                "Invalid Student ID/email or password.");
+        }
 
-if (passwordResult == PasswordVerificationResult.SuccessRehashNeeded)
-{
-    user.PasswordHash =
-        _passwordHasher.HashPassword(
-            user,
-            dto.Password
-        );
+        // --------------------------------------
+        // Rehash password if necessary
+        // --------------------------------------
 
-    await _userRepository.UpdateAsync(user);
-    await _userRepository.SaveChangesAsync();
-}
+        if (passwordResult ==
+            PasswordVerificationResult.SuccessRehashNeeded)
+        {
+            user.PasswordHash =
+                _passwordHasher.HashPassword(
+                    user,
+                    dto.Password);
 
+            await _userRepository.UpdateAsync(user);
+            await _userRepository.SaveChangesAsync();
+        }
 
         // --------------------------------------
         // Determine role
@@ -291,23 +289,27 @@ if (passwordResult == PasswordVerificationResult.SuccessRehashNeeded)
             throw new Exception("User role is not configured.");
         }
 
-
         // --------------------------------------
-        // Generate JWT
+        // JWT identifier
         // --------------------------------------
 
         var identifier =
             student?.StudentId
             ?? user.Email;
 
+        // --------------------------------------
+        // Generate JWT
+        // --------------------------------------
 
         var token =
             _jwtService.GenerateToken(
                 user.UserId,
                 identifier,
-                role
-            );
+                role);
 
+        // --------------------------------------
+        // Return response
+        // --------------------------------------
 
         return new AuthenticationResponseDto
         {
@@ -315,14 +317,12 @@ if (passwordResult == PasswordVerificationResult.SuccessRehashNeeded)
 
             User = MapToDto(
                 user,
-                role
-            )
+                role)
         };
     }
 
-
     // ==========================================
-    // MAP USER
+    // MAP USER TO DTO
     // ==========================================
 
     private static UserDto MapToDto(
@@ -334,6 +334,10 @@ if (passwordResult == PasswordVerificationResult.SuccessRehashNeeded)
             UserId = user.UserId,
 
             FullName = user.FullName,
+
+            Email = user.Email,
+
+            PhoneNumber = user.PhoneNumber ?? string.Empty,
 
             Role = role,
 

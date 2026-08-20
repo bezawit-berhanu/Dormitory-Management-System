@@ -4,7 +4,7 @@ namespace DormitoryManagementSystem.Application.DTOs;
 
 public class RoomAssignmentDto
 {
-   
+
     public int RoomAssignmentId { get; set; }
 
     public string StudentId { get; set; }= string.Empty;

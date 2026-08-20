@@ -7,10 +7,6 @@ public static class MockStaffData
     public static List<RegistrarStaff> Staff { get; } =
         new List<RegistrarStaff>
         {
-            // ==========================================
-            // CAMPUS 4K
-            // ==========================================
-
             new RegistrarStaff
             {
                 EmployeeId = "EMP-4K-001",

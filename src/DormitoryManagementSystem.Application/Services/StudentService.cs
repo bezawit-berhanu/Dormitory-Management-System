@@ -38,5 +38,5 @@ public class StudentService : IStudentService
         return _mapper.Map<StudentDto>(student);
     }
 
-   
+
 }

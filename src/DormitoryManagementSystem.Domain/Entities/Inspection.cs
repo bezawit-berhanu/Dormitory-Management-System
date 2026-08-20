@@ -1,4 +1,5 @@
 namespace DormitoryManagementSystem.Domain.Entities;
+
 public class Inspection
 {
     public int InspectionId { get; set; }

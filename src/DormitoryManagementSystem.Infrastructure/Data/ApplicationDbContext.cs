@@ -5,15 +5,16 @@ namespace DormitoryManagementSystem.Infrastructure.Data;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
     }
 
-  
+    // ===============================
+    // DbSets
+    // ===============================
 
     public DbSet<Announcement> Announcements => Set<Announcement>();
-
     public DbSet<User> Users => Set<User>();
     public DbSet<Role> Roles => Set<Role>();
 
@@ -47,136 +48,24 @@ public class ApplicationDbContext : DbContext
     public DbSet<MaintenanceAssignment> MaintenanceAssignments => Set<MaintenanceAssignment>();
 
     public DbSet<Notification> Notifications => Set<Notification>();
+
     public DbSet<RoomTransferRequest> RoomTransferRequests => Set<RoomTransferRequest>();
     public DbSet<RoomTransferResponse> RoomTransferResponses => Set<RoomTransferResponse>();
 
     public DbSet<SecurityIncident> SecurityIncidents => Set<SecurityIncident>();
 
     public DbSet<Violation> Violations => Set<Violation>();
-  
+
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ComplaintResponse>(entity =>
-        {
-            entity.HasKey(e => e.ResponseId);
-
-            entity.HasOne(e => e.Complaint)
-                .WithMany(c => c.Responses)
-                .HasForeignKey(e => e.ComplaintId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasOne(e => e.RespondedByUser)
-                .WithMany()
-                .HasForeignKey(e => e.RespondedByUserId)
-                .OnDelete(DeleteBehavior.Restrict);
-        });
-
-        modelBuilder.Entity<InspectionFinding>(entity =>
-        {
-            entity.HasKey(e => e.FindingId);
-
-            entity.HasOne(e => e.Inspection)
-                .WithMany(i => i.Findings)
-                .HasForeignKey(e => e.InspectionId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
-        modelBuilder.Entity<MaintenanceActivity>()
-    .HasKey(x => x.ActivityId);
-        modelBuilder.Entity<MaintenanceActivity>()
-        .HasOne<MaintenanceRequest>()
-        .WithMany()
-        .HasForeignKey(x => x.MaintenanceRequestId);
-
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<MaintenanceAssignment>()
-    .HasKey(x => x.AssignmentId);
-        modelBuilder.Entity<RoomTransferRequest>()
-        .HasKey(x => x.TransferRequestId);
-        modelBuilder.Entity<Bed>()
-        .HasKey(x => x.BedId);
-        modelBuilder.Entity<AuditLog>()
-        .HasKey(x => x.AuditLogId);
-        modelBuilder.Entity<CheckIn>()
-        .HasKey(x => x.CheckInId);
-        modelBuilder.Entity<CheckOut>()
-        .HasKey(x => x.CheckOutId);
-        modelBuilder.Entity<QRCode>()
-        .HasKey(x => x.QRCodeId);
-        modelBuilder.Entity<Violation>()
-          .HasKey(x => x.ViolationId);
-        modelBuilder.Entity<Complaint>()
-  .HasKey(x => x.ComplaintId);
-        modelBuilder.Entity<Announcement>()
-        .HasKey(x => x.AnnouncementId);
-        modelBuilder.Entity<Announcement>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedBy)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Notification>()
-            .HasKey(x => x.NotificationId);
-
-        modelBuilder.Entity<RoomTransferResponse>()
-            .HasKey(x => x.ResponseId);
-
-        modelBuilder.Entity<Block>()
-            .HasKey(x => x.BlockId);
-
-        modelBuilder.Entity<Complaint>()
-            .HasKey(x => x.ComplaintId);
-        modelBuilder.Entity<Complaint>()
-.HasOne(x => x.Student)
-.WithMany()
-.HasForeignKey(x => x.SId)
-.OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Inspection>()
-    .HasOne(i => i.Room)
-    .WithMany()
-    .HasForeignKey(i => i.RoomId)
-    .OnDelete(DeleteBehavior.Restrict);
-        modelBuilder.Entity<Inspection>()
-            .HasOne(i => i.InspectedByUser)
-            .WithMany()
-            // .HasForeignKey(i => i.InspectedBy)
-            .HasPrincipalKey(u => u.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
-        modelBuilder.Entity<InspectionFinding>()
-            .HasKey(x => x.FindingId);
-
-        modelBuilder.Entity<Floor>()
-            .HasKey(x => x.FloorId);
-
-        modelBuilder.Entity<Room>()
-            .HasKey(x => x.RoomId);
-
-        modelBuilder.Entity<Role>()
-            .HasKey(x => x.RoleId);
-
-        modelBuilder.Entity<User>()
-            .HasKey(x => x.UserId);
-
-        modelBuilder.Entity<Student>()
-            .HasKey(x => x.StudentId);
-
-        modelBuilder.Entity<Dormitory>()
-            .HasKey(x => x.DormitoryId);
-
-        modelBuilder.Entity<Department>()
-            .HasKey(x => x.DepartmentId);
-
-        modelBuilder.Entity<SecurityIncident>()
-            .HasKey(x => x.IncidentId);
-
-
-    {
-        base.OnModelCreating(modelBuilder);
-
+        // Apply configurations from Infrastructure/Configurations
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(ApplicationDbContext).Assembly
         );
+
 
         // ===============================
         // Role
@@ -184,6 +73,7 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Role>()
             .HasKey(r => r.RoleId);
+
 
         // ===============================
         // User
@@ -198,40 +88,106 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(u => u.RoleId)
             .OnDelete(DeleteBehavior.Restrict);
 
+
         // ===============================
         // Student
         // ===============================
 
         modelBuilder.Entity<Student>()
-            .HasKey(s => s.SId);
+            .HasKey(s => s.StudentId);
 
+        // Student -> User
+        // No Student.User navigation exists,
+        // therefore use WithMany().
         modelBuilder.Entity<Student>()
-            .HasOne(s => s.User)
+            .HasOne<User>()
             .WithMany()
             .HasForeignKey(s => s.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        // Student -> Department
+        // No Student.Department navigation exists,
+        // therefore use WithMany().
         modelBuilder.Entity<Student>()
             .HasOne<Department>()
             .WithMany()
             .HasForeignKey(s => s.DepartmentId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Configure EmergencyContact as an owned/value object
-        modelBuilder.Entity<Student>()
-            .OwnsOne(s => s.EmergencyContactNumber);
-            // ===============================
-// Staff
-// ===============================
 
-modelBuilder.Entity<Staff>()
-    .HasKey(s => s.StaffId);
+        // ===============================
+        // Staff
+        // ===============================
 
-modelBuilder.Entity<Staff>()
-    .HasOne(s => s.User)
-    .WithMany()
-    .HasForeignKey(s => s.UserId)
-    .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<Staff>()
+            .HasKey(s => s.StaffId);
+
+        modelBuilder.Entity<Staff>()
+            .HasOne(s => s.User)
+            .WithMany()
+            .HasForeignKey(s => s.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+
+        // ===============================
+        // Department
+        // ===============================
+
+        modelBuilder.Entity<Department>()
+            .HasKey(d => d.DepartmentId);
+
+
+        // ===============================
+        // Dormitory
+        // ===============================
+
+        modelBuilder.Entity<Dormitory>()
+            .HasKey(d => d.DormitoryId);
+
+
+        // ===============================
+        // Block
+        // ===============================
+
+        modelBuilder.Entity<Block>()
+            .HasKey(b => b.BlockId);
+
+
+        // ===============================
+        // Floor
+        // ===============================
+
+        modelBuilder.Entity<Floor>()
+            .HasKey(f => f.FloorId);
+
+
+        // ===============================
+        // Room
+        // ===============================
+
+        modelBuilder.Entity<Room>()
+            .HasKey(r => r.RoomId);
+
+        modelBuilder.Entity<Room>()
+            .HasOne(r => r.Floor)
+            .WithMany()
+            .HasForeignKey(r => r.FloorId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+
+        // ===============================
+        // Bed
+        // ===============================
+
+        modelBuilder.Entity<Bed>()
+            .HasKey(b => b.BedId);
+
+        modelBuilder.Entity<Bed>()
+            .HasOne(b => b.Room)
+            .WithMany(r => r.Beds)
+            .HasForeignKey(b => b.RoomId)
+            .OnDelete(DeleteBehavior.Restrict);
+
 
         // ===============================
         // Room Assignment
@@ -240,9 +196,11 @@ modelBuilder.Entity<Staff>()
         modelBuilder.Entity<RoomAssignment>()
             .HasKey(ra => ra.RoomAssignmentId);
 
+        // Student navigation may exist on RoomAssignment,
+        // but Student has no RoomAssignments collection.
         modelBuilder.Entity<RoomAssignment>()
             .HasOne(ra => ra.Student)
-            .WithMany(s => s.RoomAssignments)
+            .WithMany()
             .HasForeignKey(ra => ra.SId)
             .OnDelete(DeleteBehavior.Restrict);
 
@@ -264,6 +222,7 @@ modelBuilder.Entity<Staff>()
             .HasForeignKey(ra => ra.AssignedByUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
+
         // ===============================
         // Check In
         // ===============================
@@ -273,7 +232,7 @@ modelBuilder.Entity<Staff>()
 
         modelBuilder.Entity<CheckIn>()
             .HasOne(c => c.Student)
-            .WithMany(s => s.CheckIns)
+            .WithMany()
             .HasForeignKey(c => c.SId)
             .OnDelete(DeleteBehavior.Restrict);
 
@@ -289,6 +248,7 @@ modelBuilder.Entity<Staff>()
             .HasForeignKey(c => c.CheckedInByUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
+
         // ===============================
         // Check Out
         // ===============================
@@ -298,7 +258,7 @@ modelBuilder.Entity<Staff>()
 
         modelBuilder.Entity<CheckOut>()
             .HasOne(c => c.Student)
-            .WithMany(s => s.CheckOuts)
+            .WithMany()
             .HasForeignKey(c => c.SId)
             .OnDelete(DeleteBehavior.Restrict);
 
@@ -314,6 +274,7 @@ modelBuilder.Entity<Staff>()
             .HasForeignKey(c => c.CheckedOutBy)
             .OnDelete(DeleteBehavior.Restrict);
 
+
         // ===============================
         // QR Code
         // ===============================
@@ -321,37 +282,65 @@ modelBuilder.Entity<Staff>()
         modelBuilder.Entity<QRCode>()
             .HasKey(q => q.QRCodeId);
 
+        // Student has no QRCodes collection.
         modelBuilder.Entity<QRCode>()
             .HasOne(q => q.Student)
-            .WithMany(s => s.QRCode)
+            .WithMany()
             .HasForeignKey(q => q.SId)
             .OnDelete(DeleteBehavior.Restrict);
 
+
         // ===============================
-        // Room
+        // Complaint
         // ===============================
 
-        modelBuilder.Entity<Room>()
-            .HasKey(r => r.RoomId);
+        modelBuilder.Entity<Complaint>()
+            .HasKey(c => c.ComplaintId);
 
-        modelBuilder.Entity<Room>()
-            .HasOne(r => r.Floor)
+        modelBuilder.Entity<Complaint>()
+            .HasOne(c => c.Student)
             .WithMany()
-            .HasForeignKey(r => r.FloorId)
+            .HasForeignKey(c => c.SId)
             .OnDelete(DeleteBehavior.Restrict);
 
+
         // ===============================
-        // Bed
+        // Complaint Response
         // ===============================
 
-        modelBuilder.Entity<Bed>()
-            .HasKey(b => b.BedId);
+        modelBuilder.Entity<ComplaintResponse>()
+            .HasKey(cr => cr.ResponseId);
 
-        modelBuilder.Entity<Bed>()
-            .HasOne(b => b.Room)
-            .WithMany(r => r.Beds)
-            .HasForeignKey(b => b.RoomId)
+        modelBuilder.Entity<ComplaintResponse>()
+            .HasOne(cr => cr.Complaint)
+            .WithMany(c => c.Responses)
+            .HasForeignKey(cr => cr.ComplaintId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ComplaintResponse>()
+            .HasOne(cr => cr.RespondedByUser)
+            .WithMany()
+            .HasForeignKey(cr => cr.RespondedByUserId)
             .OnDelete(DeleteBehavior.Restrict);
+
+
+        // ===============================
+        // Inspection
+        // ===============================
+
+        modelBuilder.Entity<Inspection>()
+            .HasKey(i => i.InspectionId);
+
+        modelBuilder.Entity<Inspection>()
+            .HasOne(i => i.Room)
+            .WithMany()
+            .HasForeignKey(i => i.RoomId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // The InspectedBy relationship is intentionally not
+        // configured here because the current Inspection entity
+        // does not expose an InspectedBy property.
+
 
         // ===============================
         // Inspection Finding
@@ -365,6 +354,15 @@ modelBuilder.Entity<Staff>()
             .WithMany(i => i.Findings)
             .HasForeignKey(f => f.InspectionId)
             .OnDelete(DeleteBehavior.Cascade);
+
+
+        // ===============================
+        // Maintenance Request
+        // ===============================
+
+        modelBuilder.Entity<MaintenanceRequest>()
+            .HasKey(m => m.MaintenanceRequestId);
+
 
         // ===============================
         // Maintenance Activity
@@ -385,6 +383,7 @@ modelBuilder.Entity<Staff>()
             .HasForeignKey(a => a.PerformedBy)
             .OnDelete(DeleteBehavior.Restrict);
 
+
         // ===============================
         // Maintenance Assignment
         // ===============================
@@ -404,6 +403,7 @@ modelBuilder.Entity<Staff>()
             .HasForeignKey(ma => ma.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
+
         // ===============================
         // Room Transfer Request
         // ===============================
@@ -414,13 +414,12 @@ modelBuilder.Entity<Staff>()
         modelBuilder.Entity<RoomTransferRequest>()
             .HasOne(rtr => rtr.Student)
             .WithMany()
-            .HasForeignKey(rtr => rtr.SId)
-            .OnDelete(DeleteBehavior.Restrict);
+.HasForeignKey(rtr => rtr.CurrentRoomId).OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<RoomTransferRequest>()
-            .HasOne(rtr => rtr.CurrentRoom)
+            .HasOne(x => x.Student)
             .WithMany()
-            .HasForeignKey(rtr => rtr.CurrentRoomId)
+            .HasForeignKey(x => x.SId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<RoomTransferRequest>()
@@ -434,6 +433,7 @@ modelBuilder.Entity<Staff>()
             .WithMany()
             .HasForeignKey(rtr => rtr.ApprovedBy)
             .OnDelete(DeleteBehavior.Restrict);
+
 
         // ===============================
         // Room Transfer Response
@@ -454,6 +454,37 @@ modelBuilder.Entity<Staff>()
             .HasForeignKey(rtr => rtr.RespondedBy)
             .OnDelete(DeleteBehavior.Restrict);
 
+
+        // ===============================
+        // Announcement
+        // ===============================
+
+        modelBuilder.Entity<Announcement>()
+            .HasKey(a => a.AnnouncementId);
+
+        modelBuilder.Entity<Announcement>()
+            .HasOne(a => a.CreatedByUser)
+            .WithMany()
+            .HasForeignKey(a => a.CreatedBy)
+            .OnDelete(DeleteBehavior.Restrict);
+
+
+        // ===============================
+        // Notification
+        // ===============================
+
+        modelBuilder.Entity<Notification>()
+            .HasKey(n => n.NotificationId);
+
+
+        // ===============================
+        // Audit Log
+        // ===============================
+
+        modelBuilder.Entity<AuditLog>()
+            .HasKey(a => a.AuditLogId);
+
+
         // ===============================
         // Security Incident
         // ===============================
@@ -472,6 +503,13 @@ modelBuilder.Entity<Staff>()
             .WithMany()
             .HasForeignKey(si => si.ReportedBy)
             .OnDelete(DeleteBehavior.Restrict);
+
+
+        // ===============================
+        // Violation
+        // ===============================
+
+        modelBuilder.Entity<Violation>()
+            .HasKey(v => v.ViolationId);
     }
-}
 }

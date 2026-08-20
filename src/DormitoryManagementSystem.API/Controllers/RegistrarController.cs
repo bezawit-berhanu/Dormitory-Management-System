@@ -24,7 +24,7 @@ public class RegistrarController : ControllerBase
         return Ok(students);
     }
 
-    
+
 
     [HttpGet("students/{studentId}")]
     public async Task<IActionResult> GetStudent(
