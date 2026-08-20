@@ -285,8 +285,11 @@ if (passwordResult == PasswordVerificationResult.SuccessRehashNeeded)
         // --------------------------------------
 
         var role =
-            user.Role?.RoleName
-            ?? "Student";
+            user.Role?.RoleName;
+            if(string.IsNullOrWhiteSpace(role))
+        {
+            throw new Exception("User role is not configured.");
+        }
 
 
         // --------------------------------------
