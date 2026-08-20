@@ -21,11 +21,11 @@ public class Student
 
     public DateTime DateOfBirth { get; set; }
 
-    public string YearOfStudy { get; set; } = string.Empty;
+    public int YearOfStudy { get; set; }
 
     public string EmergencyContactNumber { get; set; } = string.Empty;
 
-    public string Status { get; set; } = string.Empty;
+    public StudentStatus Status { get; set; }
 
     // Navigation properties
     public User? User { get; set; }

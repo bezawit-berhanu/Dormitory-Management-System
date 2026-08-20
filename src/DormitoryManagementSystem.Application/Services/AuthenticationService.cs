@@ -161,7 +161,7 @@ public class AuthenticationService : IAuthenticationService
             DateOfBirth = registrarStudent.DateOfBirth,
 
             // Registrar gives int, Student stores string
-            YearOfStudy = registrarStudent.YearOfStudy.ToString(),
+            YearOfStudy = registrarStudent.YearOfStudy,
 
             // Registrar gives int, Student stores string
             Status = registrarStudent.Status.ToString()
