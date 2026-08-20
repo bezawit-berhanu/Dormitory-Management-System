@@ -11,7 +11,9 @@ public class QRCodeService : IQRCodeService
     private readonly IQRCodeRepository _qrCodeRepository;
     private readonly IMapper _mapper;
 
-    public QRCodeService(IQRCodeRepository qrCodeRepository, IMapper mapper)
+    public QRCodeService(
+        IQRCodeRepository qrCodeRepository,
+        IMapper mapper)
     {
         _qrCodeRepository = qrCodeRepository;
         _mapper = mapper;
@@ -26,7 +28,9 @@ public class QRCodeService : IQRCodeService
             GeneratedDate = DateTime.UtcNow,
             ExpiryDate = DateTime.UtcNow.AddYears(1)
         };
+
         await _qrCodeRepository.AddAsync(qrCode);
+
         return _mapper.Map<QRCodeDto>(qrCode);
     }
 
@@ -44,9 +48,9 @@ public class QRCodeService : IQRCodeService
     {
         var qrCode = await _qrCodeRepository.GetByValueAsync(qrCodeValue);
 
-        if (qrCode == null) return false;
+        if (qrCode == null)
+            return false;
 
-        return qrCode.ExpiryDate > qrCode.GeneratedDate;
+        return qrCode.ExpiryDate > DateTime.UtcNow;
     }
-
 }

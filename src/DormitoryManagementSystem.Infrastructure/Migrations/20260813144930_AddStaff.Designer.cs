@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DormitoryManagementSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260810084657_AddAnnouncementTable")]
-    partial class AddAnnouncementTable
+    [Migration("20260813144930_AddStaff")]
+    partial class AddStaff
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,14 +76,22 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("ActionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserName")
+                    b.Property<int>("RecordId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TableName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("AuditLogId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("AuditLogs");
                 });
@@ -103,9 +111,8 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("BedId");
 
@@ -160,7 +167,7 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.Property<int>("SId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StudentId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("CheckInId");
@@ -169,7 +176,9 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
 
                     b.HasIndex("RoomAssignmentId");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("SId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CheckIns");
                 });
@@ -188,9 +197,6 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.Property<int>("CheckedOutBy")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CheckedOutByUserUserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Reason")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -201,16 +207,18 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.Property<int>("SId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StudentId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("CheckOutId");
 
-                    b.HasIndex("CheckedOutByUserUserId");
+                    b.HasIndex("CheckedOutBy");
 
                     b.HasIndex("RoomAssignmentId");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("SId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CheckOuts");
                 });
@@ -241,13 +249,16 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("StudentSId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ComplaintId");
 
-                    b.HasIndex("SId");
+                    b.HasIndex("StudentSId");
 
                     b.ToTable("Complaints");
                 });
@@ -263,6 +274,9 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.Property<int>("ComplaintId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ComplaintId1")
+                        .HasColumnType("int");
+
                     b.Property<int>("RespondedByUserId")
                         .HasColumnType("int");
 
@@ -276,6 +290,8 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.HasKey("ResponseId");
 
                     b.HasIndex("ComplaintId");
+
+                    b.HasIndex("ComplaintId1");
 
                     b.HasIndex("RespondedByUserId");
 
@@ -293,6 +309,9 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.Property<string>("DepartmentName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RegistrarDepartmentId")
+                        .HasColumnType("int");
 
                     b.HasKey("DepartmentId");
 
@@ -432,13 +451,7 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.Property<int>("MaintenanceRequestId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MaintenanceRequestId1")
-                        .HasColumnType("int");
-
                     b.Property<int>("PerformedBy")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PerformedByUserUserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -449,9 +462,7 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
 
                     b.HasIndex("MaintenanceRequestId");
 
-                    b.HasIndex("MaintenanceRequestId1");
-
-                    b.HasIndex("PerformedByUserUserId");
+                    b.HasIndex("PerformedBy");
 
                     b.ToTable("MaintenanceActivities");
                 });
@@ -483,7 +494,7 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MaintenanceAssignment");
+                    b.ToTable("MaintenanceAssignments");
                 });
 
             modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.MaintenanceRequest", b =>
@@ -571,7 +582,7 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("QRCodeId"));
 
-                    b.Property<DateTime>("ExpiryDate")
+                    b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("GeneratedDate")
@@ -579,7 +590,8 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
 
                     b.Property<string>("QRCodeValue")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("SId")
                         .HasColumnType("int");
@@ -588,12 +600,9 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StudentId")
-                        .HasColumnType("int");
-
                     b.HasKey("QRCodeId");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("SId");
 
                     b.ToTable("QRCodes");
                 });
@@ -623,9 +632,8 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomId"));
 
-                    b.Property<string>("Capacity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
 
                     b.Property<int>("FloorId")
                         .HasColumnType("int");
@@ -634,9 +642,8 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("RoomId");
 
@@ -672,7 +679,11 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StudentId")
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("RoomAssignmentId");
@@ -683,7 +694,9 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("SId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("RoomAssignments");
                 });
@@ -697,9 +710,6 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransferRequestId"));
 
                     b.Property<int>("ApprovedBy")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ApprovedByUserUserId")
                         .HasColumnType("int");
 
                     b.Property<int>("CurrentRoomId")
@@ -722,18 +732,15 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StudentId")
-                        .HasColumnType("int");
-
                     b.HasKey("TransferRequestId");
 
-                    b.HasIndex("ApprovedByUserUserId");
+                    b.HasIndex("ApprovedBy");
 
                     b.HasIndex("CurrentRoomId");
 
                     b.HasIndex("RequestedRoomId");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("SId");
 
                     b.ToTable("RoomTransferRequests");
                 });
@@ -753,9 +760,6 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.Property<int>("RespondedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("RespondedByUserUserId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("ResponseDate")
                         .HasColumnType("datetime2");
 
@@ -768,7 +772,7 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
 
                     b.HasKey("ResponseId");
 
-                    b.HasIndex("RespondedByUserUserId");
+                    b.HasIndex("RespondedBy");
 
                     b.HasIndex("TransferRequestId");
 
@@ -797,9 +801,6 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.Property<int>("ReportedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReportedByUserUserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
@@ -809,20 +810,56 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
 
                     b.HasKey("IncidentId");
 
-                    b.HasIndex("ReportedByUserUserId");
+                    b.HasIndex("ReportedBy");
 
                     b.HasIndex("RoomId");
 
                     b.ToTable("SecurityIncidents");
                 });
 
-            modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.Student", b =>
+            modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.Staff", b =>
                 {
-                    b.Property<int>("StudentId")
+                    b.Property<int>("StaffId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StaffId"));
+
+                    b.Property<string>("AssignedBlock")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Campus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StaffId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Staff");
+                });
+
+            modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.Student", b =>
+                {
+                    b.Property<int>("SId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SId"));
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -830,36 +867,35 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
-                    b.Property<string>("EmergencyContactNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("DepartmentId1")
+                        .HasColumnType("int");
 
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Status")
+                    b.Property<string>("StudentId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StudentNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("YearOfStudy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("YearOfStudy")
+                        .HasColumnType("int");
 
-                    b.HasKey("StudentId");
+                    b.HasKey("SId");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("DepartmentId1");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Students");
                 });
@@ -883,20 +919,18 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("UserId");
 
@@ -934,7 +968,7 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StudentId")
+                    b.Property<int?>("StudentSId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ViolationDate")
@@ -948,7 +982,7 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
 
                     b.HasIndex("RecordedByUserIdUserId");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("StudentSId");
 
                     b.ToTable("Violations");
                 });
@@ -964,12 +998,23 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.Navigation("CreatedByUser");
                 });
 
+            modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.AuditLog", b =>
+                {
+                    b.HasOne("DormitoryManagementSystem.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.Bed", b =>
                 {
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Room", "Room")
-                        .WithMany()
+                        .WithMany("Beds")
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Room");
@@ -991,18 +1036,24 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.User", "CheckedInByUser")
                         .WithMany()
                         .HasForeignKey("CheckedInByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.RoomAssignment", "RoomAssignment")
                         .WithMany()
                         .HasForeignKey("RoomAssignmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId");
+                        .WithMany("CheckIns")
+                        .HasForeignKey("SId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DormitoryManagementSystem.Domain.Entities.User", null)
+                        .WithMany("CheckIns")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("CheckedInByUser");
 
@@ -1015,17 +1066,25 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                 {
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.User", "CheckedOutByUser")
                         .WithMany()
-                        .HasForeignKey("CheckedOutByUserUserId");
+                        .HasForeignKey("CheckedOutBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.RoomAssignment", "RoomAssignment")
                         .WithMany()
                         .HasForeignKey("RoomAssignmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId");
+                        .WithMany("CheckOuts")
+                        .HasForeignKey("SId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DormitoryManagementSystem.Domain.Entities.User", null)
+                        .WithMany("CheckOuts")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("CheckedOutByUser");
 
@@ -1038,9 +1097,7 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                 {
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Student", "Student")
                         .WithMany()
-                        .HasForeignKey("SId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("StudentSId");
 
                     b.Navigation("Student");
                 });
@@ -1048,10 +1105,14 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
             modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.ComplaintResponse", b =>
                 {
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Complaint", "Complaint")
-                        .WithMany("Responses")
+                        .WithMany()
                         .HasForeignKey("ComplaintId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("DormitoryManagementSystem.Domain.Entities.Complaint", null)
+                        .WithMany("Responses")
+                        .HasForeignKey("ComplaintId1");
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.User", "RespondedByUser")
                         .WithMany()
@@ -1107,22 +1168,16 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
 
             modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.MaintenanceActivity", b =>
                 {
-                    b.HasOne("DormitoryManagementSystem.Domain.Entities.MaintenanceRequest", null)
-                        .WithMany()
-                        .HasForeignKey("MaintenanceRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.MaintenanceRequest", "MaintenanceRequest")
                         .WithMany()
-                        .HasForeignKey("MaintenanceRequestId1")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("MaintenanceRequestId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.User", "PerformedByUser")
                         .WithMany()
-                        .HasForeignKey("PerformedByUserUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("PerformedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("MaintenanceRequest");
@@ -1135,13 +1190,13 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.MaintenanceRequest", "MaintenanceRequest")
                         .WithMany()
                         .HasForeignKey("MaintenanceRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("MaintenanceRequest");
@@ -1182,8 +1237,10 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
             modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.QRCode", b =>
                 {
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId");
+                        .WithMany("QRCode")
+                        .HasForeignKey("SId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Student");
                 });
@@ -1193,7 +1250,7 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Floor", "Floor")
                         .WithMany()
                         .HasForeignKey("FloorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Floor");
@@ -1204,24 +1261,30 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.User", "AssignedByUser")
                         .WithMany()
                         .HasForeignKey("AssignedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Bed", "Bed")
-                        .WithMany()
+                        .WithMany("RoomAssignments")
                         .HasForeignKey("BedId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Room", "Room")
-                        .WithMany()
+                        .WithMany("RoomAssignments")
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId");
+                        .WithMany("RoomAssignments")
+                        .HasForeignKey("SId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DormitoryManagementSystem.Domain.Entities.User", null)
+                        .WithMany("AssignedRooms")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("AssignedByUser");
 
@@ -1236,23 +1299,27 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                 {
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.User", "ApprovedByUser")
                         .WithMany()
-                        .HasForeignKey("ApprovedByUserUserId");
+                        .HasForeignKey("ApprovedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Room", "CurrentRoom")
                         .WithMany()
                         .HasForeignKey("CurrentRoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Room", "RequestedRoom")
                         .WithMany()
                         .HasForeignKey("RequestedRoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Student", "Student")
                         .WithMany()
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("SId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("ApprovedByUser");
 
@@ -1267,14 +1334,14 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                 {
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.User", "RespondedByUser")
                         .WithMany()
-                        .HasForeignKey("RespondedByUserUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("RespondedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.RoomTransferRequest", "TransferRequest")
                         .WithMany()
                         .HasForeignKey("TransferRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("RespondedByUser");
@@ -1286,14 +1353,14 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                 {
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.User", "ReportedByUser")
                         .WithMany()
-                        .HasForeignKey("ReportedByUserUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("ReportedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ReportedByUser");
@@ -1301,21 +1368,71 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
                     b.Navigation("Room");
                 });
 
+            modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.Staff", b =>
+                {
+                    b.HasOne("DormitoryManagementSystem.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.Student", b =>
                 {
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Department", null)
-                        .WithMany("Students")
+                        .WithMany()
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("DormitoryManagementSystem.Domain.Entities.Department", null)
+                        .WithMany("Students")
+                        .HasForeignKey("DepartmentId1");
+
+                    b.HasOne("DormitoryManagementSystem.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.OwnsOne("DormitoryManagementSystem.Domain.ValueObjects.EmergencyContact", "EmergencyContactNumber", b1 =>
+                        {
+                            b1.Property<int>("StudentSId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("FullName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("PhoneNumber")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Relationship")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("StudentSId");
+
+                            b1.ToTable("Students");
+
+                            b1.WithOwner()
+                                .HasForeignKey("StudentSId");
+                        });
+
+                    b.Navigation("EmergencyContactNumber");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.User", b =>
                 {
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Role", "Role")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Role");
@@ -1329,11 +1446,16 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
 
                     b.HasOne("DormitoryManagementSystem.Domain.Entities.Student", "Student")
                         .WithMany()
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentSId");
 
                     b.Navigation("RecordedByUserId");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.Bed", b =>
+                {
+                    b.Navigation("RoomAssignments");
                 });
 
             modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.Complaint", b =>
@@ -1349,6 +1471,38 @@ namespace DormitoryManagementSystem.Infrastructure.Migrations
             modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.Inspection", b =>
                 {
                     b.Navigation("Findings");
+                });
+
+            modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.Role", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.Room", b =>
+                {
+                    b.Navigation("Beds");
+
+                    b.Navigation("RoomAssignments");
+                });
+
+            modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.Student", b =>
+                {
+                    b.Navigation("CheckIns");
+
+                    b.Navigation("CheckOuts");
+
+                    b.Navigation("QRCode");
+
+                    b.Navigation("RoomAssignments");
+                });
+
+            modelBuilder.Entity("DormitoryManagementSystem.Domain.Entities.User", b =>
+                {
+                    b.Navigation("AssignedRooms");
+
+                    b.Navigation("CheckIns");
+
+                    b.Navigation("CheckOuts");
                 });
 #pragma warning restore 612, 618
         }

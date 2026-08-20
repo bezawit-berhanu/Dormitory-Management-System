@@ -39,42 +39,4 @@ public class StudentService : IStudentService
     }
 
 
-    public async Task<StudentDto> CreateStudentAsync(CreateStudentDto dto)
-    {
-        var student = _mapper.Map<Student>(dto);
-
-        await _studentRepository.AddAsync(student);
-
-        return _mapper.Map<StudentDto>(student);
-    }
-
-
-    public async Task<bool> UpdateStudentAsync(
-        int id,
-        UpdateStudentDto dto)
-    {
-        var student = await _studentRepository.GetByIdAsync(id);
-
-        if (student == null)
-            return false;
-
-        _mapper.Map(dto, student);
-
-        await _studentRepository.UpdateAsync(student);
-
-        return true;
-    }
-
-
-    public async Task<bool> DeleteStudentAsync(int id)
-    {
-        var student = await _studentRepository.GetByIdAsync(id);
-
-        if (student == null)
-            return false;
-
-        await _studentRepository.DeleteAsync(student);
-
-        return true;
-    }
 }

@@ -172,9 +172,6 @@
     width: 100%;
   }
 
-  /* =========================================================
-     CAMPUS STRUCTURE
-     ========================================================= */
 
   .structure-page {
     min-height: 100%;
@@ -643,10 +640,10 @@
     border: 2px solid rgba(110, 231, 183, 0.15);
     border-top-color: #6ee7b7;
   }
-  
 
 
-  
+
+
 
   @keyframes spin {
     to {
